@@ -20,4 +20,12 @@ public class Event {
     //marks if the cost is split by all people or if it's a per person cost.
     private boolean splitCost = true;
 
+    @Override
+    public int compareTo(Object other){
+        if (!(other instanceof Event)){
+            throw new ClassCastException();
+        }
+        Event that = (Event)other;
+        return this.date.compareTo(that.date);
+    }
 }
