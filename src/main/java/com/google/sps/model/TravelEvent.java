@@ -1,5 +1,5 @@
 package com.google.sps.model;
 
-public class TravelEvent extends Events {
+public class TravelEvent extends Event {
     
 }
