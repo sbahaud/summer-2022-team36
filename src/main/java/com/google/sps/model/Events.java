@@ -7,7 +7,7 @@ public class Events {
     private String title;
     private String location;
     //uses user hashes
-    private List<Long> users;
+    private List<Long> participants;
     private String date;//not too sure
     private float estimatedCost;
     private float actualCost;
