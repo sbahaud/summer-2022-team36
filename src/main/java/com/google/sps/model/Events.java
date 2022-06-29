@@ -4,6 +4,7 @@ import java.util.List;
 import java.lang.Long;
 
 public class Events {
+    private long eventId;
     private String title;
     private String location;
     //uses user hashes

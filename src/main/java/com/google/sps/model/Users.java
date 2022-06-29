@@ -3,14 +3,14 @@ package com.google.sps.model;
 import java.util.List;
 
 public class Users {
-    private long id;
+    private long userId;
     private String userName;
     private List<Trip> trips;
 
     public float totalSpent(){
         float total = 0;
         for (Trip trip: trips){
-            total += trip.getParticipantAmmountPaid(id);
+            total += trip.getParticipantAmmountPaid(userId);
         }
         
         return total;
@@ -19,7 +19,7 @@ public class Users {
     public float totalDue(){
         float total = 0;
         for (Trip trip: trips){
-            total+= trip.getParticipantAmmountOwed(id);
+            total+= trip.getParticipantAmmountOwed(userId);
         }
 
         return total - totalSpent();
