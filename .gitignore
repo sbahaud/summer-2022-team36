@@ -1,0 +1,18 @@
+.class
+target/
+
+# binaries
+bin/
+dist/
+lib/
+.classpath
+.project
+.settings/
+.theia
+
+# editors
+*.swp
+.idea/
+.vs/
+.vscode/
+.DS_Store
