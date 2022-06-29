@@ -1,9 +1,11 @@
-package com.google.sps.data;
+package com.google.sps.model;
+
+import java.util.List;
 
 public class Users {
     class UserTrip {
-        String titile;
-        String link;
+        String title;
+        String linkToTrip;
         float ammountOwed;
         float ammountPaid;
     }
@@ -21,7 +23,7 @@ public class Users {
 
     public float totalDue(){
         float total = 0;
-        for (UserTrip.trip: trips){
+        for (UserTrip trip: trips){
             total+= trip.ammountOwed;
         }
         return total;
