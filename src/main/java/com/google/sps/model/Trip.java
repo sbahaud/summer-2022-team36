@@ -6,6 +6,7 @@ public class Trip {
     private long tripID;
     private String title;
     private List<Long> participants;
+    private List<Event> itenerary;
     public float totalCost;
     private float totalBudget;
     
