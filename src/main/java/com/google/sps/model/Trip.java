@@ -5,8 +5,8 @@ import java.util.List;
 public class Trip {
     private long tripID;
     private String title;
-    private List<Long> participants;
-    private List<Event> itenerary;
+    private List<Long> participantIds;
+    private List<Long> eventIds;
     public float totalCost;
     private float totalBudget;
     
