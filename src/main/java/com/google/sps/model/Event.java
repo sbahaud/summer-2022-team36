@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.lang.Long;
 
-public class Event {
+public class Event implements Comparable<Event>{
     private long eventId;
     private String title;
     private String location;
@@ -22,11 +22,11 @@ public class Event {
     private boolean splitCost = true;
 
     @Override
-    public int compareTo(Object other){
-        if (!(other instanceof Event)){
-            throw new ClassCastException();
+    public int compareTo(Event that){
+        int dateComparison = this.date.compareTo(that.date);
+        if (dateComparison == 0) {
+            return this.title.compareTo(that.title);
         }
-        Event that = (Event)other;
-        return this.date.compareTo(that.date);
+        return dateComparison;
     }
 }
