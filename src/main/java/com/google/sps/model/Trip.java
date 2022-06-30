@@ -10,11 +10,9 @@ public class Trip {
     public float totalCost;
     private float totalBudget;
     
-    public long getParticipantAmmountOwed(long userId){
-        //TODO: calculate participant ammount owed
-    }
-
-    public long getParticipantAmmountPaid(long userId){
-        //TODO: calculate ammount paid  by a user
-    }
+    //TODO: calculate participant ammount owed
+    // public long getParticipantAmmountOwed(long userId){}
+    
+    //TODO: calculate ammount paid  by a user
+    // public long getParticipantAmmountPaid(long userId){}
 }
