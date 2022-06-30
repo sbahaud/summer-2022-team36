@@ -29,4 +29,15 @@ public class Event implements Comparable<Event>{
         }
         return dateComparison;
     }
+
+    @Override
+    public boolean equals(Object other){
+        if (!(other instanceof Event)){
+            return false;
+        }
+        Event that = (Event)other;
+        //if both objects have the same date and name they should be equal
+        return 0 == compareTo(that);
+
+    }
 }
