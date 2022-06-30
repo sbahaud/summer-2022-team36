@@ -1,11 +1,12 @@
 package com.google.sps.model;
 
 import java.util.List;
+import java.lang.Long;
 
 public class User {
     private long userId;
     private String userName;
-    private List<Trip> trips;
+    private List<Long> tripIds;
 
     public float totalSpent(){
         float total = 0;
