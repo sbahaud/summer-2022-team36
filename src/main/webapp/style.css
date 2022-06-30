@@ -1,0 +1,55 @@
+.createTrip {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px 100px;
+    position: relative;
+    min-height: 100vh;
+    width: 430px;
+}
+.inputBox {
+    margin-top: 10px;
+    position: relative;
+    max-width: 430px;
+}
+
+.inputBox input {
+    border: none;
+    border-bottom: 2px solid;
+    font-size: 16px;
+    flex-direction: row;
+    margin: 10px 0;
+    outline: none;
+    padding: 5px 0;
+    resize: none;
+
+}
+.inputBoxDate input[name="text-input-start-date"],
+.inputBoxDate input[name="text-input-end-date"] {
+    width: min-content;
+    margin: 10px 0;
+}
+
+.createTrip label {
+    font-size: 16px;
+    left: 0;
+    margin: 10px 0;
+    padding: 5px 0;
+
+}
+.inputBox input[value="add"] {
+    width: min-content
+}
+
+input[type="submit"] {
+    background: green;
+    border: none;
+    cursor: pointer;
+    color: var(--bg-color);
+    font-size: 18px;
+    padding: 10px;
+}
+input[type="submit"][name="finish"] {
+    width: 100%
+}
