@@ -12,10 +12,10 @@ public abstract class Trip {
     abstract long tripID();
     abstract String title();
     abstract List<Long> participants();
+    abstract List<Long> eventIds;
     abstract float totalCost();
     abstract float totalBudget();
 }
-
 
 /*public long getParticipantAmmountOwed(long userId){
     //TODO: calculate participant ammount owed
