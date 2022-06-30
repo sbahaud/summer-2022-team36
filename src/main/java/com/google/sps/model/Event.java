@@ -1,5 +1,6 @@
 package com.google.sps.model;
 
+import java.util.Date;
 import java.util.List;
 import java.lang.Long;
 
@@ -9,7 +10,7 @@ public class Event {
     private String location;
     //uses user hashes
     private List<Long> participants;
-    private String date;//not too sure
+    private Date date;
     private float estimatedCost;
     private float actualCost;
     private boolean paid;
