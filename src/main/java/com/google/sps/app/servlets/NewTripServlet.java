@@ -43,6 +43,10 @@ public class NewTripServlet extends HttpServlet {
             response.getWriter().println("Input information error");
         }
 
+        final Gson gson = new Gson();
+        response.setContentType("application/json;");
+        response.getWriter().println(gson.toJson("{tripID}"));
+
         response.sendRedirect("https://summer22-sps-36.appspot.com/");
     }
 
