@@ -21,6 +21,15 @@ public class Event implements Comparable<Event>{
     //marks if the cost is split by all people or if it's a per person cost.
     private boolean splitCost = true;
 
+    
+    public Date getDate(){
+        return date;
+    }
+
+    public String getTitle(){
+        return title;
+    }
+
     @Override
     public int compareTo(Event that){
         int dateComparison = this.date.compareTo(that.date);
