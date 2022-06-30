@@ -1,4 +1,4 @@
-package com.google.sps;
+package com.google.sps.app;
 
 import java.net.URL;
 import org.eclipse.jetty.annotations.AnnotationConfiguration;
