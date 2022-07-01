@@ -15,35 +15,36 @@ import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.gson.Gson;
+import com.google.sps.util.Validator;
 
 @WebServlet("/LogIn")
 public class LogIn extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(!validInput(request)) {
+        String username = request.getParameter("text-input-user-name");
+        if(!Validator.validUserName(username)) {
             response.getWriter().println("Invalid Username");
             return;
         }
 
-        String username = request.getParameter("text-input-user-name");
-
-        UUID userId = readFromDatastore(username);
-
+        String userId = readFromDatastore(username);
         response.getWriter().println(userId);
     }
 
-    public UUID readFromDatastore(String username){
+    public String readFromDatastore(String username){
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         Query<Entity> query = 
-            Query.newEntityQueryBuilder().setKind(username).build();
+            Query.newEntityQueryBuilder().setKind("User").build();
         QueryResults<Entity> results = datastore.run(query);
-
-        //TODO: how can I get a UUID
-        return results.next().getLong("userId");
-    }
-
-    public boolean validInput(HttpServletRequest request) {
-        return request.getParameter("text-input-user-name").matches("[\\w\\d]*");
+        
+        while (results.hasNext()) {
+            Entity entity = results.next();
+            
+            if (entity.getString("username").equals(username)){
+                return entity.getString("userId");
+            }
+        }
+        return "Username doesn't exist. Please Signup.";
     }
 }
