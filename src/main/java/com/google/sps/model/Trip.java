@@ -5,7 +5,7 @@ import com.google.auto.value.AutoValue;
 import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.Set;
-D
+
 @AutoValue
 public abstract class Trip {
 
