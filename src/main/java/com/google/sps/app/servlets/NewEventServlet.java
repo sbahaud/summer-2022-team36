@@ -42,7 +42,7 @@ public class NewEventServlet extends HttpServlet {
 
             UUID eventID = UUIDs.generateID();
             String location = StringEscapeUtils.escapeHtml4(request.getParameter("text-input-location"));
-            Timestamp date = Timestamps.parse(request.getParameter("text-input-date"));
+            String date = request.getParameter("text-input-date");
             writeToDatastore(eventID, textValuetitle, estimatedCost, location, date);
 
             final Gson gson = new Gson();
@@ -57,7 +57,7 @@ public class NewEventServlet extends HttpServlet {
         response.sendRedirect("https://summer22-sps-36.appspot.com/");
     }
 
-    public void writeToDatastore(UUID eventID, String textValuetitle, float estimatedCost, String location,  Timestamp date) {
+    public void writeToDatastore(UUID eventID, String textValuetitle, float estimatedCost, String location,  String date) {
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         KeyFactory keyFactor = datastore.newKeyFactory().setKind("Event");
         FullEntity eventEntity = Entity.newBuilder(keyFactor.newKey())
