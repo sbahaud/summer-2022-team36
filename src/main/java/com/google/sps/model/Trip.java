@@ -6,8 +6,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+
 @AutoValue
 public abstract class Trip {
+
 
     static public Trip create(UUID tripID, String title, float totalBudget){
         return new AutoValue_Trip(tripID, title, new HashSet<Long>(), new HashSet<Long>(), 0.0F, totalBudget);

@@ -22,6 +22,7 @@ public class Event implements Comparable<Event>{
     //marks if the cost is split by all people or if it's a per person cost.
     private boolean splitCost = true;
 
+
     public Event(UUID eventId, String title, String location, Date date, float estimatedCost){
         this.eventId=eventId;
         this.title=title;
@@ -41,6 +42,7 @@ public class Event implements Comparable<Event>{
     public String getTitle(){
         return title;
     }
+
 
     public String getLocation(){
         return location;
