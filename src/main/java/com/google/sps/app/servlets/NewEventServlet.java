@@ -16,9 +16,11 @@ import com.google.sps.model.Category;
 import com.google.sps.model.Event;
 import com.google.sps.util.UUIDs;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.annotation.WebServlet;
@@ -35,19 +37,12 @@ public class NewEventServlet extends HttpServlet {
 
         String error = validateInput(request);
         if (error.isEmpty()) {
-            // Get the value entered in the form.
-            String textValuetitle = StringEscapeUtils.escapeHtml4(request.getParameter("text-input-title"));
-            float estimatedCost = Float
-                    .parseFloat(request.getParameter("text-input-estimatedCost"));
-
-            UUID eventID = UUIDs.generateID();
-            String location = StringEscapeUtils.escapeHtml4(request.getParameter("text-input-location"));
-            String date = request.getParameter("text-input-date");
-            writeToDatastore(eventID, textValuetitle, estimatedCost, location, date);
+            Event newEvent= getEvent(request);
+            writeToDatastore(newEvent);
 
             final Gson gson = new Gson();
             response.setContentType("application/json;");
-            response.getWriter().println(gson.toJson(eventID));
+            response.getWriter().println(gson.toJson(newEvent.getID()));
 
         } else {
             response.getWriter().println("Input information error");
@@ -57,15 +52,15 @@ public class NewEventServlet extends HttpServlet {
         response.sendRedirect("https://summer22-sps-36.appspot.com/");
     }
 
-    public void writeToDatastore(UUID eventID, String textValuetitle, float estimatedCost, String location,  String date) {
+    public void writeToDatastore(Event newEvent) {
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         KeyFactory keyFactor = datastore.newKeyFactory().setKind("Event");
         FullEntity eventEntity = Entity.newBuilder(keyFactor.newKey())
-                .set("eventID", eventID.toString())
-                .set("title", textValuetitle.trim())
-                .set("estimatedCost", estimatedCost)
-                .set("location", location)
-                .set("date", date.toString())
+                .set("eventID", newEvent.getID().toString())
+                .set("title", newEvent.getTitle().trim())
+                .set("estimatedCost", newEvent.getEstimatedCost())
+                .set("location", newEvent.getLocation())
+                .set("date", newEvent.getDate().toString())
                 .build();
         datastore.put(eventEntity);
     }
@@ -79,14 +74,35 @@ public class NewEventServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             return "Invalid estimatedCost";
         }
-        try {
-            Timestamp date = Timestamps.parse(request.getParameter("text-input-date"));
-        } catch (ParseException e) {
+
+        if(parseInputDate(request)==null){
             return "Invalid date";
         }
         //no idea how to validate address for now.
 
         return "";
+    }
+
+    public Event getEvent(HttpServletRequest request){
+        // Get the value entered in the form.
+        String textValuetitle = StringEscapeUtils.escapeHtml4(request.getParameter("text-input-title"));
+        float estimatedCost = Float
+                .parseFloat(request.getParameter("text-input-estimatedCost"));
+
+        UUID eventID = UUIDs.generateID();
+        String location = StringEscapeUtils.escapeHtml4(request.getParameter("text-input-location"));
+        Date date = parseInputDate(request);
+        return new Event(eventID,textValuetitle,location,date,estimatedCost);
+    }
+
+    public Date parseInputDate(HttpServletRequest request){
+        Date date;
+        try {
+            date = DateFormat.getDateInstance().parse(request.getParameter("text-input-date"));
+        } catch (ParseException e) {
+            return null;
+        }
+        return date;
     }
 
 }

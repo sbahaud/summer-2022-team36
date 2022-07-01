@@ -4,20 +4,21 @@ import com.google.auto.value.AutoValue;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @AutoValue
 public abstract class Trip {
 
-    static Trip create(long tripID, String title, float totalBudget){
+    static public Trip create(UUID tripID, String title, float totalBudget){
         return new AutoValue_Trip(tripID, title, new HashSet<Long>(), new HashSet<Long>(), 0.0F, totalBudget);
     }
-    abstract long tripID();
-    abstract String title();
+    abstract public UUID tripID();
+    abstract public String title();
 
-    abstract Set<Long> participants();
-    abstract Set<Long> eventIds();
-    abstract float totalCost();
-    abstract float totalBudget();
+    abstract public Set<UUID> participants();
+    abstract public Set<UUID> eventIds();
+    abstract public float totalCost();
+    abstract public float totalBudget();
 }
 
 /*public long getParticipantAmmountOwed(long userId){

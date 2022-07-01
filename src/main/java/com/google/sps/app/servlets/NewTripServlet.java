@@ -32,17 +32,11 @@ public class NewTripServlet extends HttpServlet {
 
         String error = validateInput(request);
         if (error.isEmpty()) {
-            // Get the value entered in the form.
-            String textValuetitle = StringEscapeUtils.escapeHtml4(request.getParameter("text-input-title"));
-            float totalBudget = Float
-                    .parseFloat(request.getParameter("text-input-totalBudget"));
-
-            UUID tripID = UUIDs.generateID();
-            String userID = request.getParameter("userID");
-            writeToDatastore(tripID, textValuetitle, totalBudget, userID);
+            Trip newTrip = getTrip(request);
+            writeToDatastore(newTrip);
             final Gson gson = new Gson();
             response.setContentType("application/json;");
-            response.getWriter().println(gson.toJson(tripID));
+            response.getWriter().println(gson.toJson(newTrip.tripID()));
         } 
         else {
             response.getWriter().println("Input information error");
@@ -52,14 +46,13 @@ public class NewTripServlet extends HttpServlet {
         response.sendRedirect("https://summer22-sps-36.appspot.com/");
     }
 
-    public void writeToDatastore(UUID tripID, String textValuetitle, float totalBudget, String userID) {
+    public void writeToDatastore(Trip newTrip) {
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         KeyFactory keyFactor = datastore.newKeyFactory().setKind("Trip");
         FullEntity tripEntity = Entity.newBuilder(keyFactor.newKey())
-                .set("tripID", tripID.toString())
-                .set("title", textValuetitle.trim())
-                .set("totalBudget", totalBudget)
-                .set("user", userID)
+                .set("tripID", newTrip.tripID().toString())
+                .set("title", newTrip.title().trim())
+                .set("totalBudget", newTrip.totalBudget())
                 .build();
         datastore.put(tripEntity);
     }
@@ -73,10 +66,17 @@ public class NewTripServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             return "Invalid totalBudget";
         }
-        if(!UUIDs.validateUUID(request.getParameter("userID"))){
-            return "Invalid user";
-        }
         return "";
+    }
+
+    public Trip getTrip(HttpServletRequest request){
+        // Get the value entered in the form.
+        String textValuetitle = StringEscapeUtils.escapeHtml4(request.getParameter("text-input-title"));
+        float totalBudget = Float
+                .parseFloat(request.getParameter("text-input-totalBudget"));
+
+        UUID tripID = UUIDs.generateID();
+        return Trip.create(tripID,textValuetitle,totalBudget);
     }
 
 }

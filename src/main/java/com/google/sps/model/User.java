@@ -2,11 +2,12 @@ package com.google.sps.model;
 
 import java.util.List;
 import java.lang.Long;
+import java.util.UUID;
 
 public class User {
-    private long userId;
+    private UUID userId;
     private String userName;
-    private List<Long> tripIds;
+    private List<UUID> tripIds;
 
     /**
      * Should be moved to front end since 
