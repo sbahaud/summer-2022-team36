@@ -5,9 +5,9 @@ import java.lang.Long;
 import java.util.UUID;
 
 public class User {
-    private UUID userId;
+    private long userId;
     private String userName;
-    private List<UUID> tripIds;
+    private List<Long> tripIds;
 
     /**
      * Should be moved to front end since 

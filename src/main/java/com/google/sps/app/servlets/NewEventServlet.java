@@ -32,9 +32,9 @@ import io.opencensus.common.ServerStatsFieldEnums.Id;
 public class NewEventServlet extends HttpServlet {
 
     private static String TITLE_PARAM = "text-input-title";
-    private static String ESTIMATED_COST_PARAM = "text-input-estimatedCost";
-    private static String DATE_COST_PARAM = "text-input-date";
-    private static String LOCATION_COST_PARAM = "text-input-location";
+    private static String ESTIMATED_PARAM = "text-input-estimatedCost";
+    private static String DATE_PARAM = "text-input-date";
+    private static String LOCATION_PARAM = "text-input-location";
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -73,7 +73,7 @@ public class NewEventServlet extends HttpServlet {
             return "Invalid title";
         }
         try {
-            float estimatedCost = Float.parseFloat(request.getParameter(ESTIMATED_COST_PARAM));
+            float estimatedCost = Float.parseFloat(request.getParameter(ESTIMATED_PARAM));
         } catch (NumberFormatException e) {
             return "Invalid estimatedCost";
         }
@@ -90,10 +90,10 @@ public class NewEventServlet extends HttpServlet {
         // Get the value entered in the form.
         String title = StringEscapeUtils.escapeHtml4(request.getParameter(TITLE_PARAM));
         float estimatedCost = Float
-                .parseFloat(request.getParameter(ESTIMATED_COST_PARAM));
+                .parseFloat(request.getParameter(ESTIMATED_PARAM));
 
         long eventID = UUIDs.generateID();
-        String location = StringEscapeUtils.escapeHtml4(request.getParameter(LOCATION_COST_PARAM));
+        String location = StringEscapeUtils.escapeHtml4(request.getParameter(LOCATION_PARAM));
         Date date = parseInputDate(request);
         return new Event(eventID,title,location,date,estimatedCost);
     }
@@ -101,7 +101,7 @@ public class NewEventServlet extends HttpServlet {
     public Date parseInputDate(HttpServletRequest request){
         Date date;
         try {
-            date = DateFormat.getDateInstance().parse(request.getParameter(DATE_COST_PARAM));
+            date = DateFormat.getDateInstance().parse(request.getParameter(DATE_PARAM));
         } catch (ParseException e) {
             return null;
         }
