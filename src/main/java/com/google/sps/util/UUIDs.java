@@ -4,8 +4,8 @@ import java.util.UUID;
 
 //version 4 UUID
 public class UUIDs {
-    public static UUID generateID() {
-        return UUID.randomUUID();
+    public static long generateID() {
+        return UUID.randomUUID().hashCode();
     }
 
     public static boolean validateUUID(String ID) {

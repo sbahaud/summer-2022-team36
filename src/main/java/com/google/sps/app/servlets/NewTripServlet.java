@@ -27,6 +27,9 @@ import org.apache.commons.text.StringEscapeUtils;
 @WebServlet("/NewTrip")
 public class NewTripServlet extends HttpServlet {
 
+    private static String TITLE_PARAM = "text-input-title";
+    private static String TOTAL_BUDGET_PARAM = "text-input-totalBudget";
+
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -42,7 +45,6 @@ public class NewTripServlet extends HttpServlet {
             response.getWriter().println("Input information error");
         }
 
-
         response.sendRedirect("https://summer22-sps-36.appspot.com/");
     }
 
@@ -50,7 +52,7 @@ public class NewTripServlet extends HttpServlet {
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         KeyFactory keyFactor = datastore.newKeyFactory().setKind("Trip");
         FullEntity tripEntity = Entity.newBuilder(keyFactor.newKey())
-                .set("tripID", newTrip.tripID().toString())
+                .set("tripID", newTrip.tripID())
                 .set("title", newTrip.title().trim())
                 .set("totalBudget", newTrip.totalBudget())
                 .build();
@@ -58,11 +60,11 @@ public class NewTripServlet extends HttpServlet {
     }
 
     public String validateInput(HttpServletRequest request) {
-        if (!request.getParameter("text-input-title").matches("[\\w*\\s*]*")) {
+        if (!request.getParameter(TITLE_PARAM).matches("[\\w*\\s*]*")) {
             return "Invalid title";
         }
         try {
-            float totalBudget = Float.parseFloat(request.getParameter("text-input-totalBudget"));
+            float totalBudget = Float.parseFloat(request.getParameter(TOTAL_BUDGET_PARAM));
         } catch (NumberFormatException e) {
             return "Invalid totalBudget";
         }
@@ -71,11 +73,11 @@ public class NewTripServlet extends HttpServlet {
 
     public Trip getTrip(HttpServletRequest request){
         // Get the value entered in the form.
-        String textValuetitle = StringEscapeUtils.escapeHtml4(request.getParameter("text-input-title"));
+        String textValuetitle = StringEscapeUtils.escapeHtml4(request.getParameter(TITLE_PARAM));
         float totalBudget = Float
-                .parseFloat(request.getParameter("text-input-totalBudget"));
+                .parseFloat(request.getParameter(TOTAL_BUDGET_PARAM));
 
-        UUID tripID = UUIDs.generateID();
+        long tripID = UUIDs.generateID();
         return Trip.create(tripID,textValuetitle,totalBudget);
     }
 

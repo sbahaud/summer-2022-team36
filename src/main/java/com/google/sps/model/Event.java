@@ -3,14 +3,13 @@ package com.google.sps.model;
 import java.util.Date;
 import java.util.List;
 import java.lang.Long;
-import java.util.UUID;
 
 public class Event implements Comparable<Event>{
-    private UUID eventId;
+    private long eventId;
     private String title;
     private String location;
     //uses user hashes
-    private List<UUID> participants;
+    private List<Long> participants;
     private Date date;
     private float estimatedCost;
     private float actualCost;
@@ -22,7 +21,7 @@ public class Event implements Comparable<Event>{
     //marks if the cost is split by all people or if it's a per person cost.
     private boolean splitCost = true;
 
-    public Event(UUID eventId, String title, String location, Date date, float estimatedCost){
+    public Event(long eventId, String title, String location, Date date, float estimatedCost){
         this.eventId=eventId;
         this.title=title;
         this.location=location;
@@ -30,7 +29,7 @@ public class Event implements Comparable<Event>{
         this.estimatedCost=estimatedCost;
     }
 
-    public UUID getID(){
+    public long getID(){
         return eventId;
     }
     

@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Long;
 import java.util.Date;
 import java.util.UUID;
 
@@ -29,8 +30,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.text.StringEscapeUtils;
 
+import io.opencensus.common.ServerStatsFieldEnums.Id;
+
 @WebServlet("/NewEvent")
 public class NewEventServlet extends HttpServlet {
+
+    private static String TITLE_PARAM = "text-input-title";
+    private static String ESTIMATED_COST_PARAM = "text-input-estimatedCost";
+    private static String DATE_COST_PARAM = "text-input-date";
+    private static String LOCATION_COST_PARAM = "text-input-location";
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -48,7 +56,6 @@ public class NewEventServlet extends HttpServlet {
             response.getWriter().println("Input information error");
         }
 
-
         response.sendRedirect("https://summer22-sps-36.appspot.com/");
     }
 
@@ -56,7 +63,7 @@ public class NewEventServlet extends HttpServlet {
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         KeyFactory keyFactor = datastore.newKeyFactory().setKind("Event");
         FullEntity eventEntity = Entity.newBuilder(keyFactor.newKey())
-                .set("eventID", newEvent.getID().toString())
+                .set("eventID", newEvent.getID())
                 .set("title", newEvent.getTitle().trim())
                 .set("estimatedCost", newEvent.getEstimatedCost())
                 .set("location", newEvent.getLocation())
@@ -66,11 +73,11 @@ public class NewEventServlet extends HttpServlet {
     }
 
     public String validateInput(HttpServletRequest request) {
-        if (!request.getParameter("text-input-title").matches("[\\w*\\s*]*")) {
+        if (!request.getParameter(TITLE_PARAM).matches("[\\w*\\s*]*")) {
             return "Invalid title";
         }
         try {
-            float estimatedCost = Float.parseFloat(request.getParameter("text-input-estimatedCost"));
+            float estimatedCost = Float.parseFloat(request.getParameter(ESTIMATED_COST_PARAM));
         } catch (NumberFormatException e) {
             return "Invalid estimatedCost";
         }
@@ -85,20 +92,20 @@ public class NewEventServlet extends HttpServlet {
 
     public Event getEvent(HttpServletRequest request){
         // Get the value entered in the form.
-        String textValuetitle = StringEscapeUtils.escapeHtml4(request.getParameter("text-input-title"));
+        String title = StringEscapeUtils.escapeHtml4(request.getParameter(TITLE_PARAM));
         float estimatedCost = Float
-                .parseFloat(request.getParameter("text-input-estimatedCost"));
+                .parseFloat(request.getParameter(ESTIMATED_COST_PARAM));
 
-        UUID eventID = UUIDs.generateID();
-        String location = StringEscapeUtils.escapeHtml4(request.getParameter("text-input-location"));
+        long eventID = UUIDs.generateID();
+        String location = StringEscapeUtils.escapeHtml4(request.getParameter(LOCATION_COST_PARAM));
         Date date = parseInputDate(request);
-        return new Event(eventID,textValuetitle,location,date,estimatedCost);
+        return new Event(eventID,title,location,date,estimatedCost);
     }
 
     public Date parseInputDate(HttpServletRequest request){
         Date date;
         try {
-            date = DateFormat.getDateInstance().parse(request.getParameter("text-input-date"));
+            date = DateFormat.getDateInstance().parse(request.getParameter(DATE_COST_PARAM));
         } catch (ParseException e) {
             return null;
         }
