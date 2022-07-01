@@ -10,9 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.FullEntity;
 import com.google.cloud.datastore.KeyFactory;
-import com.google.datastore.v1.Entity;
+import com.google.sps.util.IDgenerator;
 import com.google.sps.util.Validator;
 
 @WebServlet("/SignUp")
@@ -33,7 +34,7 @@ public class SignUp extends HttpServlet{
     }
 
     public UUID writeToDatastore(String username){
-        UUID userId = UUID.fromString(username);
+        UUID userId = IDgenerator.generateID();
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         KeyFactory keyFactory = datastore.newKeyFactory().setKind("User");
