@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.api.gax.rpc.InvalidArgumentException;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
@@ -27,11 +28,21 @@ public class LogIn extends HttpServlet {
             return;
         }
 
-        String userId = readFromDatastore(username);
-        response.getWriter().println(userId);
+        UUID userId;
+        try {
+            userId = readFromDatastore(username);
+        } catch (IllegalArgumentException e) {
+            response.getWriter().println(e.getMessage());
+            return;
+        }
+
+        Gson gson = new Gson();
+
+        response.setContentType("application/json;");
+        response.getWriter().println(gson.toJson(userId));
     }
 
-    public String readFromDatastore(String username){
+    public UUID readFromDatastore(String username) throws IllegalArgumentException {
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         Query<Entity> query = 
@@ -42,9 +53,9 @@ public class LogIn extends HttpServlet {
             Entity entity = results.next();
             
             if (entity.getString("username").equals(username)){
-                return entity.getString("userId");
+                return UUID.fromString(entity.getString("userId"));
             }
         }
-        return "Username doesn't exist. Please Signup.";
+        throw new IllegalArgumentException("Username doesn't exist. Please Signup.");
     }
 }

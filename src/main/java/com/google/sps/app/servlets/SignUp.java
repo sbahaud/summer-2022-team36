@@ -13,6 +13,7 @@ import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.FullEntity;
 import com.google.cloud.datastore.KeyFactory;
+import com.google.gson.Gson;
 import com.google.sps.util.IDgenerator;
 import com.google.sps.util.Validator;
 
@@ -30,7 +31,10 @@ public class SignUp extends HttpServlet{
 
         UUID userId = writeToDatastore(username);
 
-        response.getWriter().println(userId.toString());
+        Gson gson = new Gson();
+
+        response.setContentType("application/json;");;
+        response.getWriter().println(gson.toJson(userId));
     }
 
     public UUID writeToDatastore(String username){
