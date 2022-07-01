@@ -14,6 +14,7 @@ public abstract class Trip {
     }
     abstract long tripID();
     abstract String title();
+
     abstract Set<Long> participants();
     abstract Set<Long> eventIds();
     abstract float totalCost();
