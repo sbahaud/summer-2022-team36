@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.lang.Long;
 import java.util.Set;
 
+
 @AutoValue
 public abstract class Trip {
 

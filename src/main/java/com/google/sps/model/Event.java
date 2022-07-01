@@ -41,6 +41,7 @@ public class Event implements Comparable<Event>{
         return title;
     }
 
+
     public String getLocation(){
         return location;
     }
