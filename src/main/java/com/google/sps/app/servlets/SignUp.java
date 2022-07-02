@@ -25,7 +25,7 @@ public class SignUp extends HttpServlet{
         String username = request.getParameter("text-input-user-name");
         
         if(!Validator.validUserName(username)) {
-            response.getWriter().println("Invalid Username");
+            response.getWriter().println("Invalid Username: Please only use letters and numbers.");
             return;
         }
 
