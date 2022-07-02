@@ -19,9 +19,12 @@ import com.google.sps.util.Validator;
 
 @WebServlet("/LogIn")
 public class LogIn extends HttpServlet {
+
+    final String textInput = "text-input-";
+
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter("text-input-user-name");
+        String username = request.getParameter(textInput+"user-name");
         if(!Validator.validUserName(username)) {
             response.getWriter().println("Invalid Username");
             return;
