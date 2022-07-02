@@ -24,7 +24,7 @@ public class SignUp extends HttpServlet{
     
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter(textInput+"user-name");
+        String username = request.getParameter(textInput+"user-name").trim();
         
         if(!Validator.validUserName(username)) {
             response.getWriter().println("Invalid Username: Please only use letters and numbers.");
