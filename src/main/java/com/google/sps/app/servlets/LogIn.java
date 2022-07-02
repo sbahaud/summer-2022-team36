@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.cloud.datastore.BaseEntity;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.sps.util.Validator;
@@ -39,17 +41,19 @@ public class LogIn extends HttpServlet {
     public long queryDatastore(String username) throws IllegalArgumentException {
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-        Query<Entity> query = 
-            Query.newEntityQueryBuilder().setKind("User").build();
-        QueryResults<Entity> results = datastore.run(query);
+
+        String gqlQuery = "select * from User where username=" + username;
+
+        Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
+        QueryResults<?> results = datastore.run(query);
         
-        while (results.hasNext()) {
-            Entity entity = results.next();
-            
-            if (entity.getString("username").equals(username)){
-                return entity.getLong("userId");
-            }
+        //checks if there are no results for the username
+        if(!results.hasNext()){
+            throw new IllegalArgumentException("Username doesn't exist. Please Signup.");
         }
-        throw new IllegalArgumentException("Username doesn't exist. Please Signup.");
+
+        //possible class cast or null pointer
+        return ((BaseEntity<Key>) results.next()).getLong("userId");
+
     }
 }
