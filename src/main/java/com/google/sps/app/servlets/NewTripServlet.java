@@ -13,7 +13,10 @@ import com.google.gson.Gson;
 import com.google.sps.model.Trip;
 import com.google.sps.util.UUIDs;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +30,8 @@ public class NewTripServlet extends HttpServlet {
 
     private static String TITLE_PARAM = "text-input-title";
     private static String TOTAL_BUDGET_PARAM = "text-input-totalBudget";
+    private static String START_DATE_PARAM = "text-input-start-date";
+    private static String END_DATE_PARAM = "text-input-end-date";
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -40,7 +45,7 @@ public class NewTripServlet extends HttpServlet {
             response.getWriter().println(gson.toJson(newTrip.tripID()));
         } 
         else {
-            response.getWriter().println("Input information error");
+            response.getWriter().println("Input information error: "+ error);
         }
 
         response.sendRedirect("https://summer22-sps-36.appspot.com/");
@@ -53,6 +58,8 @@ public class NewTripServlet extends HttpServlet {
                 .set("tripID", newTrip.tripID())
                 .set("title", newTrip.title().trim())
                 .set("totalBudget", newTrip.totalBudget())
+                .set("startDate", newTrip.start().toString())
+                .set("endDate", newTrip.end().toString())
                 .build();
         datastore.put(tripEntity);
     }
@@ -66,6 +73,16 @@ public class NewTripServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             return "Invalid totalBudget";
         }
+        Date start = parseInputDate(request.getParameter(START_DATE_PARAM));
+        Date end = parseInputDate(request.getParameter(END_DATE_PARAM));
+        if(start==null){
+            return "Invalid start date";
+        }
+        if(end==null){
+            return "Invalid end date";
+        }
+        if(end.before(start))
+            return "Start date should before end date";
         return "";
     }
 
@@ -76,7 +93,19 @@ public class NewTripServlet extends HttpServlet {
                 .parseFloat(request.getParameter(TOTAL_BUDGET_PARAM));
 
         long tripID = UUIDs.generateID();
-        return Trip.create(tripID,textValuetitle,totalBudget);
+        Date start = parseInputDate(request.getParameter(START_DATE_PARAM));
+        Date end = parseInputDate(request.getParameter(END_DATE_PARAM));
+        return Trip.create(tripID,textValuetitle,totalBudget,start,end);
+    }
+
+    public Date parseInputDate(String textDate){
+        Date date;
+        try {
+            date = DateFormat.getDateInstance().parse(textDate);
+        } catch (ParseException e) {
+            return null;
+        }
+        return date;
     }
 
 }
