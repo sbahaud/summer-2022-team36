@@ -11,4 +11,14 @@ public class Validator {
     public static boolean validUserName(String username) {
         return username.matches("[\\w\\d]*");
     }
+
+    public static boolean userNameAvalible(String username){
+        try {
+            long userID = DataStoreHelper.queryUserID(username);
+        } catch (IllegalArgumentException e) {
+            return true;
+        }
+        //if user id could be found it isn't avalible
+        return false;
+    }
 }
