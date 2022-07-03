@@ -31,7 +31,7 @@ public class SignUp extends HttpServlet{
             response.getWriter().println("Invalid Username: Please only use letters and numbers.");
             return;
         } else if (!Validator.userNameAvalible(username)) {
-            response.getWriter().println("Invalid Username: Username already taken.");
+            response.getWriter().println("Username Taken: <a href=\"/LogIn\">Login</a>");
             return;
         }
 
