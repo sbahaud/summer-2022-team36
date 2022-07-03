@@ -15,6 +15,7 @@ import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.sps.util.DataStoreHelper;
 import com.google.sps.util.Validator;
 
 @WebServlet("/LogIn")
@@ -22,44 +23,23 @@ public class LogIn extends HttpServlet {
 
     private static final String USER_NAME_PARAM =
         "text-input-user-name";
-    private static final String USER_QUERY_TEMPLATE =
-        "SELECT userId FROM User WHERE username=";
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter(USER_NAME_PARAM).trim();
         if(!Validator.validUserName(username)) {
-            response.getWriter().println("Invalid Username");
+            response.getWriter().println("Invalid Username: Improper characters. Please use letters and numbers only.");
             return;
         }
 
         long userId;
         try {
-            userId = queryDatastore(username);
+            userId = DataStoreHelper.queryUserID(username);
         } catch (IllegalArgumentException e) {
             response.getWriter().println(e.getMessage());
             return;
         }
 
         response.getWriter().println(userId);
-    }
-
-    public long queryDatastore(String username) throws IllegalArgumentException {
-
-        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-
-        String gqlQuery = USER_QUERY_TEMPLATE + username;
-
-        Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
-        QueryResults<?> results = datastore.run(query);
-        
-        //checks if there are no results for the username
-        if(!results.hasNext()){
-            throw new IllegalArgumentException("Username doesn't exist. <a href\"/SignUp\">Please Signup</a>.");
-        }
-
-        //possible class cast or null pointer
-        return ((BaseEntity<Key>) results.next()).getLong("userId");
-
     }
 }
