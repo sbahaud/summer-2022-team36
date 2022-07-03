@@ -20,7 +20,10 @@ import com.google.sps.util.Validator;
 @WebServlet("/LogIn")
 public class LogIn extends HttpServlet {
 
-    final String USER_NAME_PARAM = " text-input-user-name";
+    private static final String USER_NAME_PARAM =
+        "text-input-user-name";
+    private static final String USER_QUERY_TEMPLATE =
+        "SELECT userId FROM User WHERE username=";
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -45,14 +48,14 @@ public class LogIn extends HttpServlet {
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
-        String gqlQuery = "select * from User where username=" + username;
+        String gqlQuery = USER_QUERY_TEMPLATE + username;
 
         Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
         QueryResults<?> results = datastore.run(query);
         
         //checks if there are no results for the username
         if(!results.hasNext()){
-            throw new IllegalArgumentException("Username doesn't exist. Please Signup.");
+            throw new IllegalArgumentException("Username doesn't exist. <a href\"/SignUp\">Please Signup</a>.");
         }
 
         //possible class cast or null pointer
