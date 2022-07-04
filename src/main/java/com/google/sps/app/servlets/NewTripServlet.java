@@ -15,6 +15,7 @@ import com.google.sps.util.UUIDs;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +46,8 @@ public class NewTripServlet extends HttpServlet {
             response.getWriter().println(gson.toJson(newTrip.tripID()));
         } 
         else {
+            System.out.println(request.getParameter(START_DATE_PARAM));
+            System.out.println("Input information error: "+ error);
             response.getWriter().println("Input information error: "+ error);
         }
 
@@ -101,7 +104,8 @@ public class NewTripServlet extends HttpServlet {
     public Date parseInputDate(String textDate){
         Date date;
         try {
-            date = DateFormat.getDateInstance().parse(textDate);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            date = dateFormat.parse(textDate);
         } catch (ParseException e) {
             return null;
         }
