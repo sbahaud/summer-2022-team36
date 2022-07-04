@@ -27,10 +27,10 @@ public class GetEvents extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String tripID = request.getParameter("tripID");
-        List<Event> Event = getEvents(tripID);
+        List<Event> Events = getEvents(tripID);
         Gson gson = new Gson();
         response.setContentType("application/json;");
-        response.getWriter().println(gson.toJson(Event));
+        response.getWriter().println(gson.toJson(Events));
     }
 
     public List<Event> getEvents(String tripID) {

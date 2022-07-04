@@ -27,13 +27,14 @@ public class GetTrips extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String userID = request.getParameter("userID");
-        List<Trip> Trip = getTrips(userID);
-        if(Trip.isEmpty()){
+        List<Trip> Trips = getTrips(userID);
+        if(Trips.isEmpty()){
             response.getWriter().println("No Trip exist. Please Create One.");
+            return;
         }
         Gson gson = new Gson();
         response.setContentType("application/json;");
-        response.getWriter().println(gson.toJson(Trip));
+        response.getWriter().println(gson.toJson(Trips));
     }
 
     public List<Trip> getTrips(String userID) {
