@@ -78,7 +78,7 @@ public class NewEventServlet extends HttpServlet {
             return "Invalid estimatedCost";
         }
 
-        if(parseInputDate(request)==null){
+        if(parseInputDate(request.getParameter(DATE_PARAM))==null){
             return "Invalid date";
         }
         //no idea how to validate address for now.
@@ -94,14 +94,14 @@ public class NewEventServlet extends HttpServlet {
 
         long eventID = UUIDs.generateID();
         String location = StringEscapeUtils.escapeHtml4(request.getParameter(LOCATION_PARAM));
-        Date date = parseInputDate(request);
+        Date date = parseInputDate(request.getParameter(DATE_PARAM));
         return new Event(eventID,title,location,date,estimatedCost);
     }
 
-    public Date parseInputDate(HttpServletRequest request){
+    public Date parseInputDate(String textDate){
         Date date;
         try {
-            date = DateFormat.getDateInstance().parse(request.getParameter(DATE_PARAM));
+            date = DateFormat.getDateInstance().parse(textDate);
         } catch (ParseException e) {
             return null;
         }

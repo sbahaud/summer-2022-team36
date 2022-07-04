@@ -1,0 +1,38 @@
+body {
+    font-family: "Montserrat";
+    margin: 0;
+    padding: 0;
+}
+
+.row {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin: 2em;
+}
+
+.signin-title, .signup-title {
+    color: #78938A;
+    font-size: 5em;
+    margin-top: 10vh;
+}
+
+
+.name-input {
+    font-size: 1.2em;
+    border: none;
+    border-bottom: solid #525E75;
+    height: 5vh;
+    width: 30vw;
+}
+
+.info-input {
+    border: none;
+    border-bottom: solid #525E75;
+    height: 5vh;
+    width: 30vw;
+}
+
+.label {
+    margin: 0;
+}
