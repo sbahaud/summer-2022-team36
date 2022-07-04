@@ -30,13 +30,13 @@
                     <div class="inputBoxDate">
                         <label>Date</label></br> 
                         <label>from </label>
-                        <input name="text-input-start-date" type="date" placeholder="Start date" min="2022-01" max="2025-12" required="required">
+                        <input name="text-input-start-date" type="date" placeholder="Start date" id="fromDate" max="2025-12" required="required">
                         <label> to </label>
-                        <input name="text-input-end-date" type="date" placeholder="End date" min="2022-01" max="2025-12" required="required">
+                        <input name="text-input-end-date" type="date" placeholder="End date" id="toDate" min="" required="required">
                     </div>
                     <div class="inputBox">
-                        <label>Total Budget in CAD </label></br>
-                        <input name="text-input-totalBudget" type="text" placeholder="" required="required">
+                        <label>Total Budget </label></br>
+                        <input name="text-input-totalBudget" type="text" placeholder="e.g. 1000" required="required">
                         
                     </div>
                     <div class="inputBox">
@@ -47,6 +47,8 @@
         </div>
 
         <!-- JavaScript -->
-        <script src="script.js"></script>
+        <script type="text/JavaScript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/JavaScript" src="tripScript.js"></script>
+
     </body>
 </html>
