@@ -9,8 +9,8 @@ import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
-import com.google.sps.model.Event;
-import com.google.sps.util.dataStoreHelper;
+import com.google.sps.model.Trip;
+import com.google.sps.util.DataStoreHelper;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,47 +21,55 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/get-event")
-public class GetEvent extends HttpServlet {
+@WebServlet("/get-trips")
+public class GetTrips extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String tripID = request.getParameter("tripID");
-        List<Event> Event = getEvent(tripID);
+        String userID = request.getParameter("userID");
+        List<Trip> Trip = getTrips(userID);
+        if(Trip.isEmpty()){
+            response.getWriter().println("No Trip exist. Please Create One.");
+        }
         Gson gson = new Gson();
         response.setContentType("application/json;");
-        response.getWriter().println(gson.toJson(Event));
+        response.getWriter().println(gson.toJson(Trip));
     }
 
-    public List<Event> getEvent(String userID) {
-        QueryResults<?> results = queryDatastore(userID);
-
-        List<Event> events = new ArrayList<>();
+    public List<Trip> getTrips(String userID) {
+        QueryResults<?> results;
+        try {
+        results = queryDatastore(userID);
+        }
+        catch (IllegalArgumentException e) {
+            return new ArrayList(); //an empty list
+        }
+        List<Trip> trips = new ArrayList<>();
         while (results.hasNext()) {
             BaseEntity<Key> entity = (BaseEntity<Key>) results.next();
 
-            long eventID = entity.getLong("eventID");
+            long tripID = entity.getLong("tripID");
             String title = entity.getString("title");
-            float estimatedCost = (float) entity.getDouble("estimatedCost");
-            String location = entity.getString("location");
-            Date date = dataStoreHelper.parseInputDate(entity.getString("date"));
-            events.add(new Event(eventID, title, location, date, estimatedCost));
+            float totalBudget = (float) entity.getDouble("totalBudget");
+            Date start = DataStoreHelper.parseInputDate(entity.getString("startDate"));
+            Date end = DataStoreHelper.parseInputDate(entity.getString("endDate"));
+            trips.add(Trip.create(tripID, title, totalBudget, start, end));
         }
-        return events;
+        return trips;
     }
 
-    public QueryResults<?> queryDatastore(String tripID) throws IllegalArgumentException {
+    public QueryResults<?> queryDatastore(String userID) throws IllegalArgumentException {
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
-        String gqlQuery = "select * from Event where tripID=" + tripID;
+        String gqlQuery = "select * from Trip where participant=" + userID;
 
         Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
         QueryResults<?> results = datastore.run(query);
 
         // checks if there are no results for the username
         if (!results.hasNext()) {
-            throw new IllegalArgumentException("No Event exist. Please Create One.");
+            throw new IllegalArgumentException("No Trip exist. Please Create One.");
         }
 
         return results;

@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.google.sps.model.Category;
 import com.google.sps.model.Event;
 import com.google.sps.util.UUIDs;
-import com.google.sps.util.dataStoreHelper;
+import com.google.sps.util.DataStoreHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +77,7 @@ public class NewEventServlet extends HttpServlet {
             return "Invalid estimatedCost";
         }
 
-        if(dataStoreHelper.parseInputDate(request.getParameter(DATE_PARAM))==null){
+        if(DataStoreHelper.parseInputDate(request.getParameter(DATE_PARAM))==null){
             return "Invalid date";
         }
         //no idea how to validate address for now.
@@ -93,7 +93,7 @@ public class NewEventServlet extends HttpServlet {
 
         long eventID = UUIDs.generateID();
         String location = StringEscapeUtils.escapeHtml4(request.getParameter(LOCATION_PARAM));
-        Date date = dataStoreHelper.parseInputDate(request.getParameter(DATE_PARAM));
+        Date date = DataStoreHelper.parseInputDate(request.getParameter(DATE_PARAM));
         return new Event(eventID,title,location,date,estimatedCost);
     }
 

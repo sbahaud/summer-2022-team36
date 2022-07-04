@@ -4,7 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
-public class dataStoreHelper {
+public class DataStoreHelper {
     static public Date parseInputDate(String textDate){
         Date date;
         try {
