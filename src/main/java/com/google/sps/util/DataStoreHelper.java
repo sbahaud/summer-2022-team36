@@ -19,7 +19,7 @@ public class DataStoreHelper {
     private static final String USER_QUERY_TEMPLATE =
         "SELECT userId FROM User WHERE username=";
 
-    static public Date parseInputDate(String textDate){
+    public static Date parseInputDate(String textDate){
         Date date;
         try {
             date = DateFormat.getDateInstance().parse(textDate);
@@ -30,7 +30,7 @@ public class DataStoreHelper {
     }
 
 
-    static public long queryUserID(String username) throws IllegalArgumentException {
+    public static long queryUserID(String username) throws IllegalArgumentException {
         String gqlQuery = USER_QUERY_TEMPLATE + username;
 
         Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
