@@ -1,5 +1,6 @@
 package com.google.sps.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.lang.Long;
@@ -27,6 +28,13 @@ public class Event implements Comparable<Event>{
         this.location=location;
         this.date=date;
         this.estimatedCost=estimatedCost;
+        this.paidBy = null;
+        this.actualCost = null;
+        this.paid = false;
+        this.includeInBudget = true;
+        this.splitCost = true;
+        this.participants = new ArrayList<Long>();
+
     }
 
     public long getID(){
@@ -48,6 +56,10 @@ public class Event implements Comparable<Event>{
 
     public float getEstimatedCost(){
         return estimatedCost;
+    }
+
+    public List<Long> getParticipants(){
+        return participants;
     }
 
     @Override
