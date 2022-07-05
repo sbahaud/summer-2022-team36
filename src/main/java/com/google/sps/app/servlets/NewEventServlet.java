@@ -56,14 +56,14 @@ public class NewEventServlet extends HttpServlet {
 
     public void writeToDatastore(Event newEvent) {
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-        KeyFactory keyFactor = datastore.newKeyFactory().setKind("Event");
-        FullEntity eventEntity = Entity.newBuilder(keyFactor.newKey())
+        KeyFactory keyFactory = datastore.newKeyFactory().setKind("Event");
+        FullEntity eventEntity = Entity.newBuilder(keyFactory.newKey())
                 .set("eventID", newEvent.getID())
                 .set("title", newEvent.getTitle().trim())
                 .set("estimatedCost", newEvent.getEstimatedCost())
                 .set("location", newEvent.getLocation())
                 .set("date", newEvent.getDate().toString())
-                .set("associatedUsers", newEvent.getParticipants())
+                .setProperty("associatedUsers", newEvent.getParticipants())
                 .build();
         datastore.put(eventEntity);
     }
