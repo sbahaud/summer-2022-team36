@@ -63,7 +63,7 @@ public class NewEventServlet extends HttpServlet {
                 .set("estimatedCost", newEvent.getEstimatedCost())
                 .set("location", newEvent.getLocation())
                 .set("date", newEvent.getDate().toString())
-                .setProperty("associatedUsers", newEvent.getParticipants())
+                .set("associatedUsers", newEvent.getParticipants())
                 .build();
         datastore.put(eventEntity);
     }

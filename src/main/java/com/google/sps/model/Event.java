@@ -28,8 +28,6 @@ public class Event implements Comparable<Event>{
         this.location=location;
         this.date=date;
         this.estimatedCost=estimatedCost;
-        this.paidBy = null;
-        this.actualCost = null;
         this.paid = false;
         this.includeInBudget = true;
         this.splitCost = true;
