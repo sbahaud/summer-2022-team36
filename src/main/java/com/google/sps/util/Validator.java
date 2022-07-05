@@ -14,8 +14,11 @@ public class Validator {
 
     public static boolean userNameAvalible(String username){
         try {
+            //searches for username
             long userID = DataStoreHelper.queryUserID(username);
+        //user name could not be found in database
         } catch (IllegalArgumentException e) {
+            //username must be avalible
             return true;
         }
         //if user id could be found it isn't avalible
