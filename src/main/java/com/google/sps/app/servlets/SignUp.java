@@ -20,7 +20,8 @@ import com.google.sps.util.Validator;
 @WebServlet("/SignUp")
 public class SignUp extends HttpServlet{
 
-    final String USER_NAME_PARAM = " text-input-user-name";
+    private static final String USER_NAME_PARAM =
+        "text-input-user-name";
     
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -28,6 +29,9 @@ public class SignUp extends HttpServlet{
         
         if(!Validator.validUserName(username)) {
             response.getWriter().println("Invalid Username: Please only use letters and numbers.");
+            return;
+        } else if (!Validator.userNameAvalible(username)) {
+            response.getWriter().println("Username Taken: <a href=\"/LogIn\">Login</a>");
             return;
         }
 
