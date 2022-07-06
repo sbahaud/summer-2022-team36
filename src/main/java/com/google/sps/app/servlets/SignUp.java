@@ -20,14 +20,12 @@ import com.google.sps.util.Validator;
 @WebServlet("/SignUp")
 public class SignUp extends HttpServlet{
 
-    // private static final String USER_NAME_PARAM =
-    //     "text-input-user-name";
+    private static final String USER_NAME_PARAM =
+        "text-input-user-name";
     
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter("USER_NAME_PARAM").trim();
-        response.getWriter().println("here");
-        response.getWriter().println(username);
+        String username = request.getParameter(USER_NAME_PARAM).trim();
 
         if(!Validator.validUserName(username)) {
             response.getWriter().println("Invalid Username: Please only use letters and numbers.");
