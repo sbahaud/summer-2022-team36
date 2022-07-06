@@ -24,6 +24,18 @@ public class LogIn extends HttpServlet {
     private static final String USER_NAME_PARAM =
         "text-input-user-name";
 
+    /**
+     * @param "text-input-user-name"
+     * Accepts a post parameter with a username
+     * If the username is found
+     * @return the user's ID is returned
+     * If the username is NOT found
+     * @return an error message with a hyperlink
+     * The hyperlink can be integrated with the front end
+     * by setting the innerHTML of a container to the
+     * error message, which contains an <a> tag
+     * Note: HTTP response is in standard text not JSON
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter(USER_NAME_PARAM).trim();
