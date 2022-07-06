@@ -7,6 +7,7 @@ import java.lang.Long;
 
 public class Event implements Comparable<Event>{
     private long eventId;
+    private long tripID;
     private String title;
     private String location;
     //uses user hashes
@@ -22,8 +23,9 @@ public class Event implements Comparable<Event>{
     //marks if the cost is split by all people or if it's a per person cost.
     private boolean splitCost = true;
 
-    public Event(long eventId, String title, String location, Date date, float estimatedCost){
+    public Event(long eventId, long tripID, String title, String location, Date date, float estimatedCost){
         this.eventId=eventId;
+        this.tripID=tripID;
         this.title=title;
         this.location=location;
         this.date=date;
