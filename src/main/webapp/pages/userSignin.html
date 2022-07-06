@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In!</title>
+    <title>Log In!</title>
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="../styles/userSigninSignup.css">
@@ -20,11 +20,20 @@
 <body>
     <div class="container">
         <div class="row">
-            <h1 class="signin-title">Sign In</h1>
+            <h1 class="signin-title">Log In</h1>
         </div>
         <div class="row">
-            <input class="name-input" placeholder="Name Here"/>
+            <input class="name-input" id="login-user-name" />
+            <label class="label">Name</label>
+
+            <!-- messages -->
+            <p class="error hide" id="error-msg">Please use letters and numbers only.</p>
+            <p class="error hide" id="empty-msg">Username cannot be empty.</p>
+            <p class="success hide" id="success-msg">Log In Successful!</p>
         </div>
+        
     </div>
+
+    <script src="../javascript/userSignin.js"></script>
 </body>
 </html>
