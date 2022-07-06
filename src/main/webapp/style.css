@@ -30,7 +30,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+}
+
 .createTrip {
     padding: 50px 100px;
     position: relative;

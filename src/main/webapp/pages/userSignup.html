@@ -23,10 +23,17 @@
             <h1 class="signup-title">Sign Up!</h1>
         </div>
         <div class="row">
-            <input class="info-input" id="signup-user-name" />
+            <input class="name-input" id="signup-user-name" />
             <label class="label">Name</label>
-        </div>
 
+            <!-- messages -->
+            <p class="error hide" id="error-msg">Please use letters and numbers only.</p>
+            <p class="error hide" id="empty-msg">Username cannot be empty.</p>
+            <p class="success hide" id="success-msg">Sign Up Successful!</p>
+        </div>
+        
     </div>
+
+    <script src="../javascript/userSignup.js"></script>
 </body>
 </html>

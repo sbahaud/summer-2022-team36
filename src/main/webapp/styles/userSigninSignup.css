@@ -17,22 +17,34 @@ body {
     margin-top: 10vh;
 }
 
-
-.name-input {
-    font-size: 1.2em;
-    border: none;
-    border-bottom: solid #525E75;
-    height: 5vh;
-    width: 30vw;
+.name-input:focus {
+    outline: none;
 }
 
-.info-input {
+.name-input {
     border: none;
     border-bottom: solid #525E75;
+    font-size: 1.2em;
     height: 5vh;
     width: 30vw;
 }
 
 .label {
     margin: 0;
+    text-align: left;
+    width: 30vw;
+}
+
+.error {
+    color: darkred;
+    font-size: 0.8em;
+}
+
+.success {
+    color: darkgreen;
+    font-size: 0.8em;
+}
+
+.hide {
+    display: none;
 }
