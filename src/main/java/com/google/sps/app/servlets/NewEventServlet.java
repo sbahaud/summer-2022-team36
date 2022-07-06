@@ -30,6 +30,8 @@ import io.opencensus.common.ServerStatsFieldEnums.Id;
 @WebServlet("/NewEvent")
 public class NewEventServlet extends HttpServlet {
 
+    
+    private static String TRIP_ID = "cookie-trip-id";
     private static String TITLE_PARAM = "text-input-title";
     private static String ESTIMATED_PARAM = "text-input-estimatedCost";
     private static String DATE_PARAM = "text-input-date";
@@ -59,6 +61,7 @@ public class NewEventServlet extends HttpServlet {
         KeyFactory keyFactory = datastore.newKeyFactory().setKind("Event");
         FullEntity eventEntity = Entity.newBuilder(keyFactory.newKey())
                 .set("eventID", newEvent.getID())
+                .set("tripID", newEvent.getTripID())
                 .set("title", newEvent.getTitle().trim())
                 .set("estimatedCost", newEvent.getEstimatedCost())
                 .set("location", newEvent.getLocation())
@@ -92,10 +95,11 @@ public class NewEventServlet extends HttpServlet {
         float estimatedCost = Float
                 .parseFloat(request.getParameter(ESTIMATED_PARAM));
 
+        long tripID = Long.parseLong(request.getParameter(TRIP_ID));
         long eventID = UUIDs.generateID();
         String location = StringEscapeUtils.escapeHtml4(request.getParameter(LOCATION_PARAM));
         Date date = DataStoreHelper.parseInputDate(request.getParameter(DATE_PARAM));
-        return new Event(eventID,title,location,date,estimatedCost);
+        return new Event(eventID,tripID,title,location,date,estimatedCost);
     }
 
 }

@@ -40,6 +40,10 @@ public class Event implements Comparable<Event>{
     public long getID(){
         return eventId;
     }
+
+    public long getTripID(){
+        return tripID;
+    }
     
     public Date getDate(){
         return date;
