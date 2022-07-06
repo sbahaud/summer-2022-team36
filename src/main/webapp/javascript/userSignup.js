@@ -52,6 +52,7 @@ username.addEventListener("keypress", function(event) {
             hide(errorMsg);
             hide(emptyMsg);
             show(successMsg);
+            console.log("here!!");
             postUsername(username.value);
         } else {
             // console.log("throw error message");
