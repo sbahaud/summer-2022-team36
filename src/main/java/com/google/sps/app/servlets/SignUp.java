@@ -24,17 +24,12 @@ public class SignUp extends HttpServlet{
         "text-input-user-name";
     
     /**
-     * @param "text-input-user-name"
-     * Accepts a post parameter with a username
-     * If the username is avalible
-     * @return the user's ID is returned
-     * and a user entity is added to datastore
-     * If the username is NOT avalible
-     * @return an error message with a hyperlink
-     * The hyperlink can be integrated with the front end
-     * by setting the innerHTML of a container to the
-     * error message, which contains an <a> tag
-     * Note: HTTP response is in standard text not JSON
+     * Returns a response for the POST request in standard text not JSON.
+     * @param request a post request. Expects "text-input-user-name" with a username in the request param.
+     * @return the user's ID if the username is avalible and an error message if the username is taken.
+     * If succesful the method also creates a User entity and pushes it to datastore.
+     * The error message contains a hyperlink that can be integrated with the front end by setting the innerHTML
+     * of a container to the error message, which contains an <a> tag pointing to the login servlet.
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

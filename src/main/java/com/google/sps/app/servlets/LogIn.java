@@ -25,16 +25,11 @@ public class LogIn extends HttpServlet {
         "text-input-user-name";
 
     /**
-     * @param "text-input-user-name"
-     * Accepts a post parameter with a username
-     * If the username is found
-     * @return the user's ID is returned
-     * If the username is NOT found
-     * @return an error message with a hyperlink
-     * The hyperlink can be integrated with the front end
-     * by setting the innerHTML of a container to the
-     * error message, which contains an <a> tag
-     * Note: HTTP response is in standard text not JSON
+     * Returns a response for the POST request in standard text not JSON.
+     * @param request a post request. Expects "text-input-user-name" with a username in the request param.
+     * @return the user's ID if the username can be found and an error message if the username can't be found.
+     * The error message contains a hyperlink that can be integrated with the front end by setting the innerHTML
+     * of a container to the error message, which contains an <a> tag pointing to the signup servlet.
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
