@@ -12,8 +12,10 @@ function input_check(input){
 
 // send username to backend
 function postUsername(username) {
+    console.log(username);
     const params = new URLSearchParams();
-
+    console.log("params:");
+    console.log(params);
     params.append('USER_NAME_PARAM', username);
 
     fetch('/SignUp', {method: 'POST', body: params})
@@ -54,6 +56,7 @@ username.addEventListener("keypress", function(event) {
             show(successMsg);
             console.log("here!!");
             postUsername(username.value);
+            console.log(username.value);
         } else {
             // console.log("throw error message");
             hide(emptyMsg);
