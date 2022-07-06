@@ -44,18 +44,21 @@ var username = document.getElementById("signup-user-name");
 username.addEventListener("keypress", function(event) {
     if(event.key === "Enter") {
         event.preventDefault();
-
-        username = username.value;
-
-        if(username === "") {
+        if(username.value === "") {
             hide(errorMsg);
             show(emptyMsg);
-        } else if(input_check(username)){
+        } else if(input_check(username.value)){
+            // console.log(username.value);
             hide(errorMsg);
             hide(emptyMsg);
             show(successMsg);
-            postUsername(username);
-            console.log(username);
+
+            console.log("here!!");
+            console.log("username is");
+            console.log(username.value);
+            
+            postUsername(username.value);
+            console.log(username.value);
         } else {
             // console.log("throw error message");
             hide(emptyMsg);
@@ -63,6 +66,6 @@ username.addEventListener("keypress", function(event) {
         }
 
         // clear input box
-        username = "";
+        username.value = "";
     }
 });
