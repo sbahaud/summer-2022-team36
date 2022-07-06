@@ -14,9 +14,6 @@ function input_check(input){
 function postUsername(username) {
     const params = new URLSearchParams();
 
-    console.log("params:");
-    console.log(params);
-
     params.append('text-input-user-name', username);
 
     fetch('/SignUp', {method: 'POST', body: params});
@@ -47,17 +44,18 @@ var username = document.getElementById("signup-user-name");
 username.addEventListener("keypress", function(event) {
     if(event.key === "Enter") {
         event.preventDefault();
-        if(username.value === "") {
+
+        username = username.value;
+
+        if(username === "") {
             hide(errorMsg);
             show(emptyMsg);
-        } else if(input_check(username.value)){
-            // console.log(username.value);
+        } else if(input_check(username)){
             hide(errorMsg);
             hide(emptyMsg);
             show(successMsg);
-            console.log("here!!");
-            postUsername(username.value);
-            console.log(username.value);
+            postUsername(username);
+            console.log(username);
         } else {
             // console.log("throw error message");
             hide(emptyMsg);
@@ -65,6 +63,6 @@ username.addEventListener("keypress", function(event) {
         }
 
         // clear input box
-        username.value = "";
+        username = "";
     }
 });
