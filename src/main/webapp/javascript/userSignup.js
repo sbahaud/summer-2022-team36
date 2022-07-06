@@ -12,10 +12,14 @@ function input_check(input){
 
 // send username to backend
 function postUsername(username) {
+
     console.log(username);
+
     const params = new URLSearchParams();
+
     console.log("params:");
     console.log(params);
+
     params.append('USER_NAME_PARAM', username);
 
     fetch('/SignUp', {method: 'POST', body: params})
