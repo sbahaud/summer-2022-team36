@@ -11,12 +11,14 @@ function input_check(input){
 }
 
 // send username to backend
-function postUsername(username) {
-    const params = new URLSearchParams();
+function getUsername(username) {
+    const userId = await fetch('/LogIn');
 
-    params.append('text-input-user-name', username);
+    if (userId !== ""){
+        return true;
+    }
 
-    fetch('/LogIn', {method: 'POST', username});
+    return false;
 }
 
 
@@ -32,8 +34,11 @@ username.addEventListener("keypress", function(event) {
         if(username.value === "") {
             msgDiv.innerHTML = `<p class="error">Username cannot be empty.</p>`;
         } else if(input_check(username.value)){
-            postUsername(username.value);
-            msgDiv.innerHTML = `<p class="success">Log In successful!</p>`;
+            if(postUsername(username.value)){
+                msgDiv.innerHTML = `<p class="success">Log In successful!</p>`;
+            } else {
+                msgDiv.innerHTML = `<p class="success">Wrong username!</p>`;
+            }
         } else {
             msgDiv.innerHTML = `<p class="error">Usernames are letters and numbers only.</p>`;
         }
