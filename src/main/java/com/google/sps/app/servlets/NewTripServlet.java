@@ -11,6 +11,7 @@ import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.gson.Gson;
 import com.google.sps.model.Trip;
+import com.google.sps.util.DataStoreHelper;
 import com.google.sps.util.UUIDs;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -76,8 +77,8 @@ public class NewTripServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             return "Invalid totalBudget";
         }
-        Date start = parseInputDate(request.getParameter(START_DATE_PARAM));
-        Date end = parseInputDate(request.getParameter(END_DATE_PARAM));
+        Date start = DataStoreHelper.parseInputDate(request.getParameter(START_DATE_PARAM));
+        Date end = DataStoreHelper.parseInputDate(request.getParameter(END_DATE_PARAM));
         if(start==null){
             return "Invalid start date";
         }
@@ -96,20 +97,9 @@ public class NewTripServlet extends HttpServlet {
                 .parseFloat(request.getParameter(TOTAL_BUDGET_PARAM));
 
         long tripID = UUIDs.generateID();
-        Date start = parseInputDate(request.getParameter(START_DATE_PARAM));
-        Date end = parseInputDate(request.getParameter(END_DATE_PARAM));
+        Date start = DataStoreHelper.parseInputDate(request.getParameter(START_DATE_PARAM));
+        Date end = DataStoreHelper.parseInputDate(request.getParameter(END_DATE_PARAM));
         return Trip.create(tripID,textValuetitle,totalBudget,start,end);
-    }
-
-    public Date parseInputDate(String textDate){
-        Date date;
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            date = dateFormat.parse(textDate);
-        } catch (ParseException e) {
-            return null;
-        }
-        return date;
     }
 
 }

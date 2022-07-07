@@ -20,22 +20,41 @@ import com.google.sps.util.Validator;
 @WebServlet("/SignUp")
 public class SignUp extends HttpServlet{
 
-    final String USER_NAME_PARAM = " text-input-user-name";
+    private static final String USER_NAME_PARAM =
+        "text-input-user-name";
     
+    /**
+     * Returns a response for the POST request in standard text not JSON.
+     * @param request a post request. Expects "text-input-user-name" with a username in the request param.
+     * @return the user's ID if the username is avalible and an error message if the username is taken.
+     * If succesful the method also creates a User entity and pushes it to datastore.
+     * The error message contains a hyperlink that can be integrated with the front end by setting the innerHTML
+     * of a container to the error message, which contains an <a> tag pointing to the login servlet.
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter(USER_NAME_PARAM).trim();
         
-        if(!Validator.validUserName(username)) {
-            response.getWriter().println("Invalid Username: Please only use letters and numbers.");
-            return;
-        }
+        // if(!Validator.validUserName(username)) {
+        //     response.getWriter().println("Invalid Username: Please only use letters and numbers.");
+        //     return;
+        // } else if (!Validator.userNameAvalible(username)) {
+        //     response.getWriter().println("Username Taken: <a href=\"/LogIn\">Login</a>");
+        //     return;
+        // }
 
         long userId = writeToDatastore(username);
 
         response.getWriter().println(userId);
     }
 
+
+    /**
+     * Creates a user Entity to add to
+     * datastore.
+     * @param username
+     * @return randomly generated ID
+     */
     public long writeToDatastore(String username){
         long userId = UUIDs.generateID();
 

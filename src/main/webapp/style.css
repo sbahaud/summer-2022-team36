@@ -71,19 +71,12 @@ body {
     width: min-content
 }
 
-input[type="submit"] {
-    background: green;
-    border: none;
-    cursor: pointer;
-    color: var(--bg-color);
-    font-size: 18px;
-    padding: 10px;
-}
 input[type="submit"][name="finish"] {
     width: 100%
 }
 
-.btn {
+.btn,
+input[type="submit"] {
     border: none;
     border-radius: 20px;
     font-family: "Montserrat";
