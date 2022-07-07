@@ -21,14 +21,10 @@ function postUsername(username) {
 
 
 // show/hide message
-var errorMsg = document.getElementById("error-msg");
-var emptyMsg = document.getElementById("empty-msg");
-var successMsg = document.getElementById("success-msg");
-
 var msgDiv = document.getElementById("status-msg");
 
 // get username
-var username = document.getElementById("signup-user-name");
+var username = document.getElementById("text-input-user-name");
 
 username.addEventListener("keypress", function(event) {
     if(event.key === "Enter") {
