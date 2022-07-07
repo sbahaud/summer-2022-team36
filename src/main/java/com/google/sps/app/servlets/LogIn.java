@@ -28,6 +28,11 @@ public class LogIn extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter(USER_NAME_PARAM).trim();
 
+        // if(!Validator.validUserName(username)) {
+        //     response.getWriter().println("Invalid Username: Improper characters. Please use letters and numbers only.");
+        //     return;
+        // }
+
         long userId;
         try {
             userId = DataStoreHelper.queryUserID(username);
