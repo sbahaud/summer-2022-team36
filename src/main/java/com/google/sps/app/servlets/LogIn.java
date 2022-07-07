@@ -26,7 +26,7 @@ public class LogIn extends HttpServlet {
     private static final String VALIDATOR_ERROR_MESSAGE = "<p>Invalid Username: %s<p>";
     //validation error message discriptions
     private static final String IMPROPER_CHARACTERS = VALIDATOR_ERROR_MESSAGE + "Improper characters. Please use letters and numbers only.";
-    private static final String EMPTY_USER_NAME = VALIDATOR_ERROR_MESSAGE + "Empty usernames are not accepted";
+    private static final String USER_NAME_LENGTH = VALIDATOR_ERROR_MESSAGE + "Usernames must be between 1 and 64 characters";
 
     /**
      * Returns a response for the POST request in standard text not JSON.
@@ -38,8 +38,10 @@ public class LogIn extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter(USER_NAME_PARAM).trim();
-        if(!Validator.validUserName(username)) {
-            response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, IMPROPER_CHARACTERS));
+        String error = Validator.validateUserName(username);
+        if(error != "") {
+            error = error == "length" ? USER_NAME_LENGTH : IMPROPER_CHARACTERS;
+            response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, error));
             return;
         }
 
