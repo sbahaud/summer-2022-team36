@@ -16,7 +16,7 @@ function postUsername(username) {
 
     params.append('text-input-user-name', username);
 
-    fetch('/SignUp', {method: 'POST', body: params});
+    fetch('/SignUp', {method: 'POST', username});
 }
 
 
@@ -25,18 +25,7 @@ var errorMsg = document.getElementById("error-msg");
 var emptyMsg = document.getElementById("empty-msg");
 var successMsg = document.getElementById("success-msg");
 
-function show(msg){
-    if(msg.classList.contains("hide")){
-        msg.classList.remove("hide");
-    }
-}
-
-function hide(msg){
-    if(!msg.classList.contains("hide")){
-        msg.classList.add("hide");
-    }
-}
-
+var msgDiv = document.getElementById("status-msg");
 
 // get username
 var username = document.getElementById("signup-user-name");
@@ -45,24 +34,17 @@ username.addEventListener("keypress", function(event) {
     if(event.key === "Enter") {
         event.preventDefault();
         if(username.value === "") {
-            hide(errorMsg);
-            show(emptyMsg);
+            msgDiv.innerHTML = `<p class="error">Username cannot be empty.</p>`;
         } else if(input_check(username.value)){
-            // console.log(username.value);
-            hide(errorMsg);
-            hide(emptyMsg);
-            show(successMsg);
+            msgDiv.innerHTML = `<p class="success">Sign up successful!</p>`;
 
             console.log("here!!");
             console.log("username is");
             console.log(username.value);
-            
+
             postUsername(username.value);
-            console.log(username.value);
         } else {
-            // console.log("throw error message");
-            hide(emptyMsg);
-            show(errorMsg);
+            msgDiv.innerHTML = `<p class="error">Please use letters and numbers only.</p>`;
         }
 
         // clear input box
