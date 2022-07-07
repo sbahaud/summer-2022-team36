@@ -2,8 +2,8 @@ package com.google.sps.util;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import com.google.cloud.datastore.BaseEntity;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
@@ -20,13 +20,14 @@ public class DataStoreHelper {
     public static Date parseInputDate(String textDate){
         Date date;
         try {
-            date = DateFormat.getDateInstance().parse(textDate);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            date = dateFormat.parse(textDate);
         } catch (ParseException e) {
             return null;
         }
         return date;
     }
-
+    
     public static long queryUserID(String username) throws IllegalArgumentException {
         String gqlQuery = USER_QUERY_TEMPLATE + username;
 

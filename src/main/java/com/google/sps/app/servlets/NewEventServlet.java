@@ -37,6 +37,13 @@ public class NewEventServlet extends HttpServlet {
     private static String DATE_PARAM = "text-input-date";
     private static String LOCATION_PARAM = "text-input-location";
 
+    /**
+     * Does post request.
+     * @param request 
+     * @param response 
+     * @throws IOException 
+     * @return Event object in JSON
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
