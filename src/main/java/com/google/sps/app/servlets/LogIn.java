@@ -31,8 +31,8 @@ public class LogIn extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter(USER_NAME_PARAM).trim();
         String error = Validator.validateUserName(username);
-        if(error != "") {
-            error = error == "length" ? USER_NAME_LENGTH : IMPROPER_CHARACTERS;
+        if(!error.isEmpty()) {
+            error = error.equals("length") ? USER_NAME_LENGTH : IMPROPER_CHARACTERS;
             response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, error));
             return;
         }

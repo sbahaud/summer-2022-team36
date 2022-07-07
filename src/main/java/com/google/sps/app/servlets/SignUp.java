@@ -41,7 +41,7 @@ public class SignUp extends HttpServlet{
         
         // gaurd clause for invalid usernames
         String error = Validator.validateUserName(username);
-        if(error != "") {
+        if(!error.isEmpty()) {
             error = error == "length" ? USERNAME_LENGTH : IMPROPER_CHARACTERS;
             response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, error));
             return;
