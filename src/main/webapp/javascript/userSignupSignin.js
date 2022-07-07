@@ -31,7 +31,7 @@ function validateUsername(username){
 
 
 // User Sign up
-var signup_username = document.getElementById("text-input-user-name");
+var signup_username = document.getElementById("signup-username");
 signup_username.addEventListener("keypress", function(event) {
     if(event.key === "Enter") {
         event.preventDefault();
@@ -57,7 +57,7 @@ function postUsername(username) {
 
 
 // User Log In
-var login_username = document.getElementById("text-input-user-name");
+var login_username = document.getElementById("login-username");
 login_username.addEventListener("keypress", function(event) {
     if(event.key === "Enter") {
         event.preventDefault();
