@@ -1,7 +1,6 @@
 package com.google.sps.app.servlets;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +12,6 @@ import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.FullEntity;
 import com.google.cloud.datastore.KeyFactory;
-import com.google.gson.Gson;
 import com.google.sps.util.UUIDs;
 import com.google.sps.util.Validator;
 
