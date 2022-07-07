@@ -16,22 +16,28 @@ function input_check(input){
 var msgDiv = document.getElementById("status-msg");
 
 
+function validateUsername(username){
+    if(username === ""){
+        msgDiv.innerHTML = `<p class="error">Username cannot be empty.</p>`;
+    } else if(!input_check(username)) {
+        msgDiv.innerHTML = `<p class="error">Please use letters and numbers only.</p>`;
+    } else {
+        msgDiv.innerHTML = `<p class="success">Success!</p>`;
+        return true;
+    }
+
+    return false;
+}
+
+
 // User Sign up
 var signup_username = document.getElementById("text-input-user-name");
 signup_username.addEventListener("keypress", function(event) {
     if(event.key === "Enter") {
         event.preventDefault();
-        if(signup_username.value === "") {
-            // show empty error message
-            msgDiv.innerHTML = `<p class="error">Username cannot be empty.</p>`;
-        } else if(input_check(signup_username.value)){
-            // show success sign up message
-            msgDiv.innerHTML = `<p class="success">Sign up successful!</p>`;
-            // post username to database
+
+        if(validateUsername(signup_username.value)){
             postUsername(signup_username.value);
-        } else {
-            // show invalid error message
-            msgDiv.innerHTML = `<p class="error">Please use letters and numbers only.</p>`;
         }
 
         // clear input box
@@ -51,20 +57,17 @@ function postUsername(username) {
 
 
 // User Log In
-var login_username = document.getElementById("signup-user-name");
+var login_username = document.getElementById("text-input-user-name");
 login_username.addEventListener("keypress", function(event) {
     if(event.key === "Enter") {
         event.preventDefault();
-        if(login_username.value === "") {
-            msgDiv.innerHTML = `<p class="error">Username cannot be empty.</p>`;
-        } else if(input_check(login_username.value)){
-            if(postUsername(login_username.value)){
+        
+        if(validateUsername(login_username.value)){
+            if(getUsername(login_username.value)){
                 msgDiv.innerHTML = `<p class="success">Log In successful!</p>`;
             } else {
                 msgDiv.innerHTML = `<p class="success">Wrong username!</p>`;
             }
-        } else {
-            msgDiv.innerHTML = `<p class="error">Usernames are letters and numbers only.</p>`;
         }
 
         // clear input box
@@ -74,7 +77,7 @@ login_username.addEventListener("keypress", function(event) {
 
 // Search for existing user
 // send username to database, redirect on status
-function getUsername(username) {
+async function getUsername(username) {
     const params = new URLSearchParams();
 
     params.append('text-input-user-name', username);
