@@ -30,13 +30,13 @@ public class SignUp extends HttpServlet{
         String username = request.getParameter(USER_NAME_PARAM).trim();
 
 
-        if(!Validator.validUserName(username)) {
-            response.getWriter().println("Invalid Username: Please only use letters and numbers.");
-            return;
-        } else if (!Validator.userNameAvalible(username)) {
-            response.getWriter().println("Username Taken: <a href=\"/LogIn\">Login</a>");
-            return;
-        }
+        // if(!Validator.validUserName(username)) {
+        //     response.getWriter().println("Invalid Username: Please only use letters and numbers.");
+        //     return;
+        // } else if (!Validator.userNameAvalible(username)) {
+        //     response.getWriter().println("Username Taken: <a href=\"/LogIn\">Login</a>");
+        //     return;
+        // }
 
         long userId = writeToDatastore(username);
 

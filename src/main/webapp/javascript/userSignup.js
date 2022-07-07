@@ -16,7 +16,7 @@ function postUsername(username) {
 
     params.append('text-input-user-name', username);
 
-    fetch('/SignUp', {method: 'POST', username});
+    fetch('/SignUp', {method: 'POST', body: params});
 }
 
 
