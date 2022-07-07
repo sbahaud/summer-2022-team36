@@ -90,7 +90,7 @@ async function getUsername(username) {
 
     console.log(response);
 
-    if (response !== ""){
+    if (response !== "" && response.status == "200"){
         return true;
     }
 
