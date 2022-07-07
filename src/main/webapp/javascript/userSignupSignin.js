@@ -32,18 +32,20 @@ function validateUsername(username){
 
 // User Sign up
 var signup_username = document.getElementById("signup-username");
-signup_username.addEventListener("keypress", function(event) {
-    if(event.key === "Enter") {
-        event.preventDefault();
+if(signup_username){
+    signup_username.addEventListener("keypress", function(event) {
+        if(event.key === "Enter") {
+            event.preventDefault();
 
-        if(validateUsername(signup_username.value)){
-            postUsername(signup_username.value);
+            if(validateUsername(signup_username.value)){
+                postUsername(signup_username.value);
+            }
+
+            // clear input box
+            signup_username.value = "";
         }
-
-        // clear input box
-        signup_username.value = "";
-    }
-});
+    });
+}
 
 // Create New User
 // send username to database
@@ -58,22 +60,24 @@ function postUsername(username) {
 
 // User Log In
 var login_username = document.getElementById("login-username");
-login_username.addEventListener("keypress", function(event) {
-    if(event.key === "Enter") {
-        event.preventDefault();
-        
-        if(validateUsername(login_username.value)){
-            if(getUsername(login_username.value)){
-                msgDiv.innerHTML = `<p class="success">Log In successful!</p>`;
-            } else {
-                msgDiv.innerHTML = `<p class="success">Wrong username!</p>`;
+if(login_username){
+    login_username.addEventListener("keypress", function(event) {
+        if(event.key === "Enter") {
+            event.preventDefault();
+            
+            if(validateUsername(login_username.value)){
+                if(getUsername(login_username.value)){
+                    msgDiv.innerHTML = `<p class="success">Log In successful!</p>`;
+                } else {
+                    msgDiv.innerHTML = `<p class="success">Wrong username!</p>`;
+                }
             }
-        }
 
-        // clear input box
-        login_username.value = "";
-    }
-});
+            // clear input box
+            login_username.value = "";
+        }
+    });
+}
 
 // Search for existing user
 // send username to database, redirect on status
