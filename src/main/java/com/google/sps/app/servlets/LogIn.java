@@ -21,8 +21,12 @@ import com.google.sps.util.Validator;
 @WebServlet("/LogIn")
 public class LogIn extends HttpServlet {
 
-    private static final String USER_NAME_PARAM =
-        "text-input-user-name";
+    private static final String USER_NAME_PARAM = "text-input-user-name";
+    //Formatted string for validation error messages
+    private static final String VALIDATOR_ERROR_MESSAGE = "<p>Invalid Username: %s<p>";
+    //validation error message discriptions
+    private static final String IMPROPER_CHARACTERS = VALIDATOR_ERROR_MESSAGE + "Improper characters. Please use letters and numbers only.";
+    private static final String EMPTY_USER_NAME = VALIDATOR_ERROR_MESSAGE + "Empty usernames are not accepted";
 
     /**
      * Returns a response for the POST request in standard text not JSON.
@@ -35,7 +39,7 @@ public class LogIn extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter(USER_NAME_PARAM).trim();
         if(!Validator.validUserName(username)) {
-            response.getWriter().println("Invalid Username: Improper characters. Please use letters and numbers only.");
+            response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, IMPROPER_CHARACTERS));
             return;
         }
 
