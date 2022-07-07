@@ -15,7 +15,7 @@ import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
-import com.google.sps.util.Helper;
+import com.google.sps.util.DataStoreHelper;
 import com.google.sps.util.Validator;
 
 @WebServlet("/LogIn")

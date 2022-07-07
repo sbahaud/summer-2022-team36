@@ -10,7 +10,7 @@ import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.sps.model.Event;
-import com.google.sps.util.Helper;
+import com.google.sps.util.DataStoreHelper;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
