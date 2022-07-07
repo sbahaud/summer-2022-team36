@@ -35,16 +35,13 @@ public class SignUp extends HttpServlet{
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter(USER_NAME_PARAM).trim();
         
-        // gaurd clause for invalid usernames
-        if(!Validator.validUserName(username)) {
-            response.getWriter().println("Invalid Username: Please only use letters and numbers.");
-            return;
-        } 
-        // gaurd clause for already taken usernames
-        else if (!Validator.userNameAvalible(username)) {
-            response.getWriter().println("Username Taken: <a href=\"/LogIn\">Login</a>");
-            return;
-        }
+        // if(!Validator.validUserName(username)) {
+        //     response.getWriter().println("Invalid Username: Please only use letters and numbers.");
+        //     return;
+        // } else if (!Validator.userNameAvalible(username)) {
+        //     response.getWriter().println("Username Taken: <a href=\"/LogIn\">Login</a>");
+        //     return;
+        // }
 
         long userId = writeToDatastore(username);
 
