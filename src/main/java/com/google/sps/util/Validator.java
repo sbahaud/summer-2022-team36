@@ -9,8 +9,24 @@ public class Validator {
      *          containing: letters, digits, and no symbols
      * may be updated later
      */
-    public static boolean validUserName(String username) {
+
+    public static String validateUserName(String username){
+        String error = "";
+        if (!validUserNameCharacters(username)){
+            error = "characters";
+        }
+        if (!validUserNameLength(username)){
+            error = "length";
+        }
+        return error;
+    }
+    
+    private static boolean validUserNameCharacters(String username) {
         return username.matches("[\\w\\d]*");
+    }
+
+    private static boolean validUserNameLength(String username){
+        return username.length() > 0 && username.length() < 65;
     }
 
     public static boolean userNameAvalible(String username){
