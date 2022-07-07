@@ -56,6 +56,8 @@ public class SignUp extends HttpServlet{
         long userId = writeToDatastore(username);
 
         response.getWriter().println(userId);
+        // upon success redirect user to portfolio
+        //response.sendRedirect("");
     }
 
 

@@ -54,5 +54,7 @@ public class LogIn extends HttpServlet {
         }
 
         response.getWriter().println(userId);
+        // upon success redirect user to portfolio
+        //response.sendRedirect("");
     }
 }
