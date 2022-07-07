@@ -15,7 +15,7 @@ public class LogIn extends HttpServlet {
 
     private static final String USER_NAME_PARAM = "text-input-user-name";
     //Formatted string for validation error messages
-    private static final String VALIDATOR_ERROR_MESSAGE = "<p>Invalid Username: %s<p>";
+    private static final String VALIDATOR_ERROR_MESSAGE = "<p class=\"error\">Invalid Username: %s<p>";
     //validation error message discriptions
     private static final String IMPROPER_CHARACTERS = VALIDATOR_ERROR_MESSAGE + "Improper characters. Please use letters and numbers only.";
     private static final String USER_NAME_LENGTH = VALIDATOR_ERROR_MESSAGE + "Usernames must be between 1 and 64 characters";
