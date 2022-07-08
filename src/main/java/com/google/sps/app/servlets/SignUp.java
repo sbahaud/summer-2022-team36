@@ -43,19 +43,19 @@ public class SignUp extends HttpServlet{
         String error = Validator.validateUserName(username);
         if(!error.isEmpty()) {
             error = error.equals("length") ? USERNAME_LENGTH : IMPROPER_CHARACTERS;
-            response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, error));
+            response.getWriter().print(String.format(VALIDATOR_ERROR_MESSAGE, error));
             return;
         }
 
         // gaurd clause for already taken usernames
         else if (!Validator.userNameAvalible(username)) {
-            response.getWriter().println(USERNAME_TAKEN);
+            response.getWriter().print(USERNAME_TAKEN);
             return;
         }
 
         long userId = writeToDatastore(username);
 
-        response.getWriter().println(userId);
+        response.getWriter().print(userId);
         // upon success redirect user to portfolio
         // response.sendRedirect("");
     }
