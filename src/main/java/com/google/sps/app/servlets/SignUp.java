@@ -47,7 +47,7 @@ public class SignUp extends HttpServlet{
         String error = Validator.validateUserName(username);
         if(!error.isEmpty()) {
             System.out.println("Validation Error");
-            error = error == "length" ? USERNAME_LENGTH : IMPROPER_CHARACTERS;
+            error = error.equals("length") ? USERNAME_LENGTH : IMPROPER_CHARACTERS;
             System.out.println("error=" + error);
             response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, error));
             System.out.println("Resopnse written from validation error");
