@@ -37,7 +37,6 @@ public class NewEventServlet extends HttpServlet {
     private static String ESTIMATED_PARAM = "text-input-estimatedCost";
     private static String DATE_PARAM = "text-input-date";
     private static String LOCATION_PARAM = "text-input-location";
-    private static String USERS = "text-input-user-list";
 
     /**
      * Does post request.
@@ -53,8 +52,6 @@ public class NewEventServlet extends HttpServlet {
         if (error.isEmpty()) {
             Event newEvent= getEvent(request);
             writeToDatastore(newEvent);
-            //adds to the object and updates datastore entitiy
-            //String errors = DataStoreHelper.addUsersToEvent(newEvent, newEvent.getID(), response.getParameter(USERS));
 
             final Gson gson = new Gson();
             response.setContentType("application/json;");
