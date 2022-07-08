@@ -25,7 +25,7 @@ public class SignUp extends HttpServlet{
     private static final String IMPROPER_CHARACTERS = VALIDATOR_ERROR_MESSAGE + "Improper characters. Please use letters and numbers only.";
     private static final String USERNAME_LENGTH = VALIDATOR_ERROR_MESSAGE + "Usernames must be between 1 and 64 characters";
     // Taken user name error message
-    private static final String USERNAME_TAKEN = "<p class=\"error\">Username Taken: <a href=\"/LogIn\">Login</a></p>";
+    private static final String USERNAME_TAKEN = "<p class=\"error\">Username Taken: <a href=\"userSignin.html\">Login</a></p>";
     
     /**
      * Returns a response for the POST request in standard text not JSON.
