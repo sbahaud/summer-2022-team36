@@ -5,12 +5,20 @@ import javax.HttpServlet;
 @WebServlet("/addUserToEvent")
 public class AddUsersToEvent extends HttpServlet {
     
-    private static String USERS = "text-input-user-list";
+    private static String EVENT_ID = "javascript-input-event-id";
 
+    /**
+     * Reads an events userlist and adds users that aren't there yet.
+     * @param request. Containing an event ID
+     * @param response
+     * @return response containing a JSON representation of the new username list
+     * and a list of usernames that failed to add, with an error message.
+     * @throws IOException
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //adds to the object and updates datastore entitiy
-        //String errors = DataStoreHelper.addUsersToEvent(newEvent, newEvent.getID(), response.getParameter(USERS));
+        Long id = response.getParameter(EVENT_ID);
+
     }
 
     public static String addUsersToEvent(Event eventObj, Long eventID, String inputParticipantList) {
