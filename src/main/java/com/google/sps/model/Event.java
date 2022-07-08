@@ -11,7 +11,7 @@ public class Event implements Comparable<Event>{
     private String title;
     private String location;
     //uses user hashes
-    private List<Long> participants;
+    private List<String> participants;
     private Date date;
     private float estimatedCost;
     private float actualCost;
@@ -33,7 +33,6 @@ public class Event implements Comparable<Event>{
         this.paid = false;
         this.includeInBudget = true;
         this.splitCost = true;
-        this.participants = new ArrayList<Long>();
 
     }
 
@@ -64,6 +63,10 @@ public class Event implements Comparable<Event>{
 
     public List<Long> getParticipants(){
         return participants;
+    }
+
+    public void setParticipants(List<String> usernameList){
+        this.participants = usernameList;
     }
 
     @Override

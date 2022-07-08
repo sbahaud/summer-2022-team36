@@ -16,6 +16,7 @@ import com.google.sps.util.UUIDs;
 import com.google.sps.util.DataStoreHelper;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Date;
 
@@ -36,6 +37,7 @@ public class NewEventServlet extends HttpServlet {
     private static String ESTIMATED_PARAM = "text-input-estimatedCost";
     private static String DATE_PARAM = "text-input-date";
     private static String LOCATION_PARAM = "text-input-location";
+    private static String USERS = "text-input-user-list";
 
     /**
      * Does post request.
@@ -51,6 +53,8 @@ public class NewEventServlet extends HttpServlet {
         if (error.isEmpty()) {
             Event newEvent= getEvent(request);
             writeToDatastore(newEvent);
+            //adds to the object and updates datastore entitiy
+            String errors = DataStoreHelper.addUsersToEvent(newEvent, newEvent.getID(), response.getParameter(USERS));
 
             final Gson gson = new Gson();
             response.setContentType("application/json;");
@@ -73,7 +77,8 @@ public class NewEventServlet extends HttpServlet {
                 .set("estimatedCost", newEvent.getEstimatedCost())
                 .set("location", newEvent.getLocation())
                 .set("date", newEvent.getDate().toString())
-                .set("associatedUsers", newEvent.getParticipants())
+                .set("associatedUsernames", "")
+                .set("associatedUserIDs", "")
                 .build();
         datastore.put(eventEntity);
     }
