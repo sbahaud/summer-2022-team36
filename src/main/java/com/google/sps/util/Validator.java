@@ -1,5 +1,7 @@
 package com.google.sps.util;
 
+import com.google.cloud.datastore.DatastoreException;
+
 public class Validator {
 
     /**
@@ -43,7 +45,7 @@ public class Validator {
             long userID = DataStoreHelper.queryUserID(username);
             System.out.println("user found: id=" + userID);
         //user name could not be found in database
-        } catch (IllegalArgumentException e) {
+        } catch (com.google.cloud.datastore.DatastoreException e) {
             System.out.println("datastore error, assumed to be not found");
             //username must be avalible
             return true;

@@ -49,7 +49,7 @@ public class SignUp extends HttpServlet{
             System.out.println("Validation Error");
             error = error.equals("length") ? USERNAME_LENGTH : IMPROPER_CHARACTERS;
             System.out.println("error=" + error);
-            response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, error));
+            response.getWriter().print(String.format(VALIDATOR_ERROR_MESSAGE, error));
             System.out.println("Resopnse written from validation error");
             return;
         }
@@ -57,7 +57,7 @@ public class SignUp extends HttpServlet{
         // gaurd clause for already taken usernames
         else if (!Validator.userNameAvalible(username)) {
             System.out.println("Username taken error");
-            response.getWriter().println(USERNAME_TAKEN);
+            response.getWriter().print(USERNAME_TAKEN);
             System.out.println("Response written from username taken error");
             return;
         }
@@ -66,7 +66,7 @@ public class SignUp extends HttpServlet{
         long userId = writeToDatastore(username);
         System.out.println("User pushed and userID=" + userId);
 
-        response.getWriter().println(userId);
+        response.getWriter().print(userId);
         System.out.println("Response written from success");
         // upon success redirect user to portfolio
         // response.sendRedirect("");

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.cloud.datastore.DatastoreException;
 import com.google.sps.util.DataStoreHelper;
 import com.google.sps.util.Validator;
 
@@ -42,7 +43,7 @@ public class LogIn extends HttpServlet {
             System.out.println("Validation error");
             error = error.equals("length") ? USER_NAME_LENGTH : IMPROPER_CHARACTERS;
             System.out.println("Error type=" + error);
-            response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, error));
+            response.getWriter().print(String.format(VALIDATOR_ERROR_MESSAGE, error));
             System.out.println("Response written from Validation error");
             return;
         }
@@ -52,15 +53,15 @@ public class LogIn extends HttpServlet {
         long userId;
         try {
             userId = DataStoreHelper.queryUserID(username);
-        } catch (IllegalArgumentException e) {
+        } catch (com.google.cloud.datastore.DatastoreException e) {
             System.out.println("user could not be found");
-            response.getWriter().println(USERNAME_NOT_FOUND);
+            response.getWriter().print(USERNAME_NOT_FOUND);
             System.out.println("Response written from Datastore error. Presumably user not found");
             return;
         }
         System.out.println("User found: user=" + userId);
 
-        response.getWriter().println(userId);
+        response.getWriter().print(userId);
         System.out.println("Response written from success");
         // upon success redirect user to portfolio
         // response.sendRedirect("");
