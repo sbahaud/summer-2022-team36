@@ -29,11 +29,17 @@ public class DataStoreHelper {
     }
     
     public static long queryUserID(String username) throws IllegalArgumentException {
+        System.out.println("Starting queryUserID");
         String gqlQuery = USER_QUERY_TEMPLATE + username;
+        System.out.println("Searcing with the query: " + gqlQuery);
 
+        System.out.println("Getting datastore");
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        System.out.println("Building query");
         Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
+        System.out.println("Running query");
         QueryResults<?> results = datastore.run(query);
+        
         
         //checks if there are no results for the username
         if(!results.hasNext()){

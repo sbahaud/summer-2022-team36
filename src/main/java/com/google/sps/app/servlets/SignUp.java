@@ -37,25 +37,37 @@ public class SignUp extends HttpServlet{
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("Started SignUp doPost");
+
         String username = request.getParameter(USER_NAME_PARAM).trim();
-        
+        System.out.println("Username gotten: username=" + username);
+
+        System.out.println("Checking for errors");
         // gaurd clause for invalid usernames
         String error = Validator.validateUserName(username);
         if(!error.isEmpty()) {
+            System.out.println("Validation Error");
             error = error == "length" ? USERNAME_LENGTH : IMPROPER_CHARACTERS;
+            System.out.println("error=" + error);
             response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, error));
+            System.out.println("Resopnse written from validation error");
             return;
         }
 
         // gaurd clause for already taken usernames
         else if (!Validator.userNameAvalible(username)) {
+            System.out.println("Username taken error");
             response.getWriter().println(USERNAME_TAKEN);
+            System.out.println("Response written from username taken error");
             return;
         }
+        System.out.println("No errors found");
 
         long userId = writeToDatastore(username);
+        System.out.println("User pushed and userID=" + userId);
 
         response.getWriter().println(userId);
+        System.out.println("Response written from success");
         // upon success redirect user to portfolio
         // response.sendRedirect("");
     }
@@ -68,16 +80,23 @@ public class SignUp extends HttpServlet{
      * @return randomly generated ID
      */
     public long writeToDatastore(String username){
+        System.out.println("Entering writeToDatastore()");
         long userId = UUIDs.generateID();
+        System.out.println("Id generated. ID=" + userId);
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        System.out.println("Datastore created");
         KeyFactory keyFactory = datastore.newKeyFactory().setKind("User");
+        System.out.println("keyFactory created");
         FullEntity userEntity = Entity.newBuilder(keyFactory.newKey())
             .set("username", username)
             .set("userId", userId)
             .build();
+        System.out.println("Entity built");
         datastore.put(userEntity);
+        System.out.println("Entity pushed");
         
+        System.out.println("Leaving writeToDatastore()");
         return userId;
     }
 }

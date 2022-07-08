@@ -19,6 +19,8 @@ public class LogIn extends HttpServlet {
     // Validation error message discriptions
     private static final String IMPROPER_CHARACTERS = VALIDATOR_ERROR_MESSAGE + "Improper characters. Please use letters and numbers only.";
     private static final String USER_NAME_LENGTH = VALIDATOR_ERROR_MESSAGE + "Usernames must be between 1 and 64 characters";
+    // Username not found error message
+    private static final String USERNAME_NOT_FOUND = "<p class=\"error\">Username not found <a href=\"/SignUp\">Sign up</a></p>";
 
     /**
      * Returns a response for the POST request in standard text not JSON.
@@ -29,23 +31,37 @@ public class LogIn extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("Starting Login doPost");
+
         String username = request.getParameter(USER_NAME_PARAM).trim();
+        System.out.println("Username gotten: username=" + username);
+
+        System.out.println("Searching for errors");
         String error = Validator.validateUserName(username);
         if(!error.isEmpty()) {
+            System.out.println("Validation error");
             error = error.equals("length") ? USER_NAME_LENGTH : IMPROPER_CHARACTERS;
+            System.out.println("Error type=" + error);
             response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, error));
+            System.out.println("Response written from Validation error");
             return;
         }
+        System.out.println("No validation error found");
 
+        System.out.println("looking for user");
         long userId;
         try {
             userId = DataStoreHelper.queryUserID(username);
         } catch (IllegalArgumentException e) {
-            response.getWriter().println(e.getMessage());
+            System.out.println("user could not be found");
+            response.getWriter().println(USERNAME_NOT_FOUND);
+            System.out.println("Response written from Datastore error. Presumably user not found");
             return;
         }
+        System.out.println("User found: user=" + userId);
 
         response.getWriter().println(userId);
+        System.out.println("Response written from success");
         // upon success redirect user to portfolio
         // response.sendRedirect("");
     }
