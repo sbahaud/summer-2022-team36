@@ -1,8 +1,18 @@
 package com.google.sps.app.servlets;
 
+import java.io.IOException;
 import java.util.List;
 
-import javax.HttpServlet;
+import com.google.cloud.datastore.FullEntity;
+import com.google.gson.Gson;
+import com.google.sps.model.UserList;
+import com.google.sps.util.DataStoreHelper;
+import com.google.sps.util.Validator;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/addUserToEvent")
 public class AddUsersToEvent extends HttpServlet {
@@ -22,8 +32,8 @@ public class AddUsersToEvent extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //get paramaters
-        Long id = response.getParameter(EVENT_ID);
-        String[] usersToAdd = cleanInput(response.getParameter(USERS));
+        Long id = Long.parseLong(request.getParameter(EVENT_ID));
+        String[] usersToAdd = cleanInput(request.getParameter(USERS));
         
         //get lists
         List<String> usernames = getAssociatedEventUsernames();
@@ -35,40 +45,65 @@ public class AddUsersToEvent extends HttpServlet {
         //push list
         String usernameStringList = listToString(usernames);
         String userIDStringList = listToString(userIDs);
-        FullEntitiy eventEntity = getEventEntity(id);
+        FullEntity eventEntity = getEventEntity(id);
         pushUserstoEvent(eventEntity, usernameStringList, userIDStringList);
 
         //return response
         Gson gson = new Gson();
         response.setContentType("appliation/json;");
-        response.getWriter.println(gson.toJson(resp));
+        response.getWriter().println(gson.toJson(resp));
+    }
+
+    private String listToString(List<?> users) {
+        //build up list
+        String strList = "";
+        for (Object item : users) {
+            strList += item + ",";
+        }
+        //removes last comma
+        strList = strList.substring(0,strList.length()-1);
+        return strList;
+    }
+
+    private List<Long> getAssociatedEventUserIDs() {
+        return null;
+    }
+
+    private List<String> getAssociatedEventUsernames() {
+        return null;
     }
 
     private String[] cleanInput(String input){
         input = input.replace(" ", "");
-        String[] usersToAdd = participants.split(",");
+        return input.split(",");
     }
 
     private UserList addUsersToEvent(String[] usersToAdd, List<String> usernames, List<Long> userIDs) {
+        UserList responseObj = new UserList();
+        
         for (int i = 0; i < usersToAdd.length; i++) {
             String username = usersToAdd[i];
             String validationErrors = Validator.validateUserName(username);
             if (!validationErrors.isEmpty()) {
-                errors += String.format("Invalid %s for user %s\n", validationErrors, username);
+                responseObj.addError(String.format("Invalid %s for user %s\n", validationErrors, username));
                 continue;
             }
-            
+            long userID;
             try {
-                long userID = DataStoreHelper.queryUserID(username);
+                userID = DataStoreHelper.queryUserID(username);
             } catch (com.google.cloud.datastore.DatastoreException e) {
-                errors += String.format("User %s not found", username);
+                responseObj.addError(String.format("User %s not found", username));
                 continue;
             }
 
             //no error
-            userIDList.add(userID);
-            usernameList.add(username);
+            usernames.add(username);
+            userIDs.add(userID);
         }
+
+        responseObj.setAssociatedUsernames(usernames);
+        responseObj.setAssociatedUserIDs(userIDs);
+
     }
 
     private static FullEntity getEventEntity(Long eventID){
@@ -87,6 +122,13 @@ public class AddUsersToEvent extends HttpServlet {
         .build();
         datastore.put(eventEntity);
     }
+
+
+
+
+
+
+
 
     private static String addToEventsStringListOfUserString(String usernames, List<String> newUsernames){
         removeDuplicates(usernames, newUsernames);

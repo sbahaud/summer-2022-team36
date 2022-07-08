@@ -61,7 +61,7 @@ public class Event implements Comparable<Event>{
         return estimatedCost;
     }
 
-    public List<Long> getParticipants(){
+    public List<String> getParticipants(){
         return participants;
     }
 
