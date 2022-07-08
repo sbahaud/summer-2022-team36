@@ -1,28 +1,24 @@
 package com.google.sps.app.servlets;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.cloud.datastore.BaseEntity;
-import com.google.cloud.datastore.Datastore;
-import com.google.cloud.datastore.DatastoreOptions;
-import com.google.cloud.datastore.Entity;
-import com.google.cloud.datastore.Key;
-import com.google.cloud.datastore.Query;
-import com.google.cloud.datastore.QueryResults;
 import com.google.sps.util.DataStoreHelper;
 import com.google.sps.util.Validator;
 
 @WebServlet("/LogIn")
 public class LogIn extends HttpServlet {
 
-    private static final String USER_NAME_PARAM =
-        "text-input-user-name";
+    private static final String USER_NAME_PARAM = "text-input-user-name";
+    // Formatted string for validation error messages
+    private static final String VALIDATOR_ERROR_MESSAGE = "<p class=\"error\">Invalid Username: %s<p>";
+    // Validation error message discriptions
+    private static final String IMPROPER_CHARACTERS = VALIDATOR_ERROR_MESSAGE + "Improper characters. Please use letters and numbers only.";
+    private static final String USER_NAME_LENGTH = VALIDATOR_ERROR_MESSAGE + "Usernames must be between 1 and 64 characters";
 
     /**
      * Returns a response for the POST request in standard text not JSON.
@@ -34,11 +30,12 @@ public class LogIn extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter(USER_NAME_PARAM).trim();
-
-        // if(!Validator.validUserName(username)) {
-        //     response.getWriter().println("Invalid Username: Improper characters. Please use letters and numbers only.");
-        //     return;
-        // }
+        String error = Validator.validateUserName(username);
+        if(!error.isEmpty()) {
+            error = error.equals("length") ? USER_NAME_LENGTH : IMPROPER_CHARACTERS;
+            response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, error));
+            return;
+        }
 
         long userId;
         try {
@@ -49,5 +46,7 @@ public class LogIn extends HttpServlet {
         }
 
         response.getWriter().println(userId);
+        // upon success redirect user to portfolio
+        // response.sendRedirect("");
     }
 }
