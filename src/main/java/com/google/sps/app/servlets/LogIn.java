@@ -32,37 +32,23 @@ public class LogIn extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("Starting Login doPost");
-
         String username = request.getParameter(USER_NAME_PARAM).trim();
-        System.out.println("Username gotten: username=" + username);
 
-        System.out.println("Searching for errors");
         String error = Validator.validateUserName(username);
         if(!error.isEmpty()) {
-            System.out.println("Validation error");
             error = error.equals("length") ? USER_NAME_LENGTH : IMPROPER_CHARACTERS;
-            System.out.println("Error type=" + error);
             response.getWriter().print(String.format(VALIDATOR_ERROR_MESSAGE, error));
-            System.out.println("Response written from Validation error");
             return;
         }
-        System.out.println("No validation error found");
-
-        System.out.println("looking for user");
         long userId;
         try {
             userId = DataStoreHelper.queryUserID(username);
         } catch (com.google.cloud.datastore.DatastoreException e) {
-            System.out.println("user could not be found");
             response.getWriter().print(USERNAME_NOT_FOUND);
-            System.out.println("Response written from Datastore error. Presumably user not found");
             return;
         }
-        System.out.println("User found: user=" + userId);
 
         response.getWriter().print(userId);
-        System.out.println("Response written from success");
         // upon success redirect user to portfolio
         // response.sendRedirect("");
     }

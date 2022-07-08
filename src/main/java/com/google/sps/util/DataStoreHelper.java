@@ -30,22 +30,14 @@ public class DataStoreHelper {
     }
     
     public static long queryUserID(String username) throws com.google.cloud.datastore.DatastoreException {
-        System.out.println("Starting queryUserID");
         String gqlQuery = USER_QUERY_TEMPLATE + username;
-        System.out.println("Searcing with the query: " + gqlQuery);
 
-        System.out.println("Getting datastore");
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-        System.out.println("Building query");
         Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
-        System.out.println("Running query");
         QueryResults<?> results = datastore.run(query);
-        System.out.println("results found");
-
-        System.out.println("Getting userID");
+        
         long userID = ((BaseEntity<Key>) results.next()).getLong("userId");
-
-        System.out.println("Ending queryUserID()");
+        
         //possible class cast or null pointer
         return userID;
     }
