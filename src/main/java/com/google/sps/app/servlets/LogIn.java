@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.cloud.datastore.DatastoreException;
 import com.google.sps.util.DataStoreHelper;
 import com.google.sps.util.Validator;
 
@@ -19,6 +20,8 @@ public class LogIn extends HttpServlet {
     // Validation error message discriptions
     private static final String IMPROPER_CHARACTERS = VALIDATOR_ERROR_MESSAGE + "Improper characters. Please use letters and numbers only.";
     private static final String USER_NAME_LENGTH = VALIDATOR_ERROR_MESSAGE + "Usernames must be between 1 and 64 characters";
+    // Username not found error message
+    private static final String USERNAME_NOT_FOUND = "<p class=\"error\">Username not found <a href=\"userSignup.html\">Sign up</a></p>";
 
     /**
      * Returns a response for the POST request in standard text not JSON.
@@ -30,22 +33,22 @@ public class LogIn extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter(USER_NAME_PARAM).trim();
+
         String error = Validator.validateUserName(username);
         if(!error.isEmpty()) {
             error = error.equals("length") ? USER_NAME_LENGTH : IMPROPER_CHARACTERS;
-            response.getWriter().println(String.format(VALIDATOR_ERROR_MESSAGE, error));
+            response.getWriter().print(String.format(VALIDATOR_ERROR_MESSAGE, error));
             return;
         }
-
         long userId;
         try {
             userId = DataStoreHelper.queryUserID(username);
-        } catch (IllegalArgumentException e) {
-            response.getWriter().println(e.getMessage());
+        } catch (com.google.cloud.datastore.DatastoreException e) {
+            response.getWriter().print(USERNAME_NOT_FOUND);
             return;
         }
 
-        response.getWriter().println(userId);
+        response.getWriter().print(userId);
         // upon success redirect user to portfolio
         // response.sendRedirect("");
     }
