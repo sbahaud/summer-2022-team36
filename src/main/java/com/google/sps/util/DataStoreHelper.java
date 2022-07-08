@@ -100,4 +100,12 @@ public class DataStoreHelper {
         .build();
         datastore.put(eventEntity);
     }
+
+    private static String addToEventsStringListOfUserString(String usernames, List<String> newUsernames){
+
+    }
+
+    private static String addToEventsStringListOfUserIDs(String userIDs, List<String> newUserIDs){
+        
+    }
 }
