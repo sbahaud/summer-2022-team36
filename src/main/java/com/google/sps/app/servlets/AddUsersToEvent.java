@@ -1,15 +1,19 @@
 package com.google.sps.app.servlets;
 
+import java.util.List;
+
 import javax.HttpServlet;
 
 @WebServlet("/addUserToEvent")
 public class AddUsersToEvent extends HttpServlet {
     
     private static String EVENT_ID = "javascript-input-event-id";
+    private static String USERS = "text-input-user-list";
 
     /**
      * Reads an events userlist and adds users that aren't there yet.
-     * @param request. Containing an event ID
+     * @param request. Containing an event ID and
+     * a comma seperated list of usernames too add.
      * @param response
      * @return response containing a JSON representation of the new username list
      * and a list of usernames that failed to add, with an error message.
@@ -17,21 +21,37 @@ public class AddUsersToEvent extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //get paramaters
         Long id = response.getParameter(EVENT_ID);
+        String[] usersToAdd = cleanInput(response.getParameter(USERS));
+        
+        //get lists
+        List<String> usernames = getAssociatedEventUsernames();
+        List<Long> userIDs = getAssociatedEventUserIDs();
 
+        //add to lists
+        UserList resp = addUsersToEvent(usersToAdd, usernames, userIDs);
+        
+        //push list
+        String usernameStringList = listToString(usernames);
+        String userIDStringList = listToString(userIDs);
+        FullEntitiy eventEntity = getEventEntity(id);
+        pushUserstoEvent(eventEntity, usernameStringList, userIDStringList);
+
+        //return response
+        Gson gson = new Gson();
+        response.setContentType("appliation/json;");
+        response.getWriter.println(gson.toJson(resp));
     }
 
-    public static String addUsersToEvent(Event eventObj, Long eventID, String inputParticipantList) {
-        //removes spaces and formatting
-        participants = participants.replace(" ", "");
+    private String[] cleanInput(String input){
+        input = input.replace(" ", "");
+        String[] usersToAdd = participants.split(",");
+    }
 
-        String[] usernames = participants.split(",");
-
-        String errors = "";
-        List<Long> userIDList = new ArrayList<Long>();
-        List<String> usernameList = new ArrayList<String>();
-        for (int i = 0; i < usernames.length; i++) {
-            String username = usernames[i];
+    private UserList addUsersToEvent(String[] usersToAdd, List<String> usernames, List<Long> userIDs) {
+        for (int i = 0; i < usersToAdd.length; i++) {
+            String username = usersToAdd[i];
             String validationErrors = Validator.validateUserName(username);
             if (!validationErrors.isEmpty()) {
                 errors += String.format("Invalid %s for user %s\n", validationErrors, username);
@@ -49,15 +69,10 @@ public class AddUsersToEvent extends HttpServlet {
             userIDList.add(userID);
             usernameList.add(username);
         }
-
-        eventObj.setParticipants(usernameList);
-
-        FullEntity eventEntity = getEventEntity(eventID);
-        pushUserIDstoEvent(eventEntity, eventID, usernameList, userIDList);
     }
 
     private static FullEntity getEventEntity(Long eventID){
-        String gqlQuery = "SELECT * FROM User WHERE associatedUsers=" + eventID;
+        String gqlQuery = "SELECT * FROM Event WHERE eventID=" + eventID;
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
         QueryResults<?> results = datastore.run(query);
@@ -65,13 +80,7 @@ public class AddUsersToEvent extends HttpServlet {
         return (FullEntity<Key>) results.next();
     }
 
-    private static void pushUserIDstoEvent(FullEntity eventEntity, Long eventID, List<String> newUsernames, List<Long> newUserIDs){
-        String usernames = getEventUsernames();
-        String userIDs = getEventUserIDs();
-
-        usernames = addToEventsStringListOfUsernames(usernames, newUsernames);
-        userIDs = addToEventsStringListOfUserIDs(userIDs, newUserIDs);
-
+    private static void pushUserstoEvent(FullEntity eventEntity, String usernames, String userIDs){
         eventEntity
         .set("associatedUsernames", usernames)
         .set("associatedUserIDs", userIDs)
