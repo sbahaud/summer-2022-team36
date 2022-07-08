@@ -102,10 +102,24 @@ public class DataStoreHelper {
     }
 
     private static String addToEventsStringListOfUserString(String usernames, List<String> newUsernames){
-
+        removeDuplicates(usernames, newUsernames);
+        for (String username: newUsernames){
+            usernames += ","+username;
+        }
+        if (userIDs.charAt(0) == ',') {
+            userIDs = userIDs.substring(1);
+        }
+        return usernames;
     }
 
     private static String addToEventsStringListOfUserIDs(String userIDs, List<String> newUserIDs){
-        
+        removeDuplicates(userIDs, newUserIDs);
+        for (Long id: newUserIDs){
+            userIDs += ","+id;
+        }
+        if (userIDs.charAt(0) == ',') {
+            userIDs = userIDs.substring(1);
+        }
+        return userIDs;
     }
 }
