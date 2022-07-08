@@ -21,7 +21,7 @@ public class LogIn extends HttpServlet {
     private static final String IMPROPER_CHARACTERS = VALIDATOR_ERROR_MESSAGE + "Improper characters. Please use letters and numbers only.";
     private static final String USER_NAME_LENGTH = VALIDATOR_ERROR_MESSAGE + "Usernames must be between 1 and 64 characters";
     // Username not found error message
-    private static final String USERNAME_NOT_FOUND = "<p class=\"error\">Username not found <a href=\"/SignUp\">Sign up</a></p>";
+    private static final String USERNAME_NOT_FOUND = "<p class=\"error\">Username not found <a href=\"userSignup.html\">Sign up</a></p>";
 
     /**
      * Returns a response for the POST request in standard text not JSON.
