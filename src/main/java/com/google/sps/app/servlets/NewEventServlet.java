@@ -54,7 +54,7 @@ public class NewEventServlet extends HttpServlet {
             Event newEvent= getEvent(request);
             writeToDatastore(newEvent);
             //adds to the object and updates datastore entitiy
-            String errors = DataStoreHelper.addUsersToEvent(newEvent, newEvent.getID(), response.getParameter(USERS));
+            //String errors = DataStoreHelper.addUsersToEvent(newEvent, newEvent.getID(), response.getParameter(USERS));
 
             final Gson gson = new Gson();
             response.setContentType("application/json;");
