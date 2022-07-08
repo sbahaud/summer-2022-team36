@@ -15,14 +15,17 @@ function input_check(input){
 // show/hide message
 var msgDiv = document.getElementById("status-msg");
 
-
 function validateUsername(username){
-    if(username === ""){
-        msgDiv.innerHTML = `<p class="error">Username cannot be empty.</p>`;
-    } else if(!input_check(username)) {
-        msgDiv.innerHTML = `<p class="error">Please use letters and numbers only.</p>`;
-    } else {
-        msgDiv.innerHTML = `<p class="success">Success!</p>`;
+    // if(username === ""){
+    //     msgDiv.innerHTML = `<p class="error">Username cannot be empty.</p>`;
+    // } else if(!input_check(username)) {
+    //     msgDiv.innerHTML = `<p class="error">Please use letters and numbers only.</p>`;
+    // } else {
+    //     msgDiv.innerHTML = `<p class="success">Success!</p>`;
+    //     return true;
+    // }
+
+    if(username !== "" && input_check(username)){
         return true;
     }
 
@@ -38,6 +41,7 @@ if(signup_username){
             event.preventDefault();
 
             if(validateUsername(signup_username.value)){
+                sessionStorage.setItem("username", signup_username.value);
                 postUsername(signup_username.value);
             }
 
@@ -64,12 +68,13 @@ if(login_username){
     login_username.addEventListener("keypress", function(event) {
         if(event.key === "Enter") {
             event.preventDefault();
-            
+
             if(validateUsername(login_username.value)){
                 if(getUsername(login_username.value)){
-                    msgDiv.innerHTML = `<p class="success">Log In successful!</p>`;
+                    sessionStorage.setItem("username", login_username.value);
+                    // msgDiv.innerHTML = `<p class="success">Log In successful!</p>`;
                 } else {
-                    msgDiv.innerHTML = `<p class="success">Wrong username!</p>`;
+                    // msgDiv.innerHTML = `<p class="success">Wrong username!</p>`;
                 }
             }
 
@@ -88,9 +93,9 @@ async function getUsername(username) {
 
     const response = await fetch('/LogIn', {method: 'POST', body: params});
 
-    console.log(response);
 
     if (response !== "" && response.status == "200"){
+        console.log("username found");
         return true;
     }
 
