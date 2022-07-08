@@ -8,6 +8,7 @@ import com.google.cloud.datastore.BaseEntity;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
@@ -28,19 +29,16 @@ public class DataStoreHelper {
         return date;
     }
     
-    public static long queryUserID(String username) throws IllegalArgumentException {
+    public static long queryUserID(String username) throws com.google.cloud.datastore.DatastoreException {
         String gqlQuery = USER_QUERY_TEMPLATE + username;
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
         QueryResults<?> results = datastore.run(query);
         
-        //checks if there are no results for the username
-        if(!results.hasNext()){
-            throw new IllegalArgumentException("Username doesn't exist. <a href\"/SignUp\">Please Signup</a>.");
-        }
-
+        long userID = ((BaseEntity<Key>) results.next()).getLong("userId");
+        
         //possible class cast or null pointer
-        return ((BaseEntity<Key>) results.next()).getLong("userId");
+        return userID;
     }
 }

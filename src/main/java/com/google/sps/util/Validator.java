@@ -1,5 +1,7 @@
 package com.google.sps.util;
 
+import com.google.cloud.datastore.DatastoreException;
+
 public class Validator {
 
     /**
@@ -8,8 +10,24 @@ public class Validator {
      *          containing: letters, digits, and no symbols
      * may be updated later
      */
-    public static boolean validUserName(String username) {
+
+    public static String validateUserName(String username){
+        String error = "";
+        if (!validUserNameCharacters(username)){
+            error = "characters";
+        }
+        if (!validUserNameLength(username)){
+            error = "length";
+        }
+        return error;
+    }
+    
+    private static boolean validUserNameCharacters(String username) {
         return username.matches("[\\w\\d]*");
+    }
+
+    private static boolean validUserNameLength(String username){
+        return username.length() > 0 && username.length() < 65;
     }
 
     public static boolean userNameAvalible(String username){
@@ -17,7 +35,7 @@ public class Validator {
             //searches for username
             long userID = DataStoreHelper.queryUserID(username);
         //user name could not be found in database
-        } catch (IllegalArgumentException e) {
+        } catch (com.google.cloud.datastore.DatastoreException e) {
             //username must be avalible
             return true;
         }
