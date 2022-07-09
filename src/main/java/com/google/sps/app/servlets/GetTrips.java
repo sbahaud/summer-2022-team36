@@ -9,6 +9,7 @@ import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.sps.model.Trip;
 import com.google.sps.util.DataStoreHelper;
 import com.google.gson.Gson;
@@ -38,7 +39,7 @@ public class GetTrips extends HttpServlet {
     }
 
     public List<Trip> getTrips(String userID) {
-        QueryResults<?> results;
+        QueryResults<Entity> results;
         try {
         results = queryDatastore(userID);
         }
@@ -47,7 +48,7 @@ public class GetTrips extends HttpServlet {
         }
         List<Trip> trips = new ArrayList<>();
         while (results.hasNext()) {
-            BaseEntity<Key> entity = (BaseEntity<Key>) results.next();
+            Entity entity = results.next();
 
             long tripID = entity.getLong("tripID");
             String title = entity.getString("title");
@@ -59,14 +60,16 @@ public class GetTrips extends HttpServlet {
         return trips;
     }
 
-    public QueryResults<?> queryDatastore(String userID) throws IllegalArgumentException {
+    public QueryResults<Entity> queryDatastore(String userID) throws IllegalArgumentException {
+
+        Query<Entity> query =
+        Query.newEntityQueryBuilder()
+          .setKind("Trip")
+          .setFilter(PropertyFilter.eq("participant", userID))
+          .build();
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-
-        String gqlQuery = "select * from Trip where participant=" + userID;
-
-        Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
-        QueryResults<?> results = datastore.run(query);
+        QueryResults<Entity> results = datastore.run(query);
 
         // checks if there are no results for the username
         if (!results.hasNext()) {
