@@ -50,7 +50,7 @@ body {
 .trip-item {
     color: var(--second-color);
     font-size: 1.5em;
-    margin: 3em 0 0;
+
     text-align: center;
 }
 .trip-item-or {
@@ -99,12 +99,12 @@ body {
 
 }
 .inputBox input[value="add"] {
-    border: dotted;
+    border: none;
     border-radius: 40px;
     font-family: "Montserrat";
     height: 5vh;
     margin: 1em 0;
-    width:7vw
+    width:5vw
 }
 
 input[type="submit"][name="finish"] {
