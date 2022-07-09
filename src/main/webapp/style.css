@@ -76,6 +76,7 @@ body {
 .inputBox input {
     border: none;
     border-bottom: 2px solid;
+    border-bottom-color: var(--second-color);
     font-size: 16px;
     flex-direction: row;
     margin: 10px 0;
@@ -98,7 +99,12 @@ body {
 
 }
 .inputBox input[value="add"] {
-    width: min-content
+    border: dotted;
+    border-radius: 40px;
+    font-family: "Montserrat";
+    height: 5vh;
+    margin: 1em 0;
+    width:7vw
 }
 
 input[type="submit"][name="finish"] {
@@ -111,7 +117,7 @@ input[type="submit"] {
     border-radius: 20px;
     font-family: "Montserrat";
     height: 5vh;
-    margin: 0.5em 0;
+    margin: 3em 0;
     width: 30vw;
 }
 
