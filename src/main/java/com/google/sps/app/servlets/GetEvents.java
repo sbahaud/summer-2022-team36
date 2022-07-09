@@ -45,7 +45,7 @@ public class GetEvents extends HttpServlet {
             float estimatedCost = (float) entity.getDouble("estimatedCost");
             String location = entity.getString("location");
             Date date = DataStoreHelper.parseInputDate(entity.getString("date"));
-            events.add(new Event(eventID, title, location, date, estimatedCost));
+            events.add(new Event(eventID, Long.parseLong(tripID),title, location, date, estimatedCost));
         }
         return events;
     }
