@@ -48,7 +48,8 @@ public class NewTripServlet extends HttpServlet {
             response.getWriter().println("Input information error: "+ error);
         }
 
-        response.sendRedirect("https://summer22-sps-36.appspot.com/");
+        // response.sendRedirect("https://summer22-sps-36.appspot.com/");
+        response.sendRedirect("/trip/tripDetails.html");
     }
 
     public void writeToDatastore(Trip newTrip) {

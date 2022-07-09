@@ -2,7 +2,14 @@ body {
     margin: 0;
     padding: 0;
 }
-
+:root {
+    --main-color: #92ba92;
+    --second-color: #525E75;
+    --third-color: #78938A;
+    --shadow-color:#92ba9233;
+    --beige-color: #F1DDBF;
+    --big-font: 5em;
+}
 .container {
     font-family: "Montserrat";
     display: flex;
@@ -11,15 +18,15 @@ body {
 
 /* Titles */
 .home-title {
-    color: #92ba92;
-    font-size: 5em;
+    color: var(--main-color);
+    font-size: var(--big-font);
     margin: 2em 0 0;
     text-align: center;
-    text-shadow: 6px 6px 0px #92ba9233;
+    text-shadow: 6px 6px 0px var(--shadow-color);
 }
 
 .home-subtitle {
-    color: #525E75;
+    color: var(--second-color);
     font-size: 1em;
     text-align: center;
 }
@@ -30,17 +37,40 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-}    
+}
+
+/* Trip title*/
+.trip-title {
+    color: var(--third-color);
+    font-size: var(--big-font);
+    margin: 3em 0 0;
+    text-align: center;
+    margin-bottom: 10vh;
+}
+.trip-item {
+    color: var(--second-color);
+    font-size: 1.5em;
+    margin: 3em 0 0;
+    text-align: center;
+}
+.trip-item-or {
+    color: var(--main-color);
+    font-size: 1em;
+    text-align: center;
+    margin: 1em 0 0;
+}
+
+/* Trip */
 .createTrip {
     padding: 50px 100px;
     position: relative;
     min-height: 100vh;
-    width: 430px;
+    width: 500px;
 }
 .inputBox {
     margin-top: 10px;
     position: relative;
-    max-width: 430px;
+
 }
 
 .inputBox input {
@@ -83,6 +113,90 @@ input[type="submit"] {
     height: 5vh;
     margin: 0.5em 0;
     width: 30vw;
+}
+
+/* Select box*/
+.select-box {
+    display: flex;
+    width: 400px;
+    flex-direction: column;
+    margin-top: 1em;
+}
+  
+.select-box .options-container {
+    background: var(--shadow-color);
+    max-height: 0;
+    width: 100%;
+    opacity: 0;
+    transition: all 0.4s;
+    border-radius: 8px;
+    overflow: hidden;
+
+    order: 1;
+}
+
+.selected {
+    background: var(--shadow-color);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    position: relative;
+
+    order: 0;
+}
+
+.selected::after {
+    content: "";
+    background: url("images/arrow-down.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    position: absolute;
+    height: 100%;
+    width: 32px;
+    right: 10px;
+    top: 5px;
+
+    transition: all 0.4s;
+}
+
+.select-box .options-container.active {
+    max-height: 180px;
+    opacity: 1;
+    overflow-y: scroll;
+}
+
+.select-box .options-container.active + .selected::after {
+    transform: rotateX(180deg);
+    top: -6px;
+}
+
+.select-box .options-container::-webkit-scrollbar {
+    width: 8px;
+    background: var(--second-color);
+    border-radius: 0 8px 8px 0;
+}
+
+.select-box .options-container::-webkit-scrollbar-thumb {
+    background: var(--main-color);
+    border-radius: 0 8px 8px 0;
+}
+
+.select-box .option,
+.selected {
+    padding: 12px 24px;
+    cursor: pointer;
+}
+
+.select-box .option:hover {
+    background: var(--beige-color);
+}
+
+.select-box label {
+    cursor: pointer;
+}
+
+.select-box .option .radio {
+    display: none;
 }
 
 /* Footer */
