@@ -3,7 +3,14 @@ package com.google.sps.app.servlets;
 import java.io.IOException;
 import java.util.List;
 
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.FullEntity;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.KeyFactory;
+import com.google.cloud.datastore.Query;
+import com.google.cloud.datastore.QueryResults;
 import com.google.gson.Gson;
 import com.google.sps.model.UserList;
 import com.google.sps.util.DataStoreHelper;
@@ -104,55 +111,32 @@ public class AddUsersToEvent extends HttpServlet {
         responseObj.setAssociatedUsernames(usernames);
         responseObj.setAssociatedUserIDs(userIDs);
 
+        return responseObj;
     }
 
-    private static FullEntity getEventEntity(Long eventID){
+    private static Entity getEventEntity(Long eventID){
         String gqlQuery = "SELECT * FROM Event WHERE eventID=" + eventID;
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
         QueryResults<?> results = datastore.run(query);
 
-        return (FullEntity<Key>) results.next();
+        return (Entity) results.next();
     }
 
-    private static void pushUserstoEvent(FullEntity eventEntity, String usernames, String userIDs){
-        eventEntity
-        .set("associatedUsernames", usernames)
-        .set("associatedUserIDs", userIDs)
+    private static void pushUserstoEvent(Entity eventEntity, String usernames, String userIDs){
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        KeyFactory keyFactory = datastore.newKeyFactory().setKind("User");
+        Key eventKey = eventEntity.getKey();
+        FullEntity updatedEventEntity = Entity.newBuilder(keyFactory.newKey(eventKey.getId()))
+            .set("eventID", eventEntity.getLong("eventID"))
+            .set("tripID", eventEntity.getLong("tripID"))
+            .set("title", eventEntity.getString("title"))
+            .set("estimatedCost", eventEntity.getDouble("estimatedCost"))
+            .set("location", eventEntity.getString("location"))
+            .set("date", eventEntity.getString("date"))
+            .set("associatedUsernames", usernames)
+            .set("associatedUserIDs", userIDs)
         .build();
-        datastore.put(eventEntity);
-    }
-
-
-
-
-
-
-
-
-    private static String addToEventsStringListOfUserString(String usernames, List<String> newUsernames){
-        removeDuplicates(usernames, newUsernames);
-        for (String username: newUsernames){
-            usernames += ","+username;
-        }
-        if (userIDs.charAt(0) == ',') {
-            userIDs = userIDs.substring(1);
-        }
-        return usernames;
-    }
-
-    private static String addToEventsStringListOfUserIDs(String userIDs, List<String> newUserIDs){
-        removeDuplicates(userIDs, newUserIDs);
-        for (Long id: newUserIDs){
-            userIDs += ","+id;
-        }
-        if (userIDs.charAt(0) == ',') {
-            userIDs = userIDs.substring(1);
-        }
-        return userIDs;
-    }
-
-    private static void removeDuplicates(String original, List<T> newList){
-        
+        datastore.put(eventEntity);   
     }
 }
