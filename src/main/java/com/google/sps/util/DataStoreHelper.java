@@ -30,7 +30,7 @@ public class DataStoreHelper {
         return date;
     }
     
-    public static long queryUserID(String username) throws com.google.cloud.datastore.DatastoreException {
+    public static long queryUserID(String username) throws IllegalArgumentException {
         Query<Entity> query =
           Query.newEntityQueryBuilder()
             .setKind("User")
@@ -38,11 +38,11 @@ public class DataStoreHelper {
             .build();
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         QueryResults<Entity> results = datastore.run(query);
-        if(!results.hasNext())
-            throw new DatastoreException(123,"not found", "for same name");
+        if (!results.hasNext()) {
+            throw new IllegalArgumentException("No Trip exist. Please Create One.");
+        }
         long userID = results.next().getLong("userId");
 
-        //possible class cast or null pointer
         return userID;
     }
 }
