@@ -44,6 +44,8 @@ public class NewTripServlet extends HttpServlet {
             response.getWriter().println(gson.toJson(newTrip.tripID()));
         } 
         else {
+            System.out.println(request.getParameter(START_DATE_PARAM));
+            System.out.println("Input information error: "+ error);
             response.getWriter().println("Input information error: "+ error);
         }
 
