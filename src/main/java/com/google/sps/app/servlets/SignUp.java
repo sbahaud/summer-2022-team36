@@ -46,7 +46,6 @@ public class SignUp extends HttpServlet{
             response.getWriter().print(String.format(VALIDATOR_ERROR_MESSAGE, error));
             return;
         }
-        System.out.println("jack: before checking taken");
         // gaurd clause for already taken usernames
         if (!Validator.userNameAvalible(username)) {
             response.getWriter().print(USERNAME_TAKEN);

@@ -12,6 +12,7 @@ import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 
 public class DataStoreHelper {
 
@@ -30,15 +31,17 @@ public class DataStoreHelper {
     }
     
     public static long queryUserID(String username) throws com.google.cloud.datastore.DatastoreException {
-        System.out.println("jack: in query");
-        String gqlQuery = "SELECT userId from User where username="+ username;
-
+        Query<Entity> query =
+          Query.newEntityQueryBuilder()
+            .setKind("User")
+            .setFilter(PropertyFilter.eq("username", username))
+            .build();
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-        Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
-        QueryResults<?> results = datastore.run(query);
-        
-        long userID = ((BaseEntity<Key>) results.next()).getLong("userId");
-        System.out.println("jack: after run"+userID);
+        QueryResults<Entity> results = datastore.run(query);
+        if(!results.hasNext())
+            throw new DatastoreException(123,"not found", "for same name");
+        long userID = results.next().getLong("userId");
+
         //possible class cast or null pointer
         return userID;
     }

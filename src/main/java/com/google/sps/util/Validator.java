@@ -34,12 +34,10 @@ public class Validator {
     public static boolean userNameAvalible(String username){
         try {
             //searches for username
-            System.out.println("jack: before query");
             long userID = DataStoreHelper.queryUserID(username);
         //user name could not be found in database
         } catch (com.google.cloud.datastore.DatastoreException e) {
             //username must be avalible
-            System.out.println("jack: got exception");
             return true;
         }
         //if user id could be found it isn't avalible
