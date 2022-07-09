@@ -11,6 +11,7 @@ import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.gson.Gson;
 import com.google.sps.model.UserList;
 import com.google.sps.util.DataStoreHelper;
@@ -43,8 +44,9 @@ public class AddUsersToEvent extends HttpServlet {
         String[] usersToAdd = cleanInput(request.getParameter(USERS));
         
         //get lists
-        List<String> usernames = getAssociatedEventUsernames();
-        List<Long> userIDs = getAssociatedEventUserIDs();
+        Entity eventEntity = getEventEntity(id);
+        List<String> usernames = getAssociatedEventUsernames(eventEntity);
+        List<Long> userIDs = getAssociatedEventUserIDs(eventEntity);
 
         //add to lists
         UserList resp = addUsersToEvent(usersToAdd, usernames, userIDs);
@@ -52,7 +54,6 @@ public class AddUsersToEvent extends HttpServlet {
         //push list
         String usernameStringList = listToString(usernames);
         String userIDStringList = listToString(userIDs);
-        Entity eventEntity = getEventEntity(id);
         pushUserstoEvent(eventEntity, usernameStringList, userIDStringList);
 
         //return response
@@ -72,11 +73,17 @@ public class AddUsersToEvent extends HttpServlet {
         return strList;
     }
 
-    private List<Long> getAssociatedEventUserIDs() {
-        return null;
+    private List<Long> getAssociatedEventUserIDs(Entity eventEntity) {
+        Query<Entity> query =
+          Query.newEntityQueryBuilder()
+            .setKind("User")
+            .setFilter(PropertyFilter.eq("username", username))
+            .build();
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        QueryResults<?> results = datastore.run(query);
     }
 
-    private List<String> getAssociatedEventUsernames() {
+    private List<String> getAssociatedEventUsernames(Entity eventEntity) {
         return null;
     }
 
@@ -115,9 +122,13 @@ public class AddUsersToEvent extends HttpServlet {
     }
 
     private static Entity getEventEntity(Long eventID){
-        String gqlQuery = "SELECT * FROM Event WHERE eventID=" + eventID;
+
+        Query<Entity> query =
+          Query.newEntityQueryBuilder()
+            .setKind("Event")
+            .setFilter(PropertyFilter.eq("eventID", eventID))
+            .build();
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-        Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
         QueryResults<?> results = datastore.run(query);
 
         return (Entity) results.next();
