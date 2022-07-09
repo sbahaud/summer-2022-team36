@@ -1,3 +1,19 @@
+const selected = document.querySelector(".selected");
+const optionsContainer = document.querySelector(".options-container");
+
+const optionsList = document.querySelectorAll(".option");
+
+selected.addEventListener("click", () => {
+  optionsContainer.classList.toggle("active");
+});
+
+optionsList.forEach(o => {
+  o.addEventListener("click", () => {
+    selected.innerHTML = o.querySelector("label").innerHTML;
+    optionsContainer.classList.remove("active");
+  });
+});
+
 var date = new Date();
 var tdate = date.getDate();
 var month = date.getMonth() + 1;
@@ -25,20 +41,4 @@ $('#toDate').on('change', function() {
     $('#fromDate').prop('max', function() {
         return toDate;
     })
-});
-
-const selected = document.querySelector(".selected");
-const optionsContainer = document.querySelector(".options-container");
-
-const optionsList = document.querySelectorAll(".option");
-
-selected.addEventListener("click", () => {
-  optionsContainer.classList.toggle("active");
-});
-
-optionsList.forEach(o => {
-  o.addEventListener("click", () => {
-    selected.innerHTML = o.querySelector("label").innerHTML;
-    optionsContainer.classList.remove("active");
-  });
 });
