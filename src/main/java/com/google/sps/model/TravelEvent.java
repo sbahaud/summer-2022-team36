@@ -8,5 +8,5 @@ public class TravelEvent extends Event {
         super(eventId, title, location, date, estimatedCost);
         //TODO Auto-generated constructor stub
     }
-    
-}
+
+
