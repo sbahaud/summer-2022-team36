@@ -7,6 +7,8 @@
         <!-- Stylesheet --> 
         <link rel="stylesheet" href="../style.css">
 
+        <script src="details.js"></script>
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +25,8 @@
 
                 <!-- Participants -->
                 <h3 class="trip-item">💚 Add participants</h3>
-                <div class="select-box">
+
+                <!-- <div class="select-box">
                     <div class="options-container">
                       <div class="option">
                         <input type="radio" class="radio" id="emma" name="participant"/>
@@ -56,10 +59,10 @@
                       </div>
                     </div>
         
-                    <div class="selected">
+                    <div class="selected" onclick="select()">
                       Select a Participant
                     </div>
-                  </div>
+                  </div> -->
 
                 <h3 class="trip-item-or">or</h3>
                 <form action="/NewPeople" method="POST">
@@ -88,10 +91,11 @@
                       </div>
                     </div>
                     
-                    <div class="selected">
+                    <div class="selected" onclick="select()">
                       Select a place to visit
                     </div>
                 </div>
+
                 <h3 class="trip-item-or">or</h3>
                 <form action="/NewEvent" method="POST">
                     <div class="inputBox">
@@ -102,6 +106,7 @@
 
                 <!-- Transactions -->
                 <h3 class="trip-item">💚 Add transaction</h3>
+
                 <form action="/NewSpend" method="POST">
                     <div class="inputBox">
                         <input name="text-input-item" type="text" placeholder="Item e.g. lunch" required="required">
@@ -116,7 +121,7 @@
             </div>
         </div>
 
-        <script src="details.js"></script>
+        
     </body>
 
 </html>

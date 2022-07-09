@@ -19,7 +19,7 @@ body {
 /* Titles */
 .home-title {
     color: var(--main-color);
-    font-size: var(--big-font);
+    font-size: 5em;
     margin: 2em 0 0;
     text-align: center;
     text-shadow: 6px 6px 0px var(--shadow-color);
@@ -116,7 +116,7 @@ input[type="submit"] {
     border-radius: 20px;
     font-family: "Montserrat";
     height: 5vh;
-    margin: 3em 0;
+    margin: 0.5em 0;
     width: 30vw;
 }
 
