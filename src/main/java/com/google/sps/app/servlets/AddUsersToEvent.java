@@ -52,7 +52,7 @@ public class AddUsersToEvent extends HttpServlet {
         //push list
         String usernameStringList = listToString(usernames);
         String userIDStringList = listToString(userIDs);
-        FullEntity eventEntity = getEventEntity(id);
+        Entity eventEntity = getEventEntity(id);
         pushUserstoEvent(eventEntity, usernameStringList, userIDStringList);
 
         //return response
@@ -137,6 +137,6 @@ public class AddUsersToEvent extends HttpServlet {
             .set("associatedUsernames", usernames)
             .set("associatedUserIDs", userIDs)
         .build();
-        datastore.put(eventEntity);   
+        datastore.put(updatedEventEntity);   
     }
 }
