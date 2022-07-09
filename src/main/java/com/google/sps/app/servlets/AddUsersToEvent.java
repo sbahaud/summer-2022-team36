@@ -1,6 +1,8 @@
 package com.google.sps.app.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.cloud.datastore.Datastore;
@@ -74,17 +76,20 @@ public class AddUsersToEvent extends HttpServlet {
     }
 
     private List<Long> getAssociatedEventUserIDs(Entity eventEntity) {
-        Query<Entity> query =
-          Query.newEntityQueryBuilder()
-            .setKind("User")
-            .setFilter(PropertyFilter.eq("username", username))
-            .build();
-        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-        QueryResults<?> results = datastore.run(query);
+        String stringList = eventEntity.getString("associatedUserIDs");
+        String[] arrayList = stringList.split(",");
+        List<Long> list = new ArrayList<Long>();
+        for (int i = 0; i < arrayList.length; i++){
+            list.add(Long.parseLong(arrayList[i]));
+        }
+        return list;
     }
 
     private List<String> getAssociatedEventUsernames(Entity eventEntity) {
-        return null;
+        String stringList = eventEntity.getString("associatedUsernames");
+        String[] arrayList = stringList.split(",");
+        List<String> list = Arrays.asList(arrayList);
+        return list;
     }
 
     private String[] cleanInput(String input){
