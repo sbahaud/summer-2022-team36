@@ -9,6 +9,7 @@ import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.sps.model.Event;
 import com.google.sps.util.DataStoreHelper;
 import com.google.gson.Gson;
@@ -34,11 +35,11 @@ public class GetEvents extends HttpServlet {
     }
 
     public List<Event> getEvents(String tripID) {
-        QueryResults<?> results = queryDatastore(tripID);
+        QueryResults<Entity> results = queryDatastore(tripID);
 
         List<Event> events = new ArrayList<>();
         while (results.hasNext()) {
-            BaseEntity<Key> entity = (BaseEntity<Key>) results.next();
+            Entity entity = results.next();
 
             long eventID = entity.getLong("eventID");
             String title = entity.getString("title");
@@ -50,15 +51,16 @@ public class GetEvents extends HttpServlet {
         return events;
     }
 
-    public QueryResults<?> queryDatastore(String tripID) throws IllegalArgumentException {
+    public QueryResults<Entity> queryDatastore(String tripID) throws IllegalArgumentException {
+
+        Query<Entity> query =
+        Query.newEntityQueryBuilder()
+          .setKind("Event")
+          .setFilter(PropertyFilter.eq("tripID", tripID))
+          .build();
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-
-        String gqlQuery = "select * from Event where tripID=" + tripID;
-
-        Query<?> query = Query.newGqlQueryBuilder(gqlQuery).build();
-        QueryResults<?> results = datastore.run(query);
-
+        QueryResults<Entity> results = datastore.run(query);
         // checks if there are no results for the username
         if (!results.hasNext()) {
             throw new IllegalArgumentException("No Event exist. Please Create One.");
