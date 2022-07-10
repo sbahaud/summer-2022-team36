@@ -1,10 +1,10 @@
-let username = sessionStorage.getItem("username");
+let userId = sessionStorage.getItem("userId");
 
-if(username !== ""){
-    fetchTrips(username);
+if(userId !== ""){
+    fetchTrips(userId);
 }
 
-function fetchTrips(username) {
+function fetchTrips(userId) {
     fetch('/get-trips').then(response => response.json()).then((trips) => {
         trips.forEach(
             (trip) => {
