@@ -43,7 +43,7 @@ public class LogIn extends HttpServlet {
         long userId;
         try {
             userId = DataStoreHelper.queryUserID(username);
-        } catch (com.google.cloud.datastore.DatastoreException e) {
+        } catch (IllegalArgumentException e) {
             response.getWriter().print(USERNAME_NOT_FOUND);
             return;
         }
