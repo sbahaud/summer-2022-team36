@@ -4,7 +4,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.google.sps</groupId>
-  <artifactId>summer22-sps-36</artifactId>
+  <artifactId>mauricio-sps-summer-22-team-36</artifactId>
+  <!--summer22-sps-36 for team, mauricio-sps-summer-22-team-36 -->
   <version>1</version>
 
   <properties>
