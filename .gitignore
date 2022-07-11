@@ -15,4 +15,7 @@ lib/
 .idea/
 .vs/
 .vscode/
-.DS_Store
+.DS_Storej
+
+# app engine
+pom.xml
