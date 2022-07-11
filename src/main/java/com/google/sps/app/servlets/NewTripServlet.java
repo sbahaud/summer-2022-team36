@@ -64,17 +64,9 @@ public class NewTripServlet extends HttpServlet {
                 .set("totalBudget", newTrip.totalBudget())
                 .set("startDate", newTrip.start().toString())
                 .set("endDate", newTrip.end().toString())
-                .set("participants", convertToValueList(newTrip.participants()))
+                .set("participants", DataStoreHelper.convertToValueList(newTrip.participants()))
                 .build();
         datastore.put(tripEntity);
-    }
-
-    List<Value<String>> convertToValueList(List<String> list) {
-        List<Value<String>> result = new ArrayList<Value<String>>();
-        for (String s : list) {
-            result.add(StringValue.of(s));
-        }
-        return result;
     }
     
     public String validateInput(HttpServletRequest request) {
@@ -110,8 +102,11 @@ public class NewTripServlet extends HttpServlet {
         Date end = DataStoreHelper.parseInputDate(request.getParameter(END_DATE_PARAM));
         //fix later
         List<String> participants = new ArrayList<String>();
-        //participants.add("-1214434252");//jack
-        //participants.add("258309855");//tom
+        participants.add("1019264699");//jack
+        participants.add("-1939051496");//shaheen
+        participants.add("-1148042363");//emma
+        participants.add("-94026392");//Mauricio
+        participants.add("359360004");//YiFan
         return Trip.create(tripID,textValuetitle,participants, totalBudget,start,end);
     }
 

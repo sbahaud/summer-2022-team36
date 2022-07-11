@@ -57,18 +57,10 @@ public class GetTrips extends HttpServlet {
             float totalBudget = (float) entity.getDouble("totalBudget");
             Date start = DataStoreHelper.parseDataDate(entity.getString("startDate"));
             Date end = DataStoreHelper.parseDataDate(entity.getString("endDate"));
-            List<String> participants = convertToStringList(entity.getList("participants"));
+            List<String> participants = DataStoreHelper.convertToStringList(entity.getList("participants"));
             trips.add(Trip.create(tripID, title, participants, totalBudget, start, end));
         }
         return trips;
-    }
-
-    List<String> convertToStringList(List<Value<String>> participants) {
-        List<String> result = new ArrayList<String>();
-        for (Value<String> s : participants) {
-            result.add(s.get());
-        }
-        return result;
     }
 
     public QueryResults<Entity> queryDatastore(String userID) throws IllegalArgumentException {

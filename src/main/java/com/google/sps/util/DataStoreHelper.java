@@ -1,18 +1,23 @@
 package com.google.sps.util;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import com.google.cloud.datastore.BaseEntity;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.DatastoreException;
 import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.ListValue;
+import com.google.cloud.datastore.Value;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StringValue;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class DataStoreHelper {
 
@@ -56,5 +61,21 @@ public class DataStoreHelper {
         String userID = results.next().getString("userId");
 
         return userID;
+    }
+
+    public static List<Value<String>> convertToValueList(List<String> list) {
+        List<Value<String>> result = new ArrayList<Value<String>>();
+        for (String s : list) {
+            result.add(StringValue.of(s));
+        }
+        return result;
+    }
+
+    public static List<String> convertToStringList(List<Value<String>> participants) {
+        List<String> result = new ArrayList<String>();
+        for (Value<String> s : participants) {
+            result.add(s.get());
+        }
+        return result;
     }
 }
