@@ -111,7 +111,7 @@ public class NewTripServlet extends HttpServlet {
         //fix later
         List<String> participants = new ArrayList<String>();
         //participants.add("-1214434252");//jack
-        participants.add("258309855");//tom
+        //participants.add("258309855");//tom
         return Trip.create(tripID,textValuetitle,participants, totalBudget,start,end);
     }
 
