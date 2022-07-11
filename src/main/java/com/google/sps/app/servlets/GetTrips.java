@@ -27,7 +27,7 @@ public class GetTrips extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String userID = request.getParameter("userID");
+        String userID = request.getHeader("userID");
         List<Trip> Trips = getTrips(userID);
         if(Trips.isEmpty()){
             response.getWriter().println("No Trip exist. Please Create One.");
