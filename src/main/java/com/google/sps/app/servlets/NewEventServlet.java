@@ -91,7 +91,7 @@ public class NewEventServlet extends HttpServlet {
         float estimatedCost = Float
                 .parseFloat(request.getParameter(ESTIMATED_PARAM));
 
-        long eventID = UUIDs.generateID();
+        String eventID = UUIDs.generateID();
         String location = StringEscapeUtils.escapeHtml4(request.getParameter(LOCATION_PARAM));
         Date date = DataStoreHelper.parseInputDate(request.getParameter(DATE_PARAM));
         return new Event(eventID,title,location,date,estimatedCost);

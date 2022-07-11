@@ -30,7 +30,7 @@ public class DataStoreHelper {
         return date;
     }
     
-    public static long queryUserID(String username) throws IllegalArgumentException {
+    public static String queryUserID(String username) throws IllegalArgumentException {
         Query<Entity> query =
           Query.newEntityQueryBuilder()
             .setKind("User")
@@ -41,7 +41,7 @@ public class DataStoreHelper {
         if (!results.hasNext()) {
             throw new IllegalArgumentException("No Trip exist. Please Create One.");
         }
-        long userID = results.next().getLong("userId");
+        String userID = results.next().getString("userId");
 
         return userID;
     }

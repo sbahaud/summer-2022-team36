@@ -34,7 +34,7 @@ public class Validator {
     public static boolean userNameAvalible(String username){
         try {
             //searches for username
-            long userID = DataStoreHelper.queryUserID(username);
+            String userID = DataStoreHelper.queryUserID(username);
         //user name could not be found in database
         } catch (IllegalArgumentException e) {
             //username must be avalible

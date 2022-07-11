@@ -6,8 +6,11 @@ import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.FullEntity;
 import com.google.cloud.datastore.KeyFactory;
+import com.google.cloud.datastore.ListValue;
+import com.google.cloud.datastore.Value;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StringValue;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.gson.Gson;
 import com.google.sps.model.Trip;
@@ -61,10 +64,19 @@ public class NewTripServlet extends HttpServlet {
                 .set("totalBudget", newTrip.totalBudget())
                 .set("startDate", newTrip.start().toString())
                 .set("endDate", newTrip.end().toString())
+                .set("participant", convertToValueList(newTrip.participants()))
                 .build();
         datastore.put(tripEntity);
     }
 
+    List<Value<String>> convertToValueList(List<String> list) {
+        List<Value<String>> result = new ArrayList<Value<String>>();
+        for (String s : list) {
+            result.add(StringValue.of(s));
+        }
+        return result;
+    }
+    
     public String validateInput(HttpServletRequest request) {
         if (!request.getParameter(TITLE_PARAM).matches("[\\w*\\s*]*")) {
             return "Invalid title";
@@ -93,10 +105,14 @@ public class NewTripServlet extends HttpServlet {
         float totalBudget = Float
                 .parseFloat(request.getParameter(TOTAL_BUDGET_PARAM));
 
-        long tripID = UUIDs.generateID();
+        String tripID = UUIDs.generateID();
         Date start = DataStoreHelper.parseInputDate(request.getParameter(START_DATE_PARAM));
         Date end = DataStoreHelper.parseInputDate(request.getParameter(END_DATE_PARAM));
-        return Trip.create(tripID,textValuetitle,totalBudget,start,end);
+        //fix later
+        List<String> participants = new ArrayList<String>();
+        participants.add("-1214434252");//jack
+        participants.add("258309855");//tom
+        return Trip.create(tripID,textValuetitle,totalBudget,participants, start,end);
     }
 
 }

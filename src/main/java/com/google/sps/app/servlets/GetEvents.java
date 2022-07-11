@@ -41,7 +41,7 @@ public class GetEvents extends HttpServlet {
         while (results.hasNext()) {
             Entity entity = results.next();
 
-            long eventID = entity.getLong("eventID");
+            String eventID = entity.getString("eventID");
             String title = entity.getString("title");
             float estimatedCost = (float) entity.getDouble("estimatedCost");
             String location = entity.getString("location");
