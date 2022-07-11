@@ -19,10 +19,22 @@ public class DataStoreHelper {
     private static final String USER_QUERY_TEMPLATE =
         "SELECT userId FROM User WHERE username=";
 
+    //parse date in html's input format
     public static Date parseInputDate(String textDate){
         Date date;
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            date = dateFormat.parse(textDate);
+        } catch (ParseException e) {
+            return null;
+        }
+        return date;
+    }
+    //parse date in datastore's format
+    public static Date parseDataDate(String textDate){
+        Date date;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy");
             date = dateFormat.parse(textDate);
         } catch (ParseException e) {
             return null;

@@ -13,8 +13,8 @@ import java.util.List;
 @AutoValue
 public abstract class Trip {
 
-    static public Trip create(String tripID, String title, float totalBudget, List<String> participants, Date start, Date end){
-        return new AutoValue_Trip(tripID, title, start, end, participants, new ArrayList<String>(), 0.0F, totalBudget);
+    static public Trip create(String tripID, String title, List<String> participants, float totalBudget, Date start, Date end){
+        return new AutoValue_Trip(tripID, title, start, end ,participants, new ArrayList<String>(), 0.0F, totalBudget);
     }
     abstract public String tripID();
     abstract public String title();

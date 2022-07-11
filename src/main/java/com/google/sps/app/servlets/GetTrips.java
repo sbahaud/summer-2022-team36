@@ -29,8 +29,7 @@ public class GetTrips extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("jack: in");
-        String userID = "-1214434252";
+        String userID = request.getHeader("userID");
         List<Trip> Trips = getTrips(userID);
         if(Trips.isEmpty()){
             response.getWriter().println("No Trip exist. Please Create One.");
@@ -56,12 +55,11 @@ public class GetTrips extends HttpServlet {
             String tripID = entity.getString("tripID");
             String title = entity.getString("title");
             float totalBudget = (float) entity.getDouble("totalBudget");
-            Date start = DataStoreHelper.parseInputDate(entity.getString("startDate"));
-            Date end = DataStoreHelper.parseInputDate(entity.getString("endDate"));
+            Date start = DataStoreHelper.parseDataDate(entity.getString("startDate"));
+            Date end = DataStoreHelper.parseDataDate(entity.getString("endDate"));
             List<String> participants = convertToStringList(entity.getList("participants"));
-            trips.add(Trip.create(tripID, title, totalBudget, participants, start, end));
+            trips.add(Trip.create(tripID, title, participants, totalBudget, start, end));
         }
-        System.out.println("jack: before return trips");
         return trips;
     }
 
@@ -70,17 +68,15 @@ public class GetTrips extends HttpServlet {
         for (Value<String> s : participants) {
             result.add(s.get());
         }
-        System.out.println("jack: in converter");
         return result;
     }
 
     public QueryResults<Entity> queryDatastore(String userID) throws IllegalArgumentException {
 
-        System.out.println("jack:before query");
         Query<Entity> query =
         Query.newEntityQueryBuilder()
           .setKind("Trip")
-          .setFilter(PropertyFilter.eq("participant", userID))
+          .setFilter(PropertyFilter.eq("participants", userID))
           .build();
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
@@ -88,7 +84,6 @@ public class GetTrips extends HttpServlet {
 
         // checks if there are no results for the username
         if (!results.hasNext()) {
-            System.out.println("jack: No Trip exist. Please Create One.");
             throw new IllegalArgumentException("No Trip exist. Please Create One.");
         }
 

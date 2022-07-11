@@ -64,7 +64,7 @@ public class NewTripServlet extends HttpServlet {
                 .set("totalBudget", newTrip.totalBudget())
                 .set("startDate", newTrip.start().toString())
                 .set("endDate", newTrip.end().toString())
-                .set("participant", convertToValueList(newTrip.participants()))
+                .set("participants", convertToValueList(newTrip.participants()))
                 .build();
         datastore.put(tripEntity);
     }
@@ -110,9 +110,9 @@ public class NewTripServlet extends HttpServlet {
         Date end = DataStoreHelper.parseInputDate(request.getParameter(END_DATE_PARAM));
         //fix later
         List<String> participants = new ArrayList<String>();
-        participants.add("-1214434252");//jack
+        //participants.add("-1214434252");//jack
         participants.add("258309855");//tom
-        return Trip.create(tripID,textValuetitle,totalBudget,participants, start,end);
+        return Trip.create(tripID,textValuetitle,participants, totalBudget,start,end);
     }
 
 }

@@ -1,18 +1,20 @@
 let userId = sessionStorage.getItem("userId");
+console.log(userId);
 
 if(userId !== ""){
     fetchTrips(userId);
 }
 
 async function fetchTrips(userId) {
-    fetch('/get-trips').then(response => response.json()).then((trips) => {const params = new Headers();
-        trips.forEach(	
-            (trip) => {params.append('userID', userId);
-                displayTrips(trip.title, trip.totalBudget, trip.startDate, trip.endDate)});	
-    });	    var response = await fetch('/get-trips', {method: 'GET', headers: params});
-    console.log(response);
-    var responseData = await response.json();
-    console.log(responseData);
+    const params = new Headers();
+
+    params.append('userID', userId);
+
+    await fetch('/get-trips', {method: 'GET', headers: params}).then(response => response.json()).then((trips) => {
+        trips.forEach(
+            (trip) => {
+                displayTrips(trip.title, trip.totalBudget, trip.startDate, trip.endDate)});
+    });
 }   
 
 function displayTrips(title, totalBudget, startDate, endDate) {
