@@ -46,14 +46,13 @@ public class SignUp extends HttpServlet{
             response.getWriter().print(String.format(VALIDATOR_ERROR_MESSAGE, error));
             return;
         }
-
         // gaurd clause for already taken usernames
-        else if (!Validator.userNameAvalible(username)) {
+        if (!Validator.userNameAvalible(username)) {
             response.getWriter().print(USERNAME_TAKEN);
             return;
         }
 
-        long userId = writeToDatastore(username);
+        String userId = writeToDatastore(username);
 
         response.getWriter().print(userId);
         // upon success redirect user to portfolio
@@ -67,8 +66,8 @@ public class SignUp extends HttpServlet{
      * @param username
      * @return randomly generated ID
      */
-    public long writeToDatastore(String username){
-        long userId = UUIDs.generateID();
+    public String writeToDatastore(String username){
+        String userId = UUIDs.generateID();
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         KeyFactory keyFactory = datastore.newKeyFactory().setKind("User");

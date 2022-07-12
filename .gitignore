@@ -1,5 +1,6 @@
 .class
 target/
+pom.xml
 
 # binaries
 bin/
@@ -16,6 +17,8 @@ lib/
 .vs/
 .vscode/
 .DS_Store
+
+.dockerenv
 
 # app engine
 pom.xml
