@@ -11,7 +11,7 @@ if(username === "" || username === null){
         `<p>Hi ` + 
         username + 
         `!</p>` +
-        `<button class="btn create-btn" ">Dashboard</button>`;
+        `<button class="btn create-btn" onclick="location.href='./pages/dashboard.html'">Dashboard</button>`;
 }
 
 // Direct user to sign up page

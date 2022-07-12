@@ -29,7 +29,15 @@ body {
     border: none;
     border-bottom: 2px solid #78938A;
     font-family: "Montserrat";
+    font-size: 0.8em;
     margin-right: 2em;
+}
+
+button.btn.create-btn {
+    background-color: #78938A;
+    border-radius: 10px;
+    color: #fff;
+    min-width: 8vw;
 }
 
 .sub-container {
