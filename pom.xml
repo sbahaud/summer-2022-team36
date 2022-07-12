@@ -4,7 +4,6 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.google.sps</groupId>
-  <!-- summer22-sps-36, mauricio-sps-summer-22-team-36 -->
   <artifactId>mauricio-sps-summer-22-team-36</artifactId>
   <version>1</version>
 
@@ -17,7 +16,6 @@
 
     <!-- Project-specific properties -->
     <exec.mainClass>com.google.sps.app.ServerMain</exec.mainClass>
-    <!-- summer22-sps-36, mauricio-sps-summer-22-team-36 -->
     <googleCloudProjectId>mauricio-sps-summer-22-team-36</googleCloudProjectId>
   </properties>
 
