@@ -1,16 +1,21 @@
-let username = sessionStorage.getItem("username");
+let userId = sessionStorage.getItem("userId");
+console.log(userId);
 
-if(username !== ""){
-    fetchTrips(username);
+if(userId !== ""){
+    fetchTrips(userId);
 }
 
-function fetchTrips(username) {
-    fetch('/get-trips').then(response => response.json()).then((trips) => {
+async function fetchTrips(userId) {
+    const params = new Headers();
+
+    params.append('userID', userId);
+
+    await fetch('/get-trips', {method: 'GET', headers: params}).then(response => response.json()).then((trips) => {
         trips.forEach(
             (trip) => {
                 displayTrips(trip.title, trip.totalBudget, trip.startDate, trip.endDate)});
     });
-}
+}   
 
 function displayTrips(title, totalBudget, startDate, endDate) {
     const trip = document.createElement("div");

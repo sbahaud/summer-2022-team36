@@ -52,7 +52,7 @@ public class SignUp extends HttpServlet{
             return;
         }
 
-        long userId = writeToDatastore(username);
+        String userId = writeToDatastore(username);
 
         response.getWriter().print(userId);
         // upon success redirect user to portfolio
@@ -66,8 +66,8 @@ public class SignUp extends HttpServlet{
      * @param username
      * @return randomly generated ID
      */
-    public long writeToDatastore(String username){
-        long userId = UUIDs.generateID();
+    public String writeToDatastore(String username){
+        String userId = UUIDs.generateID();
 
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         KeyFactory keyFactory = datastore.newKeyFactory().setKind("User");

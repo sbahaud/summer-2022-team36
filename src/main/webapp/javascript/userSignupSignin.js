@@ -15,14 +15,13 @@ function input_check(input){
 // show/hide message
 var msgDiv = document.getElementById("status-msg");
 
-
 function validateUsername(username){
     if(username === ""){
         msgDiv.innerHTML = `<p class="error">Username cannot be empty.</p>`;
     } else if(!input_check(username)) {
         msgDiv.innerHTML = `<p class="error">Please use letters and numbers only.</p>`;
     } else {
-        msgDiv.innerHTML = `<p class="success">Success!</p>`;
+        msgDiv.innerHTML = ``;
         return true;
     }
 
@@ -38,8 +37,9 @@ if(signup_username){
             event.preventDefault();
 
             if(validateUsername(signup_username.value)){
+                sessionStorage.setItem("username", signup_username.value);
                 postUsername(signup_username.value);
-            }
+            } 
 
             // clear input box
             signup_username.value = "";
@@ -49,12 +49,27 @@ if(signup_username){
 
 // Create New User
 // send username to database
-function postUsername(username) {
+async function postUsername(username) {
     const params = new URLSearchParams();
 
     params.append('text-input-user-name', username);
 
-    fetch('/SignUp', {method: 'POST', body: params});
+    const response = await fetch('/SignUp', {method: 'POST', body: params});
+    const msgFromResponse = await response.text();
+
+    var numbers = /^[+-]?\d+$/;
+    if(msgFromResponse.match(numbers)){
+        msgDiv.innerHTML = `<p class="success">Success!</p>`;
+
+        sessionStorage.setItem("userId", msgFromResponse);
+        
+        window.setTimeout(function() {
+            window.location.href = "/pages/dashboard.html";
+        }, 500);
+    
+    } else {
+        msgDiv.innerHTML = msgFromResponse;
+    }
 }
 
 
@@ -65,13 +80,7 @@ if(login_username){
         if(event.key === "Enter") {
             event.preventDefault();
             
-            if(validateUsername(login_username.value)){
-                if(getUsername(login_username.value)){
-                    msgDiv.innerHTML = `<p class="success">Log In successful!</p>`;
-                } else {
-                    msgDiv.innerHTML = `<p class="success">Wrong username!</p>`;
-                }
-            }
+            getUsername(login_username.value);
 
             // clear input box
             login_username.value = "";
@@ -83,16 +92,22 @@ if(login_username){
 // send username to database, redirect on status
 async function getUsername(username) {
     const params = new URLSearchParams();
-
     params.append('text-input-user-name', username);
 
     const response = await fetch('/LogIn', {method: 'POST', body: params});
+    const msgFromResponse = await response.text();
 
-    console.log(response);
+    var numbers = /^[+-]?\d+$/;
+    if(msgFromResponse.match(numbers)){
+        msgDiv.innerHTML = `<p class="success">Success!</p>`;
 
-    if (response !== "" && response.status == "200"){
-        return true;
+        sessionStorage.setItem("userId", msgFromResponse);
+        
+        window.setTimeout(function() {
+            window.location.href = "/pages/dashboard.html";
+        }, 500);
+    
+    } else {
+        msgDiv.innerHTML = msgFromResponse;
     }
-
-    return false;
 }

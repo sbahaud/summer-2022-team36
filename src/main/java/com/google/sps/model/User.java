@@ -4,9 +4,9 @@ import java.util.List;
 import java.lang.Long;
 
 public class User {
-    private long userId;
+    private String userId;
     private String userName;
-    private List<Long> tripIds;
+    private List<String> tripIds;
 
     /**
      * Should be moved to front end since 
