@@ -52,7 +52,6 @@ public class NewTripServlet extends HttpServlet {
             response.getWriter().println("Input information error: "+ error);
         }
 
-        // response.sendRedirect("https://summer22-sps-36.appspot.com/");
         response.sendRedirect("/trip/tripDetails.html");
     }
 

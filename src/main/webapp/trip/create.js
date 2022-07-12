@@ -26,3 +26,16 @@ $('#toDate').on('change', function() {
         return toDate;
     })
 });
+
+// add userId to new trip
+let userId = sessionStorage.getItem("userId");
+if (userId !== "") {
+    addUserId(userId)
+}
+async function addUserId(userID) {
+    const params = new URLSearchParams();
+
+    params.append('text-input-userId', userID);
+
+    const response = await fetch('/NewTrip', {method:'POST', body:params});
+}
