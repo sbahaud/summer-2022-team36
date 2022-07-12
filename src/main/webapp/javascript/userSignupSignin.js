@@ -15,7 +15,6 @@ function input_check(input){
 // show/hide message
 var msgDiv = document.getElementById("status-msg");
 
-
 function validateUsername(username){
     if(username === ""){
         msgDiv.innerHTML = `<p class="error">Username cannot be empty.</p>`;
@@ -38,6 +37,7 @@ if(signup_username){
             event.preventDefault();
 
             if(validateUsername(signup_username.value)){
+                sessionStorage.setItem("username", signup_username.value);
                 postUsername(signup_username.value);
             } 
 

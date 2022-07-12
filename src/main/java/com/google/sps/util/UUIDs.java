@@ -4,7 +4,7 @@ import java.util.UUID;
 
 //version 4 UUID
 public class UUIDs {
-    public static long generateID() {
-        return UUID.randomUUID().hashCode();
+    public static String generateID() {
+        return Integer.toString(UUID.randomUUID().hashCode());
     }
 }

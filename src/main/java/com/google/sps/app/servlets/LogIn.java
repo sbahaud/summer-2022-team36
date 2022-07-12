@@ -40,7 +40,7 @@ public class LogIn extends HttpServlet {
             response.getWriter().print(String.format(VALIDATOR_ERROR_MESSAGE, error));
             return;
         }
-        long userId;
+        String userId;
         try {
             userId = DataStoreHelper.queryUserID(username);
         } catch (IllegalArgumentException e) {

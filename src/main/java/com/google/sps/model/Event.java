@@ -5,23 +5,23 @@ import java.util.List;
 import java.lang.Long;
 
 public class Event implements Comparable<Event>{
-    private long eventId;
+    private String eventId;
     private String title;
     private String location;
     //uses user hashes
-    private List<Long> participants;
+    private List<String> participants;
     private Date date;
     private float estimatedCost;
     private float actualCost;
     private boolean paid;
     //user Hash
-    private long paidBy;
+    private String paidBy;
     public Category tag;
     private boolean includeInBudget = true;
     //marks if the cost is split by all people or if it's a per person cost.
     private boolean splitCost = true;
 
-    public Event(long eventId, String title, String location, Date date, float estimatedCost){
+    public Event(String eventId, String title, String location, Date date, float estimatedCost){
         this.eventId=eventId;
         this.title=title;
         this.location=location;
@@ -29,7 +29,7 @@ public class Event implements Comparable<Event>{
         this.estimatedCost=estimatedCost;
     }
 
-    public long getID(){
+    public String getID(){
         return eventId;
     }
     
