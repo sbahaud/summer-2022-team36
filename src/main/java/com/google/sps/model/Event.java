@@ -33,6 +33,7 @@ public class Event implements Comparable<Event>{
         this.paid = false;
         this.includeInBudget = true;
         this.splitCost = true;
+        this.participants = new ArrayList<String>();
 
     }
 
