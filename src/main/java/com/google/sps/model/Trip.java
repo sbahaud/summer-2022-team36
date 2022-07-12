@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class Trip {
 
     static public Trip create(String tripID, String title, List<String> participants, float totalBudget, Date start, Date end){
-        return new AutoValue_Trip(tripID, title, start, end ,participants, new ArrayList<String>(), 0.0F, totalBudget);
+        return new AutoValue_Trip(tripID, title, start, end ,participants, 0.0F, totalBudget);
     }
     abstract public String tripID();
     abstract public String title();
@@ -22,7 +22,6 @@ public abstract class Trip {
     abstract public Date end();
 
     abstract public List<String> participants();
-    abstract public List<String> eventIds();
     abstract public float totalCost();
     abstract public float totalBudget();
 }
