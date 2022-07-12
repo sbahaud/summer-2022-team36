@@ -104,7 +104,7 @@ public class NewEventServlet extends HttpServlet {
                 .parseFloat(request.getParameter(ESTIMATED_PARAM));
 
         long tripID = Long.parseLong(request.getParameter(TRIP_ID));
-        long eventID = UUIDs.generateID();
+        String eventID = UUIDs.generateID();
         String location = StringEscapeUtils.escapeHtml4(request.getParameter(LOCATION_PARAM));
         Date date = DataStoreHelper.parseInputDate(request.getParameter(DATE_PARAM));
         return new Event(eventID,tripID,title,location,date,estimatedCost);

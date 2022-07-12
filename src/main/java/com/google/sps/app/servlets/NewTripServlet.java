@@ -6,8 +6,11 @@ import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.FullEntity;
 import com.google.cloud.datastore.KeyFactory;
+import com.google.cloud.datastore.ListValue;
+import com.google.cloud.datastore.Value;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StringValue;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.gson.Gson;
 import com.google.sps.model.Trip;
@@ -44,6 +47,8 @@ public class NewTripServlet extends HttpServlet {
             response.getWriter().println(gson.toJson(newTrip.tripID()));
         } 
         else {
+            System.out.println(request.getParameter(START_DATE_PARAM));
+            System.out.println("Input information error: "+ error);
             response.getWriter().println("Input information error: "+ error);
         }
 
@@ -59,10 +64,11 @@ public class NewTripServlet extends HttpServlet {
                 .set("totalBudget", newTrip.totalBudget())
                 .set("startDate", newTrip.start().toString())
                 .set("endDate", newTrip.end().toString())
+                .set("participants", DataStoreHelper.convertToValueList(newTrip.participants()))
                 .build();
         datastore.put(tripEntity);
     }
-
+    
     public String validateInput(HttpServletRequest request) {
         if (!request.getParameter(TITLE_PARAM).matches("[\\w*\\s*]*")) {
             return "Invalid title";
@@ -91,10 +97,17 @@ public class NewTripServlet extends HttpServlet {
         float totalBudget = Float
                 .parseFloat(request.getParameter(TOTAL_BUDGET_PARAM));
 
-        long tripID = UUIDs.generateID();
+        String tripID = UUIDs.generateID();
         Date start = DataStoreHelper.parseInputDate(request.getParameter(START_DATE_PARAM));
         Date end = DataStoreHelper.parseInputDate(request.getParameter(END_DATE_PARAM));
-        return Trip.create(tripID,textValuetitle,totalBudget,start,end);
+        //fix later
+        List<String> participants = new ArrayList<String>();
+        participants.add("1019264699");//jack
+        participants.add("-1939051496");//shaheen
+        participants.add("-1148042363");//emma
+        participants.add("-94026392");//Mauricio
+        participants.add("359360004");//YiFan
+        return Trip.create(tripID,textValuetitle,participants, totalBudget,start,end);
     }
 
 }

@@ -6,8 +6,8 @@ import java.util.List;
 import java.lang.Long;
 
 public class Event implements Comparable<Event>{
-    private long eventId;
-    private long tripID;
+    private String eventId;
+    private String tripID;
     private String title;
     private String location;
     //uses user hashes
@@ -17,13 +17,13 @@ public class Event implements Comparable<Event>{
     private float actualCost;
     private boolean paid;
     //user Hash
-    private long paidBy;
+    private String paidBy;
     public Category tag;
     private boolean includeInBudget = true;
     //marks if the cost is split by all people or if it's a per person cost.
     private boolean splitCost = true;
 
-    public Event(long eventId, long tripID, String title, String location, Date date, float estimatedCost){
+    public Event(String eventId, String tripID, String title, String location, Date date, float estimatedCost){
         this.eventId=eventId;
         this.tripID=tripID;
         this.title=title;
@@ -37,7 +37,7 @@ public class Event implements Comparable<Event>{
 
     }
 
-    public long getID(){
+    public String getID(){
         return eventId;
     }
 
