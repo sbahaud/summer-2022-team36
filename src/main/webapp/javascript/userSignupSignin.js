@@ -37,7 +37,6 @@ if(signup_username){
             event.preventDefault();
 
             if(validateUsername(signup_username.value)){
-                sessionStorage.setItem("username", signup_username.value);
                 postUsername(signup_username.value);
             } 
 
@@ -61,6 +60,7 @@ async function postUsername(username) {
     if(msgFromResponse.match(numbers)){
         msgDiv.innerHTML = `<p class="success">Success!</p>`;
 
+        sessionStorage.setItem("userName", username);
         sessionStorage.setItem("userId", msgFromResponse);
         
         window.setTimeout(function() {
@@ -101,6 +101,7 @@ async function getUsername(username) {
     if(msgFromResponse.match(numbers)){
         msgDiv.innerHTML = `<p class="success">Success!</p>`;
 
+        sessionStorage.setItem("userName", username);
         sessionStorage.setItem("userId", msgFromResponse);
         
         window.setTimeout(function() {

@@ -1,3 +1,19 @@
+var username = sessionStorage.getItem("userName");
+var btnDiv = document.getElementById("enter-btn-div");
+
+if(username === "" || username === null){
+    btnDiv.innerHTML = `
+        <button class="btn login-btn" onclick="location.href='./pages/userSignin.html'">Log In</button>
+        <button class="btn signup-btn" onclick="location.href='./pages/userSignin.html'">Sign Up</button>
+    `;
+} else {
+    btnDiv.innerHTML = 
+        `<p>Hi ` + 
+        username + 
+        `!</p>` +
+        `<button class="btn create-btn" ">Dashboard</button>`;
+}
+
 // Direct user to sign up page
 document.getElementById("userSignup").onclick = () => {
     location.href = "./pages/userSignup.html";

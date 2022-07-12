@@ -1,8 +1,14 @@
 let userId = sessionStorage.getItem("userId");
+let userName = sessionStorage.getItem("username");
 console.log(userId);
 
-if(userId !== ""){
+if(userId !== "" && userId !== null){
     fetchTrips(userId);
+    showUsername(userName);
+}
+
+function showUsername(username) {
+    document.getElementById("username").innerHTML = username;
 }
 
 async function fetchTrips(userId) {
