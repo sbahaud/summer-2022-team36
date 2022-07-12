@@ -25,7 +25,7 @@ public class UserList {
         failedToAdd.add(msg);
     }
 
-	public void setAssociatedUserIDs(List<Long> userIDs) {
+	public void setAssociatedUserIDs(List<String> userIDs) {
         this.associatedUserIDs = userIDs;
 	}
 

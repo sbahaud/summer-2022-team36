@@ -42,13 +42,13 @@ public class AddUsersToEvent extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //get paramaters
-        Long id = Long.parseLong(request.getParameter(EVENT_ID));
+        String id = request.getParameter(EVENT_ID);
         String[] usersToAdd = cleanInput(request.getParameter(USERS));
         
         //get lists
         Entity eventEntity = getEventEntity(id);
         List<String> usernames = getAssociatedEventUsernames(eventEntity);
-        List<Long> userIDs = getAssociatedEventUserIDs(eventEntity);
+        List<String> userIDs = getAssociatedEventUserIDs(eventEntity);
 
         //add to lists
         UserList resp = addUsersToEvent(usersToAdd, usernames, userIDs);
@@ -75,12 +75,12 @@ public class AddUsersToEvent extends HttpServlet {
         return strList;
     }
 
-    private List<Long> getAssociatedEventUserIDs(Entity eventEntity) {
+    private List<String> getAssociatedEventUserIDs(Entity eventEntity) {
         String stringList = eventEntity.getString("associatedUserIDs");
         String[] arrayList = stringList.split(",");
-        List<Long> list = new ArrayList<Long>();
+        List<String> list = new ArrayList<>();
         for (int i = 0; i < arrayList.length; i++){
-            list.add(Long.parseLong(arrayList[i]));
+            list.add((arrayList[i]));
         }
         return list;
     }
@@ -97,7 +97,7 @@ public class AddUsersToEvent extends HttpServlet {
         return input.split(",");
     }
 
-    private UserList addUsersToEvent(String[] usersToAdd, List<String> usernames, List<Long> userIDs) {
+    private UserList addUsersToEvent(String[] usersToAdd, List<String> usernames, List<String> userIDs) {
         UserList responseObj = new UserList();
         
         for (int i = 0; i < usersToAdd.length; i++) {
@@ -107,7 +107,7 @@ public class AddUsersToEvent extends HttpServlet {
                 responseObj.addError(String.format("Invalid %s for user %s\n", validationErrors, username));
                 continue;
             }
-            long userID;
+            String userID;
             try {
                 userID = DataStoreHelper.queryUserID(username);
             } catch (com.google.cloud.datastore.DatastoreException e) {
@@ -126,7 +126,7 @@ public class AddUsersToEvent extends HttpServlet {
         return responseObj;
     }
 
-    private static Entity getEventEntity(Long eventID){
+    private static Entity getEventEntity(String eventID){
 
         Query<Entity> query =
           Query.newEntityQueryBuilder()
@@ -144,8 +144,8 @@ public class AddUsersToEvent extends HttpServlet {
         KeyFactory keyFactory = datastore.newKeyFactory().setKind("User");
         Key eventKey = eventEntity.getKey();
         FullEntity updatedEventEntity = Entity.newBuilder(keyFactory.newKey(eventKey.getId()))
-            .set("eventID", eventEntity.getLong("eventID"))
-            .set("tripID", eventEntity.getLong("tripID"))
+            .set("eventID", eventEntity.getString("eventID"))
+            .set("tripID", eventEntity.getString("tripID"))
             .set("title", eventEntity.getString("title"))
             .set("estimatedCost", eventEntity.getDouble("estimatedCost"))
             .set("location", eventEntity.getString("location"))
