@@ -11,7 +11,7 @@ public class UserList {
     List<String> associatedUserIDs;
     List<String> failedToAdd;
 
-    public UserList(List<String> usernamesAssociated, List<Long> userIDsAssociated){
+    public UserList(List<String> usernamesAssociated, List<String> userIDsAssociated){
         this.associatedUsernames = usernamesAssociated;
         this.associatedUserIDs = userIDsAssociated;
         this.failedToAdd = new ArrayList<String>();

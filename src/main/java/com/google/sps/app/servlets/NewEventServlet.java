@@ -7,6 +7,7 @@ import com.google.cloud.datastore.FullEntity;
 import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.Value;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.gson.Gson;
 import com.google.sps.model.Category;
@@ -36,6 +37,8 @@ public class NewEventServlet extends HttpServlet {
     private static String ESTIMATED_PARAM = "text-input-estimatedCost";
     private static String DATE_PARAM = "text-input-date";
     private static String LOCATION_PARAM = "text-input-location";
+
+    private static List<Value<String>> EMPTY_VALUE_LIST = DataStoreHelper.convertToValueList(new ArrayList<String>());
 
     /**
      * Does post request.
@@ -73,8 +76,8 @@ public class NewEventServlet extends HttpServlet {
                 .set("estimatedCost", newEvent.getEstimatedCost())
                 .set("location", newEvent.getLocation())
                 .set("date", newEvent.getDate().toString())
-                .set("associatedUsernames", "")
-                .set("associatedUserIDs", "")
+                .set("associatedUsernames", EMPTY_VALUE_LIST)
+                .set("associatedUserIDs", EMPTY_VALUE_LIST)
                 .build();
         datastore.put(eventEntity);
     }
