@@ -27,7 +27,7 @@ async function fetchTrips(userId) {
 function displayTrips(tripId, title, totalBudget, startDate, endDate) {
     const trip = document.createElement("div");
     trip.className = "trip";
-    trip.setAttribute("onclick", "showTripDetail("+ tripId +")");
+    trip.setAttribute("onclick", "showTripDetail("+ tripId + ", " + trip + ")");
 
     var tripBox = 
         '<h3 class="trip-title">' + title + '</h3>'
@@ -40,6 +40,17 @@ function displayTrips(tripId, title, totalBudget, startDate, endDate) {
     document.getElementById("trips-div").appendChild(trip);
 }
 
-function showTripDetail(tripId) {
+function showTripDetail(tripId, tripElement) {
     console.log(tripId);
+    console.log(tripElement);
+
+    let trips = document.querySelectorAll(".trip");
+    trips.forEach((trip) => {
+        trip.addEventListener('click', () => {
+            trips.forEach((trip) => {
+                trip.classList.remove("selectedTrip");
+            });
+            this.classList.add("selectedTrip");
+        });
+    });
 }
