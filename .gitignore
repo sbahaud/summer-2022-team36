@@ -17,4 +17,8 @@ lib/
 .vs/
 .vscode/
 .DS_Store
+
 .dockerenv
+
+# app engine
+pom.xml
