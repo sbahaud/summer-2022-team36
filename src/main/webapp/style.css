@@ -79,12 +79,12 @@ body {
     outline: none;
     padding: 5px 0;
     resize: none;
-    width: 50vw
+    width: 30vw
 
 }
 .inputBox input[name="text-input-start-date"],
 .inputBox input[name="text-input-end-date"] {
-    width: 21.5vw;
+    width: 13.5vw;
 }
 
 .createTrip label {
