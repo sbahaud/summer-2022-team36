@@ -45,7 +45,7 @@ public class AddUsersToEvent extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //get paramaters
         String id = request.getParameter(EVENT_ID);
-        List<String> usersToAdd = cleanInput(request.getParameter(USERS));
+        List<String> usersToAdd = splitUserList(request.getParameter(USERS));
         
         //get lists
         Entity eventEntity = getEventEntity(id);
@@ -75,7 +75,7 @@ public class AddUsersToEvent extends HttpServlet {
         return list;
     }
 
-    private List<String> cleanInput(String input){
+    private List<String> splitUserList(String input){
         input = input.replace(" ", "");
         String[] strArr = input.split(",");
         return Arrays.asList(strArr);
