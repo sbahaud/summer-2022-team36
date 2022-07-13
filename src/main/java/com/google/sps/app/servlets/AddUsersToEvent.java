@@ -13,6 +13,7 @@ import com.google.cloud.datastore.Key;
 import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.Value;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.gson.Gson;
 import com.google.sps.model.UserList;
@@ -86,9 +87,8 @@ public class AddUsersToEvent extends HttpServlet {
     }
 
     private List<String> getAssociatedEventUsernames(Entity eventEntity) {
-        String stringList = eventEntity.getString("associatedUsernames");
-        String[] arrayList = stringList.split(",");
-        List<String> list = Arrays.asList(arrayList);
+        List<Value<String>> usernames = eventEntity.getList("associatedUsernames");
+        List<String> list = DataStoreHelper.convertToStringList(usernames);
         return list;
     }
 
