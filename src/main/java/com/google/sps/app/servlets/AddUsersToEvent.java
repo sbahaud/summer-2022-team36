@@ -34,7 +34,7 @@ public class AddUsersToEvent extends HttpServlet {
 
     /**
      * Reads an events userlist and adds users that aren't there yet.
-     * @param request. Containing an event ID and
+     * @param request contains an event ID and
      * a comma seperated list of usernames too add.
      * @param response
      * @return response containing a JSON representation of the new username list
@@ -111,7 +111,7 @@ public class AddUsersToEvent extends HttpServlet {
         return responseObj;
     }
 
-    private static Entity getEventEntity(String eventID){
+    private static Entity getEventEntity(String eventID) throws IllegalArgumentException {
 
         Query<Entity> query =
           Query.newEntityQueryBuilder()
@@ -120,6 +120,11 @@ public class AddUsersToEvent extends HttpServlet {
             .build();
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         QueryResults<?> results = datastore.run(query);
+
+        if (!results.hasNext()){
+            System.out.println(String.format("Could not find event with ID %s", eventID));
+            throw new IllegalArgumentException(String.format("Could not find event with ID %s", eventID));
+        }
 
         return (Entity) results.next();
     }
