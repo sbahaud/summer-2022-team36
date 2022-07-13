@@ -94,3 +94,8 @@ button.btn.create-btn {
 .trip-info {
     font-size: 0.8em;
 }
+
+.selectedTrip {
+    background-color: var(--main-color);
+    color: var(--beige-color);
+}
