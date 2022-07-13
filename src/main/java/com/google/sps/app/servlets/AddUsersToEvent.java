@@ -53,7 +53,7 @@ public class AddUsersToEvent extends HttpServlet {
         List<String> userIDs = getAssociatedEventUserIDs(eventEntity);
 
         //add to lists
-        UserList resp = addUsersToExistingUsers(usersToAdd, usernames, userIDs);
+        UserList resp = getUpdatedUserList(usersToAdd, usernames, userIDs);
 
         pushUserstoEvent(eventEntity, resp);
 
@@ -81,7 +81,7 @@ public class AddUsersToEvent extends HttpServlet {
         return Arrays.asList(strArr);
     }
 
-    private UserList addUsersToExistingUsers(List<String> usersToAdd, List<String> existingUsernames, List<String> existingUserIDs) {
+    private UserList getUpdatedUserList(List<String> usersToAdd, List<String> existingUsernames, List<String> existingUserIDs) {
         UserList responseObj = new UserList(existingUsernames, existingUserIDs);
 
         for (String userToAdd: usersToAdd){
