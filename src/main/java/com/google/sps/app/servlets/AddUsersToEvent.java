@@ -81,15 +81,15 @@ public class AddUsersToEvent extends HttpServlet {
         return Arrays.asList(strArr);
     }
 
-    private UserList addUsersToExistingUsers(List<String> usersToAdd, List<String> usernames, List<String> userIDs) {
-        UserList responseObj = new UserList(usernames, userIDs);
+    private UserList addUsersToExistingUsers(List<String> usersToAdd, List<String> existingUsernames, List<String> existingUserIDs) {
+        UserList responseObj = new UserList(existingUsernames, existingUserIDs);
 
         for (String userToAdd: usersToAdd){
             String validationErrors = Validator.validateUserName(userToAdd);
             if (!validationErrors.isEmpty()) {
                 responseObj.addError(String.format("Invalid %s for user %s", validationErrors, userToAdd));
                 continue;
-            } else if (usernames.contains(userToAdd)){
+            } else if (existingUsernames.contains(userToAdd)){
                 responseObj.addError(String.format("User %s already in list", userToAdd));
                 continue;
             }
