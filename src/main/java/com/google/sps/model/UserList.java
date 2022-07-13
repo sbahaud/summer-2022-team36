@@ -8,7 +8,7 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public class UserList {
     List<String> associatedUsernames;
-    List<Long> associatedUserIDs;
+    List<String> associatedUserIDs;
     List<String> failedToAdd;
 
     public UserList(List<String> usernamesAssociated, List<Long> userIDsAssociated){

@@ -41,7 +41,7 @@ public class Event implements Comparable<Event>{
         return eventId;
     }
 
-    public long getTripID(){
+    public String getTripID(){
         return tripID;
     }
     
