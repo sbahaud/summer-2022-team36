@@ -18,31 +18,40 @@
 
     <body>
         <div class="container">
-            <h1 class="home-title">New Trip</h1>
-            <h3 class="home-subtitle">Start a new trip</h3>
+            <h1 class="trip-title">Add a New Trip</h1>
             <div class="enter-btn-div">
-                <form action="/NewTrip" method="POST">
+                <!-- <form action="/NewTrip" method="POST"> -->
+                    <!-- Title -->
                     <div class="inputBox">
-                        <label>Trip name </label></br>
-                        <input name="text-input-title" type="text" placeholder="" required="required">
-                        
+                        <h3 class="trip-item">Trip name </h3>
+                        <input id="text-input-title" type="text" placeholder="" required="required">
                     </div>
-                    <div class="inputBoxDate">
-                        <label>Date</label></br> 
-                        <label>from </label>
+
+                    <!-- Dates -->
+                    <div class="inputBox">
+                        <h3 class="trip-item">Date</h3>
+                        <label>from  </label>
                         <input name="text-input-start-date" type="date" placeholder="Start date" id="fromDate" max="2025-12" required="required">
-                        <label> to </label>
+                        <label>  to  </label>
                         <input name="text-input-end-date" type="date" placeholder="End date" id="toDate" min="" required="required">
                     </div>
+
+                    <!-- Participants -->
                     <div class="inputBox">
-                        <label>Total Budget </label></br>
-                        <input name="text-input-totalBudget" type="text" placeholder="e.g. 1000" required="required">
+                        <h3 class="trip-item">Participants</h3>
+                        <input id="text-input-participants" type="text" placeholder="Add multiple names separated by comma e.g. Pactrick, Olivia">
+                    </div>
+                    <div class="inputBox">
+                        <h3 class="trip-item">Total Budget </h3>
+                        <input id="text-input-totalBudget" type="text" placeholder="e.g. 1000" required="required">
                         
                     </div>
-                    <div class="inputBox">
-                        <input name="finish" type="submit" />
-                    </div>
-                </form>  
+
+                    <button class="btn submit-btn" type="submit" id="submit-trip">Submit</button>
+                <!-- </form>   -->
+
+                <!-- messages -->
+                <div id="status-msg"></div>
             </div>                      
         </div>
 

@@ -43,15 +43,12 @@ body {
 .trip-title {
     color: var(--third-color);
     font-size: var(--big-font);
-    margin: 3em 0 0;
     text-align: center;
-    margin-bottom: 10vh;
+    margin-top: 10vh;
 }
 .trip-item {
     color: var(--second-color);
     font-size: 1.5em;
-
-    text-align: center;
 }
 .trip-item-or {
     color: var(--main-color);
@@ -61,33 +58,33 @@ body {
 }
 
 /* Trip */
-.createTrip {
+/* .createTrip {
     padding: 50px 100px;
     position: relative;
     min-height: 100vh;
     width: 500px;
-}
+} */
 .inputBox {
     margin-top: 10px;
     position: relative;
 }
 
-.inputBox input {
+.inputBox input,
+.inputBoxDate input {
     border: none;
-    border-bottom: 2px solid;
-    border-bottom-color: var(--second-color);
+    border-bottom: 2px solid var(--second-color);
     font-size: 16px;
     flex-direction: row;
     margin: 10px 0;
     outline: none;
     padding: 5px 0;
     resize: none;
+    width: 50vw
 
 }
-.inputBoxDate input[name="text-input-start-date"],
-.inputBoxDate input[name="text-input-end-date"] {
-    width: min-content;
-    margin: 10px 0;
+.inputBox input[name="text-input-start-date"],
+.inputBox input[name="text-input-end-date"] {
+    width: 21.5vw;
 }
 
 .createTrip label {
@@ -106,12 +103,12 @@ body {
     width:5vw
 }
 
-input[type="submit"][name="finish"] {
+/* input[type="submit"][name="submit-button"] {
     width: 100%
-}
+} */
 
-.btn,
-input[type="submit"] {
+.btn {
+/* input[type="submit"] { */
     border: none;
     border-radius: 20px;
     font-family: "Montserrat";
