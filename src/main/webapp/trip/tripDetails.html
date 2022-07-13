@@ -20,54 +20,38 @@
 
     <body>
         <div class="container">
-            <h1 class="trip-title">Trip name</h1>
+            <h1 class="trip-title">Add a New Event</h1>
             <div class="enter-btn-div">
 
-                <!-- Point of interest -->
-                <h3 class="trip-item">💚 Add points of interest</h3>
-                <div class="select-box">
-                    <div class="options-container">
-                      <div class="option">
-                        <input type="radio" class="radio" id="bc" name="visit"/>
-                        <label for="bc">Yoho Natioanl Park</label>
-                      </div>
-                      <div class="option">
-                        <input type="radio" class="radio" id="alberta" name="visit" />
-                        <label for="alberta">Banff National Park</label>
-                      </div>
-                      <div class="option">
-                        <input type="radio" class="radio" id="qc" name="visit" />
-                        <label for="qc">Quebec City</label>
-                      </div>
-                    </div>
-                    
-                    <div class="selected" onclick="select()">
-                      Select a place to visit
-                    </div>
+                <!-- Title -->
+                <div class="inputBox">
+                    <h3 class="trip-item">Title</h3>
+                    <input name="text-input-title" type="text" placeholder="e.g. " required="required">
                 </div>
 
-                <h3 class="trip-item-or">or</h3>
-                <form action="/NewEvent" method="POST">
-                    <div class="inputBox">
-                        <input name="text-input-points" type="text" placeholder="e.g. Canada place" required="required">
-                        <input type="submit" value="add">
-                    </div>
-                </form>
+                <!-- Dates -->
+                <div class="inputBox">
+                    <h3 class="trip-item">Date</h3>
+                    <input name="text-input-date" type="date" id="fromDate" max="2025-12" required="required">
+                    <!-- <label>from  </label>
+                    <input name="text-input-start-date" type="date" placeholder="Start date" id="fromDate" max="2025-12" required="required">
+                    <label>  to  </label>
+                    <input name="text-input-end-date" type="date" placeholder="End date" id="toDate" min="" required="required"> -->
+                </div>
 
-                <!-- Transactions -->
-                <h3 class="trip-item">💚 Add transaction</h3>
+                <!-- Location -->
+                <div class="inputBox">
+                    <h3 class="trip-item">Title</h3>
+                    <input name="text-input-location" type="text" placeholder="e.g." required="required">
+                </div>
 
-                <form action="/NewSpend" method="POST">
-                    <div class="inputBox">
-                        <input name="text-input-item" type="text" placeholder="Item e.g. lunch" required="required">
-                        <input name="text-input-cost" type="text" placeholder="Amount e.g. 130" required="required">
-                        <input name="text-input-headcount" type="text" placeholder="Split by e.g. 4" required="required">
-                        <input type="submit" value="add">
-                    </div>
-                </form>
-                <form>
-                    <input type="submit" value="Finish">
-                </form>
+                <!-- Budget -->
+                <div class="inputBox">
+                    <h3 class="trip-item">Event budget</h3>
+                    <input name="text-input-estimatedCost" type="text" placeholder="e.g. 500" required="required">
+                </div>
+                
+                <button class="btn submit-btn" type="submit" id="submit-trip">Submit</button>
             </div>
         </div>
 
