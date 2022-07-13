@@ -15,6 +15,7 @@ import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.Value;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.datastore.v1.client.DatastoreHelper;
 import com.google.gson.Gson;
 import com.google.sps.model.UserList;
 import com.google.sps.util.DataStoreHelper;
@@ -44,7 +45,7 @@ public class AddUsersToEvent extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //get paramaters
         String id = request.getParameter(EVENT_ID);
-        String[] usersToAdd = cleanInput(request.getParameter(USERS));
+        List<String> usersToAdd = cleanInput(request.getParameter(USERS));
         
         //get lists
         Entity eventEntity = getEventEntity(id);
@@ -52,12 +53,9 @@ public class AddUsersToEvent extends HttpServlet {
         List<String> userIDs = getAssociatedEventUserIDs(eventEntity);
 
         //add to lists
-        UserList resp = addUsersToEvent(usersToAdd, usernames, userIDs);
-        
-        //push list
-        String usernameStringList = listToString(usernames);
-        String userIDStringList = listToString(userIDs);
-        pushUserstoEvent(eventEntity, usernameStringList, userIDStringList);
+        UserList resp = addUsersToExistingUsers(usersToAdd, usernames, userIDs);
+
+        pushUserstoEvent(eventEntity, resp);
 
         //return response
         Gson gson = new Gson();
@@ -65,24 +63,9 @@ public class AddUsersToEvent extends HttpServlet {
         response.getWriter().println(gson.toJson(resp));
     }
 
-    private String listToString(List<?> users) {
-        //build up list
-        String strList = "";
-        for (Object item : users) {
-            strList += item + ",";
-        }
-        //removes last comma
-        strList = strList.substring(0,strList.length()-1);
-        return strList;
-    }
-
     private List<String> getAssociatedEventUserIDs(Entity eventEntity) {
-        String stringList = eventEntity.getString("associatedUserIDs");
-        String[] arrayList = stringList.split(",");
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < arrayList.length; i++){
-            list.add((arrayList[i]));
-        }
+        List<Value<String>> datastoreList = eventEntity.getList("associatedUserIDs");
+        List<String> list = DataStoreHelper.convertToStringList(datastoreList);
         return list;
     }
 
@@ -92,36 +75,38 @@ public class AddUsersToEvent extends HttpServlet {
         return list;
     }
 
-    private String[] cleanInput(String input){
+    private List<String> cleanInput(String input){
         input = input.replace(" ", "");
-        return input.split(",");
+        String[] strArr = input.split(",");
+        return Arrays.asList(strArr);
     }
 
-    private UserList addUsersToEvent(String[] usersToAdd, List<String> usernames, List<String> userIDs) {
-        UserList responseObj = new UserList();
-        
-        for (int i = 0; i < usersToAdd.length; i++) {
-            String username = usersToAdd[i];
-            String validationErrors = Validator.validateUserName(username);
+    private UserList addUsersToExistingUsers(List<String> usersToAdd, List<String> usernames, List<String> userIDs) {
+        UserList responseObj = new UserList(usernames, userIDs);
+
+        for (String userToAdd: usersToAdd){
+            String validationErrors = Validator.validateUserName(userToAdd);
             if (!validationErrors.isEmpty()) {
-                responseObj.addError(String.format("Invalid %s for user %s\n", validationErrors, username));
+                responseObj.addError(String.format("Invalid %s for user %s", validationErrors, userToAdd));
+                continue;
+            } else if (usernames.contains(userToAdd)){
+                responseObj.addError(String.format("User %s already in list", userToAdd));
                 continue;
             }
-            String userID;
+
+            String userIDToAdd;
             try {
-                userID = DataStoreHelper.queryUserID(username);
-            } catch (com.google.cloud.datastore.DatastoreException e) {
-                responseObj.addError(String.format("User %s not found", username));
+                userIDToAdd = DataStoreHelper.queryUserID(userToAdd);
+            } catch (IllegalArgumentException e) {
+                responseObj.addError(String.format("User %s not found", userToAdd));
                 continue;
             }
 
             //no error
-            usernames.add(username);
-            userIDs.add(userID);
-        }
+            responseObj.addUsername(userToAdd);
+            responseObj.addUserID(userIDToAdd);           
 
-        responseObj.setAssociatedUsernames(usernames);
-        responseObj.setAssociatedUserIDs(userIDs);
+        }
 
         return responseObj;
     }
@@ -139,7 +124,10 @@ public class AddUsersToEvent extends HttpServlet {
         return (Entity) results.next();
     }
 
-    private static void pushUserstoEvent(Entity eventEntity, String usernames, String userIDs){
+    private static void pushUserstoEvent(Entity eventEntity, UserList updates){
+        List<Value<String>> usernames = DataStoreHelper.convertToValueList(updates.getAssociatedEventUsernames());
+        List<Value<String>> userIDs = DataStoreHelper.convertToValueList(updates.getAssociatedEventUserIDs());
+
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         KeyFactory keyFactory = datastore.newKeyFactory().setKind("User");
         Key eventKey = eventEntity.getKey();

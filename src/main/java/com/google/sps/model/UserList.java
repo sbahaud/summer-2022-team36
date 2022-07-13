@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.auto.value.AutoValue;
+import com.google.cloud.datastore.Value;
 
 @AutoValue
 public class UserList {
@@ -25,6 +26,14 @@ public class UserList {
         failedToAdd.add(msg);
     }
 
+    public void addUserID(String ID) {
+        associatedUserIDs.add(ID);
+    }
+
+    public void addUsername(String username) {
+        associatedUsernames.add(username);
+    }
+
 	public void setAssociatedUserIDs(List<String> userIDs) {
         this.associatedUserIDs = userIDs;
 	}
@@ -32,4 +41,12 @@ public class UserList {
 	public void setAssociatedUsernames(List<String> usernames) {
         this.associatedUsernames = usernames;
 	}
+
+    public List<String> getAssociatedEventUsernames() {
+        return associatedUsernames;
+    }
+
+    public List<String> getAssociatedEventUserIDs() {
+        return associatedUsernames;
+    }
 }
