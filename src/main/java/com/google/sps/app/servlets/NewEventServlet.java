@@ -1,4 +1,3 @@
-
 package com.google.sps.app.servlets;
 
 import com.google.cloud.datastore.Datastore;
@@ -8,6 +7,7 @@ import com.google.cloud.datastore.FullEntity;
 import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.Value;
 import com.google.cloud.datastore.StructuredQuery.OrderBy;
 import com.google.gson.Gson;
 import com.google.sps.model.Category;
@@ -16,6 +16,7 @@ import com.google.sps.util.UUIDs;
 import com.google.sps.util.DataStoreHelper;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Date;
 
@@ -30,11 +31,22 @@ import io.opencensus.common.ServerStatsFieldEnums.Id;
 @WebServlet("/NewEvent")
 public class NewEventServlet extends HttpServlet {
 
+    
+    private static String TRIP_ID = "cookie-trip-id";
     private static String TITLE_PARAM = "text-input-title";
     private static String ESTIMATED_PARAM = "text-input-estimatedCost";
     private static String DATE_PARAM = "text-input-date";
     private static String LOCATION_PARAM = "text-input-location";
 
+    private static List<Value<String>> EMPTY_VALUE_LIST = DataStoreHelper.convertToValueList(new ArrayList<String>());
+
+    /**
+     * Does post request.
+     * @param request 
+     * @param response 
+     * @throws IOException 
+     * @return Event object in JSON
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -56,13 +68,16 @@ public class NewEventServlet extends HttpServlet {
 
     public void writeToDatastore(Event newEvent) {
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-        KeyFactory keyFactor = datastore.newKeyFactory().setKind("Event");
-        FullEntity eventEntity = Entity.newBuilder(keyFactor.newKey())
+        KeyFactory keyFactory = datastore.newKeyFactory().setKind("Event");
+        FullEntity eventEntity = Entity.newBuilder(keyFactory.newKey())
                 .set("eventID", newEvent.getID())
+                .set("tripID", newEvent.getTripID())
                 .set("title", newEvent.getTitle().trim())
                 .set("estimatedCost", newEvent.getEstimatedCost())
                 .set("location", newEvent.getLocation())
                 .set("date", newEvent.getDate().toString())
+                .set("associatedUsernames", EMPTY_VALUE_LIST)
+                .set("associatedUserIDs", EMPTY_VALUE_LIST)
                 .build();
         datastore.put(eventEntity);
     }
@@ -91,10 +106,11 @@ public class NewEventServlet extends HttpServlet {
         float estimatedCost = Float
                 .parseFloat(request.getParameter(ESTIMATED_PARAM));
 
+        String tripID = request.getParameter(TRIP_ID);
         String eventID = UUIDs.generateID();
         String location = StringEscapeUtils.escapeHtml4(request.getParameter(LOCATION_PARAM));
         Date date = DataStoreHelper.parseInputDate(request.getParameter(DATE_PARAM));
-        return new Event(eventID,title,location,date,estimatedCost);
+        return new Event(eventID,tripID,title,location,date,estimatedCost);
     }
 
 }
