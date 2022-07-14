@@ -47,15 +47,13 @@ public class AddUsersToEvent extends HttpServlet {
         String id = request.getParameter(EVENT_ID);
         List<String> usersToAdd = splitUserList(request.getParameter(USERS));
         
-        //get lists
+        //get entity
         Entity eventEntity = getEventEntity(id);
-        List<String> usernames = getAssociatedEventUsernames(eventEntity);
-        List<String> userIDs = getAssociatedEventUserIDs(eventEntity);
 
         //add to lists
-        UserList resp = getUpdatedUserList(usersToAdd, usernames, userIDs);
+        UserList resp = getUpdatedUserList(usersToAdd, eventEntity);
 
-        pushUserstoEvent(eventEntity, resp);
+        updatesDatastoreEvent(eventEntity, resp);
 
         //return response
         Gson gson = new Gson();
@@ -81,7 +79,10 @@ public class AddUsersToEvent extends HttpServlet {
         return Arrays.asList(strArr);
     }
 
-    private UserList getUpdatedUserList(List<String> usersToAdd, List<String> existingUsernames, List<String> existingUserIDs) {
+    private UserList getUpdatedUserList(List<String> usersToAdd, Entity eventEntity) {
+        List<String> existingUsernames = getAssociatedEventUsernames(eventEntity);
+        List<String> existingUserIDs = getAssociatedEventUserIDs(eventEntity);
+        
         UserList responseObj = new UserList(existingUsernames, existingUserIDs);
 
         for (String userToAdd: usersToAdd){
@@ -129,7 +130,7 @@ public class AddUsersToEvent extends HttpServlet {
         return (Entity) results.next();
     }
 
-    private static void pushUserstoEvent(Entity eventEntity, UserList updates){
+    private static void updatesDatastoreEvent(Entity eventEntity, UserList updates){
         List<Value<String>> usernames = DataStoreHelper.convertToValueList(updates.getAssociatedEventUsernames());
         List<Value<String>> userIDs = DataStoreHelper.convertToValueList(updates.getAssociatedEventUserIDs());
 
