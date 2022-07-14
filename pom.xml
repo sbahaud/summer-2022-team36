@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.google.sps</groupId>
-  <artifactId>yifan-sps-summer-22-team-36</artifactId>
+  <artifactId>summer22-sps-36</artifactId>
   <version>1</version>
 
   <properties>
@@ -16,7 +16,7 @@
 
     <!-- Project-specific properties -->
     <exec.mainClass>com.google.sps.app.ServerMain</exec.mainClass>
-    <googleCloudProjectId>yifan-sps-summer-22-team-36</googleCloudProjectId>
+    <googleCloudProjectId>summer22-sps-36</googleCloudProjectId>
   </properties>
 
   <dependencies>

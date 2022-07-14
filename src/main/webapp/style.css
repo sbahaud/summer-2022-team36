@@ -82,8 +82,8 @@ body {
     width: 30vw
 
 }
-.inputBox input[name="text-input-start-date"],
-.inputBox input[name="text-input-end-date"] {
+.inputBox input[id="text-input-start-date"],
+.inputBox input[id="text-input-end-date"] {
     width: 13.5vw;
 }
 

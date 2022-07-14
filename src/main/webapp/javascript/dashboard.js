@@ -20,7 +20,7 @@ async function fetchTrips(userId) {
     await fetch('/get-trips', {method: 'GET', headers: params}).then(response => response.json()).then((trips) => {
         trips.forEach(
             (trip) => {
-                displayTrips(trip.title, trip.totalBudget, trip.startDate, trip.endDate)});
+                displayTrips(trip.title, trip.totalBudget, trip.start, trip.end)});
     });
 }   
 
@@ -31,8 +31,8 @@ function displayTrips(title, totalBudget, startDate, endDate) {
     var tripBox = 
         '<h3 class="trip-title">' + title + '</h3>'
         + '<p class="trip-info">' + totalBudget + '</p>'
-        + '<p class="trip-info">' + startDate + '</p>'
-        + '<p class="trip-info">' + endDate + '</p>';
+        + '<p class="trip-info">' + startDate.toString() + '</p>'
+        + '<p class="trip-info">' + endDate.toString() + '</p>';
 
     trip.innerHTML = tripBox;
 

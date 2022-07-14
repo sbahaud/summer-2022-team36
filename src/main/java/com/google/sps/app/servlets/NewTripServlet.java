@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.sps.model.Trip;
 import com.google.sps.util.DataStoreHelper;
 import com.google.sps.util.UUIDs;
+import com.google.sps.util.Validator;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +35,7 @@ public class NewTripServlet extends HttpServlet {
     private static String TOTAL_BUDGET_PARAM = "text-input-totalBudget";
     private static String START_DATE_PARAM = "text-input-start-date";
     private static String END_DATE_PARAM = "text-input-end-date";
+    private static String PARTICIPANTS_PARAM = "text-input-participants";
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -88,6 +90,21 @@ public class NewTripServlet extends HttpServlet {
         }
         if(end.before(start))
             return "Start date should before end date";
+
+        String Pinput = StringEscapeUtils.escapeHtml4(request.getParameter(PARTICIPANTS_PARAM));
+        List<String> participants = DataStoreHelper.splitUserList(Pinput);
+        for (String userToAdd: participants){
+            String validationErrors = Validator.validateUserName(userToAdd);
+            if (!validationErrors.isEmpty()) {
+                return String.format("Invalid %s for user %s", validationErrors, userToAdd);
+            } 
+            String userIDToAdd;
+            try {
+                userIDToAdd = DataStoreHelper.queryUserID(userToAdd);
+            } catch (IllegalArgumentException e) {
+                return String.format("User %s not found", userToAdd);
+            }
+        }
         return "";
     }
 
@@ -100,14 +117,13 @@ public class NewTripServlet extends HttpServlet {
         String tripID = UUIDs.generateID();
         Date start = DataStoreHelper.parseInputDate(request.getParameter(START_DATE_PARAM));
         Date end = DataStoreHelper.parseInputDate(request.getParameter(END_DATE_PARAM));
-        //fix later
-        List<String> participants = new ArrayList<String>();
-        participants.add("1019264699");//jack
-        participants.add("-1939051496");//shaheen
-        participants.add("-1148042363");//emma
-        participants.add("-94026392");//Mauricio
-        participants.add("359360004");//YiFan
-        return Trip.create(tripID,textValuetitle,participants, totalBudget,start,end);
+        String Pinput = StringEscapeUtils.escapeHtml4(request.getParameter(PARTICIPANTS_PARAM));
+        List<String> IDS = new ArrayList<String>();
+        List<String> participants = DataStoreHelper.splitUserList(Pinput);
+        for (String name: participants){
+            IDS.add(DataStoreHelper.queryUserID(name));
+        }
+        return Trip.create(tripID,textValuetitle,IDS, totalBudget,start,end);
     }
 
 }
