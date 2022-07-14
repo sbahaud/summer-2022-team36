@@ -10,7 +10,6 @@ import com.google.cloud.datastore.ListValue;
 import com.google.cloud.datastore.Value;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
-import com.google.sps.model.Event;
 import com.google.cloud.datastore.StringValue;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import java.text.DateFormat;

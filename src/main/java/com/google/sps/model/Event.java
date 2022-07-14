@@ -1,13 +1,11 @@
 package com.google.sps.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.lang.Long;
 
 public class Event implements Comparable<Event>{
     private String eventId;
-    private String tripID;
     private String title;
     private String location;
     //uses user hashes
@@ -23,26 +21,16 @@ public class Event implements Comparable<Event>{
     //marks if the cost is split by all people or if it's a per person cost.
     private boolean splitCost = true;
 
-    public Event(String eventId, String tripID, String title, String location, Date date, float estimatedCost){
+    public Event(String eventId, String title, String location, Date date, float estimatedCost){
         this.eventId=eventId;
-        this.tripID=tripID;
         this.title=title;
         this.location=location;
         this.date=date;
         this.estimatedCost=estimatedCost;
-        this.paid = false;
-        this.includeInBudget = true;
-        this.splitCost = true;
-        this.participants = new ArrayList<String>();
-
     }
 
     public String getID(){
         return eventId;
-    }
-
-    public String getTripID(){
-        return tripID;
     }
     
     public Date getDate(){
@@ -60,14 +48,6 @@ public class Event implements Comparable<Event>{
 
     public float getEstimatedCost(){
         return estimatedCost;
-    }
-
-    public List<String> getParticipants(){
-        return participants;
-    }
-
-    public void setParticipants(List<String> usernameList){
-        this.participants = usernameList;
     }
 
     @Override
