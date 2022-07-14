@@ -112,7 +112,7 @@ public class AddUsersToEvent extends HttpServlet {
         return responseObj;
     }
 
-    private static Entity getEventEntity(String eventID) throws NotFoundException {
+    private static Entity getEventEntity(String eventID) throws IllegalArgumentException {
 
         Query<Entity> query =
           Query.newEntityQueryBuilder()
@@ -124,7 +124,7 @@ public class AddUsersToEvent extends HttpServlet {
 
         if (!results.hasNext()){
             System.out.println(String.format("Could not find event with ID %s", eventID));
-            throw new NotFoundException(String.format("Could not find event with ID %s", eventID));
+            throw new IllegalArgumentException(String.format("Could not find event with ID %s", eventID));
         }
 
         return (Entity) results.next();
