@@ -15,7 +15,6 @@ import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.Value;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
-import com.google.datastore.v1.client.DatastoreHelper;
 import com.google.gson.Gson;
 import com.google.sps.model.UserList;
 import com.google.sps.util.DataStoreHelper;

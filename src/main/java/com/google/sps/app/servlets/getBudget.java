@@ -1,12 +1,18 @@
 package com.google.sps.app.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.sps.model.BudgetResponse;
+import com.google.sps.model.Trip;
+import com.google.sps.model.budgetResponse;
 
 @WebServlet("/get-budget")
 public class getBudget extends HttpServlet{
@@ -22,6 +28,29 @@ public class getBudget extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userID = req.getHeader("userID");
 
-        
+        List<String> associatedTripIDs = getAssociatedTrips();
+
+        BudgetResponse responseObj = new BudgetResponse();
+        for (String tripID: associatedTripIDs){
+
+            double contribution;
+            try {
+                contribution = getEstimatedContribution(tripID);
+            } catch (IllegalArgumentException e){
+                responseObj.addToErrors("Could not calculate expected contribution");
+                continue;
+            }
+            
+            double tripBudget;
+            try {
+                tripBudget = getTripBuget(tripID);
+            } catch (IllegalArgumentException e) {
+                responseObj.addToErrors("Could not get trip budget");
+                continue;
+            }
+            
+            //no errors
+            responseObj.addToHTML(tripBudget, contribution);
+        }
     }
 }
