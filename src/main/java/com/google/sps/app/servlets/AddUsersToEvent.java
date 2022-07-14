@@ -53,7 +53,7 @@ public class AddUsersToEvent extends HttpServlet {
         //add to lists
         UserList resp = getUpdatedUserList(usersToAdd, eventEntity);
 
-        updatesDatastoreEvent(eventEntity, resp);
+        persistUpdatedEvent(eventEntity, resp);
 
         //return response
         Gson gson = new Gson();
@@ -112,7 +112,7 @@ public class AddUsersToEvent extends HttpServlet {
         return responseObj;
     }
 
-    private static Entity getEventEntity(String eventID) throws IllegalArgumentException {
+    private static Entity getEventEntity(String eventID) throws NotFoundException {
 
         Query<Entity> query =
           Query.newEntityQueryBuilder()
@@ -124,13 +124,13 @@ public class AddUsersToEvent extends HttpServlet {
 
         if (!results.hasNext()){
             System.out.println(String.format("Could not find event with ID %s", eventID));
-            throw new IllegalArgumentException(String.format("Could not find event with ID %s", eventID));
+            throw new NotFoundException(String.format("Could not find event with ID %s", eventID));
         }
 
         return (Entity) results.next();
     }
 
-    private static void updatesDatastoreEvent(Entity eventEntity, UserList updates){
+    private static void persistUpdatedEvent(Entity eventEntity, UserList updates){
         List<Value<String>> usernames = DataStoreHelper.convertToValueList(updates.getAssociatedEventUsernames());
         List<Value<String>> userIDs = DataStoreHelper.convertToValueList(updates.getAssociatedEventUserIDs());
 
