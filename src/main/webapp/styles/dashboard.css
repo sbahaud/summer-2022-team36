@@ -37,6 +37,7 @@ body {
     background-color: #fff;
     border: none;
     border-bottom: 2px solid var(--third-color);
+    cursor: pointer;
     font-family: "Montserrat";
     font-size: 0.8em;
     margin-right: 2em;
@@ -46,6 +47,7 @@ button.btn.create-btn {
     background-color: var(--third-color);
     border-radius: 10px;
     color: #fff;
+    cursor: pointer;
     min-width: 8vw;
 }
 

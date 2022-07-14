@@ -47,15 +47,13 @@ public class AddUsersToEvent extends HttpServlet {
         String id = request.getParameter(EVENT_ID);
         List<String> usersToAdd = splitUserList(request.getParameter(USERS));
         
-        //get lists
+        //get entity
         Entity eventEntity = getEventEntity(id);
-        List<String> usernames = getAssociatedEventUsernames(eventEntity);
-        List<String> userIDs = getAssociatedEventUserIDs(eventEntity);
 
         //add to lists
-        UserList resp = getUpdatedUserList(usersToAdd, usernames, userIDs);
+        UserList resp = getUpdatedUserList(usersToAdd, eventEntity);
 
-        pushUserstoEvent(eventEntity, resp);
+        persistUpdatedEvent(eventEntity, resp);
 
         //return response
         Gson gson = new Gson();
@@ -81,7 +79,10 @@ public class AddUsersToEvent extends HttpServlet {
         return Arrays.asList(strArr);
     }
 
-    private UserList getUpdatedUserList(List<String> usersToAdd, List<String> existingUsernames, List<String> existingUserIDs) {
+    private UserList getUpdatedUserList(List<String> usersToAdd, Entity eventEntity) {
+        List<String> existingUsernames = getAssociatedEventUsernames(eventEntity);
+        List<String> existingUserIDs = getAssociatedEventUserIDs(eventEntity);
+        
         UserList responseObj = new UserList(existingUsernames, existingUserIDs);
 
         for (String userToAdd: usersToAdd){
@@ -111,7 +112,7 @@ public class AddUsersToEvent extends HttpServlet {
         return responseObj;
     }
 
-    private static Entity getEventEntity(String eventID) throws IllegalArgumentException {
+    private static Entity getEventEntity(String eventID) throws NotFoundException {
 
         Query<Entity> query =
           Query.newEntityQueryBuilder()
@@ -123,13 +124,13 @@ public class AddUsersToEvent extends HttpServlet {
 
         if (!results.hasNext()){
             System.out.println(String.format("Could not find event with ID %s", eventID));
-            throw new IllegalArgumentException(String.format("Could not find event with ID %s", eventID));
+            throw new NotFoundException(String.format("Could not find event with ID %s", eventID));
         }
 
         return (Entity) results.next();
     }
 
-    private static void pushUserstoEvent(Entity eventEntity, UserList updates){
+    private static void persistUpdatedEvent(Entity eventEntity, UserList updates){
         List<Value<String>> usernames = DataStoreHelper.convertToValueList(updates.getAssociatedEventUsernames());
         List<Value<String>> userIDs = DataStoreHelper.convertToValueList(updates.getAssociatedEventUserIDs());
 

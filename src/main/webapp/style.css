@@ -79,6 +79,7 @@ input[type="submit"][name="finish"] {
 input[type="submit"] {
     border: none;
     border-radius: 20px;
+    cursor: pointer;
     font-family: "Montserrat";
     height: 5vh;
     margin: 0.5em 0;
