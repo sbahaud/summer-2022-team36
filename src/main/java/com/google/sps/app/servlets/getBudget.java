@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.cloud.datastore.Value;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
@@ -19,6 +20,7 @@ import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.sps.model.BudgetResponse;
 import com.google.sps.model.Trip;
 import com.google.sps.model.budgetResponse;
+import com.google.sps.util.DataStoreHelper;
 
 @WebServlet("/get-budget")
 public class getBudget extends HttpServlet{
@@ -34,7 +36,7 @@ public class getBudget extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userID = req.getHeader("userID");
 
-        List<String> associatedTripIDs = getAssociatedTrips();
+        List<String> associatedTripIDs = getAssociatedTrips(userID);
 
         BudgetResponse responseObj = new BudgetResponse();
         for (String tripID: associatedTripIDs){
@@ -58,6 +60,22 @@ public class getBudget extends HttpServlet{
             //no errors
             responseObj.addToHTML(tripBudget, contribution);
         }
+    }
+
+    private List<String> getAssociatedTrips(String userID) {
+        Query<Entity> query =
+          Query.newEntityQueryBuilder()
+            .setKind("User")
+            .setFilter(PropertyFilter.eq("userId", userID))
+            .build();
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        QueryResults<Entity> results = datastore.run(query);
+        if (!results.hasNext()){
+            throw new IllegalArgumentException("User could not be found");
+        }
+
+        List<Value<String>> associatedTrips = results.next().getList("participants");
+        return DataStoreHelper.convertToStringList(associatedTrips);
     }
 
     private double getTripBuget(String tripID) {
