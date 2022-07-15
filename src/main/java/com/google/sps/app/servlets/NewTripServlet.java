@@ -36,6 +36,8 @@ public class NewTripServlet extends HttpServlet {
     private static String START_DATE_PARAM = "text-input-start-date";
     private static String END_DATE_PARAM = "text-input-end-date";
     private static String PARTICIPANTS_PARAM = "text-input-participants";
+    private static String USERNAME_PARAM = "text-input-userName";
+    private static String USERID_PARAM = "text-input-userID";
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -92,13 +94,13 @@ public class NewTripServlet extends HttpServlet {
         if(end.before(start))
             return "Start date should before end date";
 
-        String Pinput = StringEscapeUtils.escapeHtml4(request.getParameter(PARTICIPANTS_PARAM));
-        List<String> participants = DataStoreHelper.splitUserList(Pinput);
+        String participantInput = StringEscapeUtils.escapeHtml4(request.getParameter(PARTICIPANTS_PARAM));
+        List<String> participants = DataStoreHelper.splitUserList(participantInput);
         for (String userToAdd: participants){
             String validationErrors = Validator.validateUserName(userToAdd);
             if (!validationErrors.isEmpty()) {
                 return String.format("Invalid %s for user %s", validationErrors, userToAdd);
-            } 
+            }
             String userIDToAdd;
             try {
                 userIDToAdd = DataStoreHelper.queryUserID(userToAdd);
@@ -118,13 +120,19 @@ public class NewTripServlet extends HttpServlet {
         String tripID = UUIDs.generateID();
         Date start = DataStoreHelper.parseInputDate(request.getParameter(START_DATE_PARAM));
         Date end = DataStoreHelper.parseInputDate(request.getParameter(END_DATE_PARAM));
-        String Pinput = StringEscapeUtils.escapeHtml4(request.getParameter(PARTICIPANTS_PARAM));
-        List<String> IDS = new ArrayList<String>();
-        List<String> participants = DataStoreHelper.splitUserList(Pinput);
+        String participantInput = StringEscapeUtils.escapeHtml4(request.getParameter(PARTICIPANTS_PARAM));
+        List<String> participantIds = new ArrayList<String>();
+        List<String> checkerduplicate = new ArrayList<String>();
+        List<String> participants = DataStoreHelper.splitUserList(participantInput);
+        checkerduplicate.add(request.getParameter(USERNAME_PARAM));
+        participantIds.add(request.getParameter(USERID_PARAM));
         for (String name: participants){
-            IDS.add(DataStoreHelper.queryUserID(name));
+            if(checkerduplicate.contains(name))
+                continue;
+            participantIds.add(DataStoreHelper.queryUserID(name));
+            checkerduplicate.add(name);
         }
-        return Trip.create(tripID,textValuetitle,IDS, totalBudget,start,end);
+        return Trip.create(tripID,textValuetitle,participantIds, totalBudget,start,end);
     }
 
 }

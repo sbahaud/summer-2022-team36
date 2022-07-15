@@ -62,7 +62,7 @@ function createTrip() {
 }
 
 // Send tripId to database
-async function postNewTrip(title, fromDate, toDate, participants, budget, userId) {
+async function postNewTrip(title, fromDate, toDate, participants, budget, userName, userId) {
     const params = new URLSearchParams();
 
     params.append('text-input-title', title);
@@ -70,7 +70,8 @@ async function postNewTrip(title, fromDate, toDate, participants, budget, userId
     params.append('text-input-end-date', toDate);
     params.append('text-input-participants', participants);
     params.append('text-input-totalBudget', budget);
-    params.append('text-input-userId', userId);
+    params.append('text-input-userName', userName);
+    params.append('text-input-userID', userId);
 
     const response = await fetch('/NewTrip', {method: 'POST', body: params});
     const responseMsg = await response.text();
