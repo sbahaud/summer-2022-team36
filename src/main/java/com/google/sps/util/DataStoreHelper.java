@@ -22,9 +22,6 @@ import java.util.List;
 
 public class DataStoreHelper {
 
-    private static final String USER_QUERY_TEMPLATE =
-        "SELECT userId FROM User WHERE username=";
-
     //parse date in html's input format
     public static Date parseInputDate(String textDate){
         Date date;

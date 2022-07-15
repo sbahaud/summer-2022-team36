@@ -15,7 +15,6 @@ import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.Value;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
-import com.google.datastore.v1.client.DatastoreHelper;
 import com.google.gson.Gson;
 import com.google.sps.model.UserList;
 import com.google.sps.util.DataStoreHelper;
@@ -112,7 +111,7 @@ public class AddUsersToEvent extends HttpServlet {
         return responseObj;
     }
 
-    private static Entity getEventEntity(String eventID) throws NotFoundException {
+    private static Entity getEventEntity(String eventID) throws IllegalArgumentException {
 
         Query<Entity> query =
           Query.newEntityQueryBuilder()
@@ -124,7 +123,7 @@ public class AddUsersToEvent extends HttpServlet {
 
         if (!results.hasNext()){
             System.out.println(String.format("Could not find event with ID %s", eventID));
-            throw new NotFoundException(String.format("Could not find event with ID %s", eventID));
+            throw new IllegalArgumentException(String.format("Could not find event with ID %s", eventID));
         }
 
         return (Entity) results.next();
