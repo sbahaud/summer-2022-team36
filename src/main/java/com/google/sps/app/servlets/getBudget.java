@@ -109,6 +109,21 @@ public class getBudget extends HttpServlet{
         return sum;
     }
 
+    private int getNumTripParticipants(String tripID) {
+        Query<Entity> query =
+          Query.newEntityQueryBuilder()
+            .setKind("Trip")
+            .setFilter(PropertyFilter.eq("tripID", tripID))
+            .build();
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        QueryResults<Entity> results = datastore.run(query);
+        if (!results.hasNext()) {
+            throw new IllegalArgumentException("Trip could not be found");
+        }
+
+        return DataStoreHelper.convertToStringList(results.next().getList("participants")).size();
+    }
+
     private List<String> getAssociatedEvents(String tripID) {
         Query<Entity> query =
           Query.newEntityQueryBuilder()
