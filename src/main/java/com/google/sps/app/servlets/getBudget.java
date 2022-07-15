@@ -62,19 +62,19 @@ public class getBudget extends HttpServlet{
         }
     }
 
-    private List<String> getAssociatedTrips(String userID) {
+    private List<String> getAssociatedTrips(String tripID) {
         Query<Entity> query =
           Query.newEntityQueryBuilder()
-            .setKind("User")
-            .setFilter(PropertyFilter.eq("userId", userID))
+            .setKind("Trip")
+            .setFilter(PropertyFilter.eq("tripID", tripID))
             .build();
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         QueryResults<Entity> results = datastore.run(query);
         if (!results.hasNext()){
-            throw new IllegalArgumentException("User could not be found");
+            throw new IllegalArgumentException("Trip could not be found");
         }
 
-        List<Value<String>> associatedTrips = results.next().getList("participants");
+        List<Value<String>> associatedTrips = results.next().getList("tripIDs");
         return DataStoreHelper.convertToStringList(associatedTrips);
     }
 
