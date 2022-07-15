@@ -98,7 +98,7 @@ public class getBudget extends HttpServlet{
         
         double sum = 0.0;
         for (String eventID : associatedEvents) {
-            sum += getEventCost();
+            sum += getEventCost(eventID);
         }
 
         return sum;
@@ -121,5 +121,20 @@ public class getBudget extends HttpServlet{
         }
 
         return eventIDs;
+    }
+
+    private double getEventCost(String eventID) {
+        Query<Entity> query =
+          Query.newEntityQueryBuilder()
+            .setKind("Event")
+            .setFilter(PropertyFilter.eq("eventId", eventID))
+            .build();
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        QueryResults<Entity> results = datastore.run(query);
+        if (!results.hasNext()){
+            throw new IllegalArgumentException("Event could not be found");
+        }
+
+        return results.next().getDouble("estimatedCost");
     }
 }
