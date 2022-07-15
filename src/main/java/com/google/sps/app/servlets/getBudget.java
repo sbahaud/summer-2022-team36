@@ -92,12 +92,18 @@ public class getBudget extends HttpServlet{
         return results.next().getDouble("totalBudget");
     }
 
-    private double getEstimatedContribution(String tripID) {
+    private double getEstimatedContribution(String userID, String tripID) {
         List<String> associatedEvents = getAssociatedEvents(tripID);
         
         double sum = 0.0;
         for (String eventID : associatedEvents) {
-            sum += getEventCost(eventID, tripID);
+            double cost = getEventCost(eventID);
+
+            int numTripParticipants = getNumTripParticipants(tripID);
+            int divisor = getSplitBy(eventID, userID, numTripParticipants);
+            double contribution = divisor == 0 ? 0.0 : cost / divisor;
+
+            sum += contribution;
         }
 
         return sum;
@@ -122,7 +128,7 @@ public class getBudget extends HttpServlet{
         return eventIDs;
     }
 
-    private double getEventCost(String eventID, String tripID) {
+    private double getEventCost(String eventID) {
         Query<Entity> query =
           Query.newEntityQueryBuilder()
             .setKind("Event")
@@ -133,16 +139,30 @@ public class getBudget extends HttpServlet{
         if (!results.hasNext()){
             throw new IllegalArgumentException("Event could not be found");
         }
-        
-        int divisor = getSplitBy(eventID);
-        if (divisor == 0) { //
-            divisor = getNumberOfParticipants(tripID);
-        } else if (divisor == -1) { // user not included in participants
-            return 0.0;
+
+        return results.next().getDouble("estimatedCost");
+    }
+
+    private int getSplitBy(String eventID, String userID, int numTripParticipants) {
+        Query<Entity> query =
+          Query.newEntityQueryBuilder()
+            .setKind("Event")
+            .setFilter(PropertyFilter.eq("eventID", eventID))
+            .build();
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        QueryResults<Entity> results = datastore.run(query);
+        if (!results.hasNext()){
+            throw new IllegalArgumentException("Event could not be found");
         }
 
-        double estimatedEventCost = results.next().getDouble("estimatedCost");
-
-        return estimatedEventCost / divisor;
+        List<Value<String>> datastoreEventParticipants = results.next().getList("participants");
+        List<String> eventParticipants = DataStoreHelper.convertToStringList(datastoreEventParticipants);
+        if (eventParticipants.size() == 0) {
+            return numTripParticipants;
+        } else if (!eventParticipants.contains(userID)) { // user not included in participant
+            return 0;
+        } else {
+            return eventParticipants.size();
+        }
     }
 }
