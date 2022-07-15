@@ -17,7 +17,6 @@ import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
-import com.google.sps.model.BudgetResponse;
 import com.google.sps.model.Trip;
 import com.google.sps.model.BudgetResponse;
 import com.google.sps.util.DataStoreHelper;
@@ -40,10 +39,9 @@ public class getBudget extends HttpServlet{
 
         BudgetResponse responseObj = new BudgetResponse();
         for (String tripID: associatedTripIDs){
-
             double contribution;
             try {
-                contribution = getEstimatedContribution(tripID);
+                contribution = getEstimatedContribution(tripID, );
             } catch (IllegalArgumentException e){
                 responseObj.addToErrors("Could not calculate expected contribution");
                 continue;
@@ -93,15 +91,36 @@ public class getBudget extends HttpServlet{
         return results.next().getDouble("totalBudget");
     }
 
-    private double getEstimatedContribution(String tripID) {
+    private double getEstimatedContribution(String userID, String tripID) {
         List<String> associatedEvents = getAssociatedEvents(tripID);
         
         double sum = 0.0;
         for (String eventID : associatedEvents) {
-            sum += getEventCost(eventID);
+            double cost = getEventCost(eventID);
+
+            int numTripParticipants = getNumTripParticipants(tripID);
+            int divisor = getSplitBy(eventID, userID, numTripParticipants);
+            double contribution = divisor == 0 ? 0.0 : cost / divisor;
+
+            sum += contribution;
         }
 
         return sum;
+    }
+
+    private int getNumTripParticipants(String tripID) {
+        Query<Entity> query =
+          Query.newEntityQueryBuilder()
+            .setKind("Trip")
+            .setFilter(PropertyFilter.eq("tripID", tripID))
+            .build();
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        QueryResults<Entity> results = datastore.run(query);
+        if (!results.hasNext()) {
+            throw new IllegalArgumentException("Trip could not be found");
+        }
+
+        return DataStoreHelper.convertToStringList(results.next().getList("participants")).size();
     }
 
     private List<String> getAssociatedEvents(String tripID) {
@@ -136,5 +155,28 @@ public class getBudget extends HttpServlet{
         }
 
         return results.next().getDouble("estimatedCost");
+    }
+
+    private int getSplitBy(String eventID, String userID, int numTripParticipants) {
+        Query<Entity> query =
+          Query.newEntityQueryBuilder()
+            .setKind("Event")
+            .setFilter(PropertyFilter.eq("eventID", eventID))
+            .build();
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        QueryResults<Entity> results = datastore.run(query);
+        if (!results.hasNext()){
+            throw new IllegalArgumentException("Event could not be found");
+        }
+
+        List<Value<String>> datastoreEventParticipants = results.next().getList("participants");
+        List<String> eventParticipants = DataStoreHelper.convertToStringList(datastoreEventParticipants);
+        if (eventParticipants.size() == 0) {
+            return numTripParticipants;
+        } else if (!eventParticipants.contains(userID)) { // user not included in participant
+            return 0;
+        } else {
+            return eventParticipants.size();
+        }
     }
 }
