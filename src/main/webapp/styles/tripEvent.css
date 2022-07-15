@@ -87,7 +87,7 @@ body {
 }
 
 .dashboard-btn,
-login-btn {
+.login-btn {
     background-color: var(--third-color);
     border-radius: 10px;
     border-bottom: 2px solid var(--third-color);
