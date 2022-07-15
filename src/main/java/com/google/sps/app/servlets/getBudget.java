@@ -19,7 +19,7 @@ import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.sps.model.BudgetResponse;
 import com.google.sps.model.Trip;
-import com.google.sps.model.budgetResponse;
+import com.google.sps.model.BudgetResponse;
 import com.google.sps.util.DataStoreHelper;
 
 @WebServlet("/get-budget")
@@ -91,5 +91,16 @@ public class getBudget extends HttpServlet{
         }
 
         return results.next().getDouble("totalBudget");
+    }
+
+    private double getEstimatedContribution(String tripID) {
+        List<String> associatedEvents = getAssociatedEvents(tripID);
+        
+        double sum = 0.0;
+        for (String eventID : associatedEvents) {
+            sum += getEventCost();
+        }
+
+        return sum;
     }
 }
