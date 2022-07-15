@@ -1,4 +1,4 @@
-    package com.google.sps.app.servlets;
+package com.google.sps.app.servlets;
 
 import com.google.cloud.datastore.BaseEntity;
 import com.google.cloud.datastore.Datastore;
