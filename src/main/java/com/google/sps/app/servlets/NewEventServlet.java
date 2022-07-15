@@ -57,13 +57,12 @@ public class NewEventServlet extends HttpServlet {
 
             final Gson gson = new Gson();
             response.setContentType("application/json;");
-            response.getWriter().println(gson.toJson(newEvent.getID()));
+            //response.getWriter().println(gson.toJson(newEvent.getID()));
+            response.getWriter().print(newEvent.getID());
 
         } else {
-            response.getWriter().println("Input information error");
+            response.getWriter().println("Input information error: " + error);
         }
-
-        response.sendRedirect("https://summer22-sps-36.appspot.com/");
     }
 
     public void writeToDatastore(Event newEvent) {

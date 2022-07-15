@@ -19,7 +19,6 @@ import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.sps.model.BudgetResponse;
 import com.google.sps.model.Trip;
-import com.google.sps.model.BudgetResponse;
 import com.google.sps.util.DataStoreHelper;
 
 @WebServlet("/get-budget")
