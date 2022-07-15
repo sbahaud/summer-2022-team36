@@ -1,0 +1,104 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+:root {
+    --main-color: #92ba92;
+    --second-color: #525E75;
+    --third-color: #78938A;
+    --shadow-color:#92ba9233;
+    --beige-color: #F1DDBF;
+    --big-font: 5em;
+}
+.container {
+    font-family: "Montserrat";
+    display: flex;
+    flex-direction: column;
+}
+.header {
+    align-items: flex-end;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0.5em;
+}
+
+
+.enter-btn-div {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Trip title*/
+.trip-title {
+    color: var(--third-color);
+    font-size: var(--big-font);
+    text-align: center;
+    margin-top: 10vh;
+}
+.trip-item {
+    color: var(--second-color);
+    font-size: 1.5em;
+}
+
+/* Trip */
+.inputBox {
+    margin-top: 10px;
+    position: relative;
+}
+
+.inputBox input {
+    border: none;
+    border-bottom: 2px solid var(--second-color);
+    font-size: 16px;
+    flex-direction: row;
+    margin: 10px 0;
+    outline: none;
+    padding: 5px 0;
+    resize: none;
+    width: 30vw
+
+}
+.inputBox input[id="text-input-start-date"],
+.inputBox input[id="text-input-end-date"] {
+    width: 13.5vw;
+}
+
+.createTrip label {
+    font-size: 16px;
+    left: 0;
+    margin: 10px 0;
+    padding: 5px 0;
+
+}
+
+/* Buttons */
+.btn {
+    border: none;
+    cursor: pointer;    
+    font-family: "Montserrat";
+}
+.submit-btn{
+    border-radius: 20px;
+    height: 5vh;
+    margin: 0.5em 0;
+    width: 30vw;
+}
+
+.dashboard-btn,
+login-btn {
+    background-color: var(--third-color);
+    border-radius: 10px;
+    border-bottom: 2px solid var(--third-color);
+    color: #fff;
+    font-size: 0.8em;
+    margin-right: 2em;
+    min-width: 8vw;
+}
+.name-btn {
+    background-color: #fff;
+    border-bottom: 2px solid var(--third-color);
+    font-size: 0.8em;
+    margin-right: 2em;
+}

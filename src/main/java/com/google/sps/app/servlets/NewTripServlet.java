@@ -46,7 +46,8 @@ public class NewTripServlet extends HttpServlet {
             writeToDatastore(newTrip);
             final Gson gson = new Gson();
             response.setContentType("application/json;");
-            response.getWriter().println(gson.toJson(newTrip.tripID()));
+            //response.getWriter().println(gson.toJson(newTrip.tripID()));
+            response.getWriter().print(newTrip.tripID());
         } 
         else {
             System.out.println(request.getParameter(START_DATE_PARAM));
