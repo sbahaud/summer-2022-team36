@@ -10,6 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Query;
+import com.google.cloud.datastore.QueryResults;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import com.google.sps.model.BudgetResponse;
 import com.google.sps.model.Trip;
 import com.google.sps.model.budgetResponse;
@@ -52,5 +58,20 @@ public class getBudget extends HttpServlet{
             //no errors
             responseObj.addToHTML(tripBudget, contribution);
         }
+    }
+
+    private double getTripBuget(String tripID) {
+        Query<Entity> query =
+          Query.newEntityQueryBuilder()
+            .setKind("Trip")
+            .setFilter(PropertyFilter.eq("tripID", tripID))
+            .build();
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        QueryResults<Entity> results = datastore.run(query);
+        if (!results.hasNext()){
+            throw new IllegalArgumentException("Trip could not be found");
+        }
+
+        return results.next().getDouble("totalBudget");
     }
 }
