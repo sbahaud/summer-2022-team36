@@ -103,4 +103,23 @@ public class getBudget extends HttpServlet{
 
         return sum;
     }
+
+    private List<String> getAssociatedEvents(String tripID) {
+        Query<Entity> query =
+          Query.newEntityQueryBuilder()
+            .setKind("Event")
+            .setFilter(PropertyFilter.eq("tripID", tripID))
+            .build();
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        QueryResults<Entity> results = datastore.run(query);
+        
+        List<String> eventIDs = new ArrayList<>();
+        while (results.hasNext()){
+            Entity event = results.next();
+            String id = event.getString("eventID");
+            eventIDs.add(id);
+        }
+
+        return eventIDs;
+    }
 }
