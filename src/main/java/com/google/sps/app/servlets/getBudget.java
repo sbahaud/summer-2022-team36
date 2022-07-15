@@ -40,10 +40,9 @@ public class getBudget extends HttpServlet{
 
         BudgetResponse responseObj = new BudgetResponse();
         for (String tripID: associatedTripIDs){
-
             double contribution;
             try {
-                contribution = getEstimatedContribution(tripID);
+                contribution = getEstimatedContribution(tripID, );
             } catch (IllegalArgumentException e){
                 responseObj.addToErrors("Could not calculate expected contribution");
                 continue;
@@ -98,7 +97,7 @@ public class getBudget extends HttpServlet{
         
         double sum = 0.0;
         for (String eventID : associatedEvents) {
-            sum += getEventCost(eventID);
+            sum += getEventCost(eventID, tripID);
         }
 
         return sum;
@@ -123,7 +122,7 @@ public class getBudget extends HttpServlet{
         return eventIDs;
     }
 
-    private double getEventCost(String eventID) {
+    private double getEventCost(String eventID, String tripID) {
         Query<Entity> query =
           Query.newEntityQueryBuilder()
             .setKind("Event")
@@ -134,7 +133,16 @@ public class getBudget extends HttpServlet{
         if (!results.hasNext()){
             throw new IllegalArgumentException("Event could not be found");
         }
+        
+        int divisor = getSplitBy(eventID);
+        if (divisor == 0) { //
+            divisor = getNumberOfParticipants(tripID);
+        } else if (divisor == -1) { // user not included in participants
+            return 0.0;
+        }
 
-        return results.next().getDouble("estimatedCost");
+        double estimatedEventCost = results.next().getDouble("estimatedCost");
+
+        return estimatedEventCost / divisor;
     }
 }
