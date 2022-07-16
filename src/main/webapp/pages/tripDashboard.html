@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Dashboard</title>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../images/favicon.ico">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="btn">Hi <span id="nameSpan"></span>!</button>
+            <button class="btn create-btn" onclick="location.href='../pages/dashboard.html'">Dashboard</button>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h1 class="title">
+                    Trip to 
+                    <span id="destination"></span>
+                </h1>
+            </div>
+            <div class="col">
+                <button class="btn create-btn" onclick="location.href='../trip/createEvent.html'">Create New Event</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="sub-col">
+                    <h3 class="trip-sub-title">Trip Info</h3>
+                    <div class="trip-info">
+
+                        <div class="info-div">
+                            <span class="info-title">Total Budget:</span> 
+                            <span class="info-content" id="totalBudget"></span>
+                        </div>
+
+                        <div class="info-div">
+                            <span class="info-title">Date: </span> 
+                            <span class="info-content" id="startDate"></span>
+                            <span class="info-title"> to </span> 
+                            <span class="info-content" id="endDate"></span>
+                        </div>
+
+                        <div class="info-div">
+                            <span class="info-title">Participants: </span> 
+                            <span class="info-content" id="participants"></span>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="sub-col">
+                    <h3 class="trip-sub-title">Events</h3>
+                    <div id="events-div"></div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+
+    <script src="../javascript/dashboard.js"></script>
+</body>
+</html>
