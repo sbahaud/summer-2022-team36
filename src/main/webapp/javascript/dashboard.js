@@ -20,7 +20,7 @@ async function fetchTrips(userId) {
     await fetch('/get-trips', {method: 'GET', headers: params}).then(response => response.json()).then((trips) => {
         trips.forEach(
             (trip) => {
-                displayTrips(trip.tripID, trip.title, trip.totalBudget, trip.startDate, trip.endDate)});
+                displayTrips(trip.tripID, trip.title, trip.totalBudget, trip.start, trip.end)});
     });
 }   
 
@@ -66,7 +66,7 @@ function showTripDetail() {
 //     console.log(tripDiv);
 //     var redirectBtn = 
 //     `
-//         <button class="btn create-btn" onclick="location.href='tripDetails.html'">
+//         <button class="btn create-btn" onclick="location.href='createEvent.html'">
 //         Go To Trip
 //         </button>
 //     `;
