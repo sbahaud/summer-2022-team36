@@ -10,19 +10,18 @@ import com.google.cloud.datastore.ListValue;
 import com.google.cloud.datastore.Value;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
+import com.google.sps.model.Event;
 import com.google.cloud.datastore.StringValue;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class DataStoreHelper {
-
-    private static final String USER_QUERY_TEMPLATE =
-        "SELECT userId FROM User WHERE username=";
 
     //parse date in html's input format
     public static Date parseInputDate(String textDate){
@@ -77,5 +76,11 @@ public class DataStoreHelper {
             result.add(s.get());
         }
         return result;
+    }
+
+    public static List<String> splitUserList(String input){
+        input = input.replace(" ", "");
+        String[] strArr = input.split(",");
+        return Arrays.asList(strArr);
     }
 }

@@ -20,7 +20,6 @@ public abstract class Trip {
     abstract public String title();
     abstract public Date start();
     abstract public Date end();
-
     abstract public List<String> participants();
     abstract public float totalCost();
     abstract public float totalBudget();

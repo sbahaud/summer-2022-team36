@@ -1,3 +1,12 @@
+:root {
+    --main-color: #92ba92;
+    --second-color: #525E75;
+    --third-color: #78938A;
+    --shadow-color:#92ba9233;
+    --beige-color: #F1DDBF;
+    --big-font: 5em;
+}
+
 body {
     font-family: "Montserrat";
     margin: 0;
@@ -17,9 +26,34 @@ body {
     flex-direction: row;
 }
 
+.header {
+    align-items: flex-end;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0.5em;
+}
+
+.btn {
+    background-color: #fff;
+    border: none;
+    border-bottom: 2px solid var(--third-color);
+    cursor: pointer;
+    font-family: "Montserrat";
+    font-size: 0.8em;
+    margin-right: 2em;
+}
+
+button.btn.create-btn {
+    background-color: var(--third-color);
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    min-width: 8vw;
+}
+
 .sub-container {
     align-items: center;
-    border: 4px solid #78938A;
+    border: 4px solid var(--third-color);
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -35,7 +69,7 @@ body {
 }
 
 .trip {
-    border: 2px solid #78938A;
+    border: 2px solid var(--third-color);
     border-radius: 10px;
     margin: 1em 0;
     padding-left: 1em;
@@ -43,14 +77,14 @@ body {
 }
 
 .title {
-    color: #78938A;
+    color: var(--third-color);
     font-size: 3em;
     margin-top: 5vh;
 }
 
 .sub-title {
     font-size: 1.5em;
-    border-bottom: 2px solid #78938A;
+    border-bottom: 2px solid var(--third-color);
 }
 
 .trip-title {
@@ -61,3 +95,47 @@ body {
     font-size: 0.8em;
 }
 
+.selectedTrip {
+    background-color: var(--main-color);
+    color: var(--beige-color);
+}
+
+/* trip dashboard */
+#destination {
+    color: var(--main-color);
+}
+
+.sub-col {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 60vh;
+    width: 40vw;
+}
+
+.trip-sub-title {
+    align-items: flex-start;
+    border-bottom: 2px solid var(--third-color);
+    font-size: 1.5em;
+    padding: 0.2em 0;
+    width: 80%;
+}
+
+.trip-info {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2em;
+    font-weight: 400;
+    justify-content: space-around;
+    width: 80%;
+}
+
+.info-div {
+    margin: 0.2em 0;
+}
+
+.info-content {
+    color: var(--second-color);
+    padding: 0 0.5em;
+}

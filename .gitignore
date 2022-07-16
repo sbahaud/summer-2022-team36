@@ -1,6 +1,5 @@
 .class
 target/
-pom.xml
 
 # binaries
 bin/
