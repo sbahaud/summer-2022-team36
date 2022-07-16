@@ -43,7 +43,7 @@ function createTrip() {
     submit.addEventListener("click", function(event) {
         event.preventDefault();
 
-        postNewTrip(title.value, fromDate.value, toDate.value, participants.value, budget.value, userId);
+        postNewTrip(title.value, fromDate.value, toDate.value, participants.value, budget.value, userName, userId);
     });
 }
 
@@ -58,6 +58,8 @@ async function postNewTrip(title, fromDate, toDate, participants, budget, userNa
     params.append('text-input-totalBudget', budget);
     params.append('text-input-userName', userName);
     params.append('text-input-userID', userId);
+
+    console.log(userName+userId);
 
     const response = await fetch('/NewTrip', {method: 'POST', body: params});
     const responseMsg = await response.text();
