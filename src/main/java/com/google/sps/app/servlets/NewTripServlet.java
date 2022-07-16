@@ -68,6 +68,7 @@ public class NewTripServlet extends HttpServlet {
                 .set("startDate", newTrip.start().toString())
                 .set("endDate", newTrip.end().toString())
                 .set("participants", DataStoreHelper.convertToValueList(newTrip.participants()))
+                .set("names", DataStoreHelper.convertToValueList(newTrip.names()))
                 .build();
         datastore.put(tripEntity);
     }
@@ -120,17 +121,17 @@ public class NewTripServlet extends HttpServlet {
         Date end = DataStoreHelper.parseInputDate(request.getParameter(END_DATE_PARAM));
         String participantInput = StringEscapeUtils.escapeHtml4(request.getParameter(PARTICIPANTS_PARAM));
         List<String> participantIds = new ArrayList<String>();
-        List<String> checkerduplicate = new ArrayList<String>();
+        List<String> names = new ArrayList<String>();
         List<String> participants = DataStoreHelper.splitUserList(participantInput);
-        checkerduplicate.add(request.getParameter(USERNAME_PARAM));
+        names.add(request.getParameter(USERNAME_PARAM));
         participantIds.add(request.getParameter(USERID_PARAM));
         for (String name: participants){
-            if(checkerduplicate.contains(name))
+            if(names.contains(name))
                 continue;
             participantIds.add(DataStoreHelper.queryUserID(name));
-            checkerduplicate.add(name);
+            names.add(name);
         }
-        return Trip.create(tripID,textValuetitle,participantIds, totalBudget,start,end);
+        return Trip.create(tripID,textValuetitle,start,end,participantIds,names,totalBudget);
     }
 
 }
