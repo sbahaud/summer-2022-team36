@@ -32,7 +32,7 @@ function displayTrips(tripId, title, totalBudget, startDate, endDate) {
 
     var tripBox = 
         '<h3 class="trip-title">' + title + '</h3>'
-        + '<p class="trip-info">Budget: ' + totalBudget + '</p>'
+        + '<p class="trip-info">Budget $ ' + totalBudget + '</p>'
         + '<p class="trip-info">' + startDate.toString() + '</p>'
         + '<p class="trip-info">' + endDate.toString() + '</p>'
         + ` <button 

@@ -57,9 +57,8 @@ function displayEvents(eventId, title, estimatedCost, location, date) {
 
     var eventBox = 
         '<h3 class="event-title">' + title + '</h3>'
-        + '<p class="event-info">Estimated Cost: ' + estimatedCost + '</p>'
+        + '<p class="event-info">Estimated Cost $ ' + estimatedCost + '</p>'
         + '<p class="event-info">Location: ' + location + '</p>'
-        // + '<p class="event-info">Date: ' + date + '</p>'
         + '<p class="trip-info">' + date.toString() + '</p>'
         ;
 

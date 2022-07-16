@@ -137,6 +137,7 @@ button.btn.create-btn {
 
 .info-div {
     margin: 0.2em 0;
+    overflow-wrap: anywhere;
 }
 
 .info-content {
