@@ -84,7 +84,7 @@ async function postNewEvent(tripId, title, date, location, budget) {
         sessionStorage.setItem("eventId", responseMsg);
         
         window.setTimeout(function() {
-            window.location.href = "/pages/dashboard.html";
+            window.location.href = "/pages/tripDashboard.html";
         }, 400);
     
     } else {
