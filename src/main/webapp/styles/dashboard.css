@@ -33,6 +33,10 @@ body {
     margin: 0.5em;
 }
 
+.hide {
+    display: none;
+}
+
 .btn {
     background-color: #fff;
     border: none;
@@ -72,13 +76,13 @@ button.btn.create-btn {
     border: 2px solid var(--third-color);
     border-radius: 10px;
     margin: 1em 0;
-    padding-left: 1em;
+    padding: 1em;
     width: 15vw;
 }
 
 .title {
     color: var(--third-color);
-    font-size: 3em;
+    font-size: 2em;
     margin-top: 5vh;
 }
 
@@ -138,4 +142,29 @@ button.btn.create-btn {
 .info-content {
     color: var(--second-color);
     padding: 0 0.5em;
+}
+
+/* event dashboard */
+#events-div {
+    align-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 80%;
+}
+
+.event {
+    border: 2px solid var(--third-color);
+    border-radius: 10px;
+    margin: 1em 0;
+    padding: 1em;
+    width: 10vw;
+}
+
+.event-title {
+    font-size: 1em;
+}
+
+.event-info {
+    font-size: 0.8em;
 }

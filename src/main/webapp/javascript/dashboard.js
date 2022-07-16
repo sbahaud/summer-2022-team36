@@ -1,11 +1,16 @@
 let userId = sessionStorage.getItem("userId");
 let userName = sessionStorage.getItem("userName");
 
-if(userId !== "" && userId !== null){
+displayTrips("trip.id", "trip.title", "trip.totalBudget", "trip.start", "trip.end");
+displayTrips("trip.id", "trip.title", "trip.totalBudget", "trip.start", "trip.end");
+displayTrips("trip.id", "trip.title", "trip.totalBudget", "trip.start", "trip.end");
+displayTrips("trip.id", "trip.title", "trip.totalBudget", "trip.start", "trip.end");
+
+// if(userId !== "" && userId !== null){
     console.log(userId);
     fetchTrips(userId);
     showUsername();
-}
+// }
 
 function showUsername() {
     console.log(userName);
@@ -20,7 +25,7 @@ async function fetchTrips(userId) {
     await fetch('/get-trips', {method: 'GET', headers: params}).then(response => response.json()).then((trips) => {
         trips.forEach(
             (trip) => {
-                displayTrips(trip.title, trip.totalBudget, trip.start, trip.end)});
+                displayTrips(trip.tripID, trip.title, trip.totalBudget, trip.start, trip.end)});
     });
 }   
 
@@ -32,9 +37,16 @@ function displayTrips(tripId, title, totalBudget, startDate, endDate) {
 
     var tripBox = 
         '<h3 class="trip-title">' + title + '</h3>'
-        + '<p class="trip-info">' + totalBudget + '</p>'
-        + '<p class="trip-info">' + startDate.toString() + '</p>'
-        + '<p class="trip-info">' + endDate.toString() + '</p>';
+        + '<p class="trip-info">Budget: ' + totalBudget + '</p>'
+        + '<p class="trip-info">From: ' + startDate + '</p>'
+        // + '<p class="trip-info">' + startDate.toString() + '</p>'
+        + '<p class="trip-info">To: ' + endDate + '</p>'
+        // + '<p class="trip-info">' + endDate.toString() + '</p>'
+        + ` <button 
+            class="btn create-btn hide" 
+            onclick="location.href='tripDashboard.html'">
+            Go To Trip
+            </button>` ;
 
     trip.innerHTML = tripBox;
 
@@ -49,32 +61,21 @@ function showTripDetail() {
         trips[i].onclick = function(){
             for(let j = 0; j<trips.length; j++){
                 trips[j].classList.remove("selectedTrip");
+                trips[j].lastChild.classList.add("hide");
             }
 
             this.classList.add("selectedTrip");
-            let tripDivId = this.getAttribute("tripIdNumber");
+            this.lastChild.classList.remove("hide");
+            let selectedTripId = this.getAttribute("tripIdNumber");
             
-            redirectToDetailPage(this);
-            getBudget(tripDivId);
+            sessionStorage.setItem("tripId",  selectedTripId);
+            getBudget(selectedTripId);
         }			
     }
 }
 
+
 // work in progress
-
-// function redirectToDetailPage(tripDiv) {
-//     console.log(tripDiv);
-//     var redirectBtn = 
-//     `
-//         <button class="btn create-btn" onclick="location.href='createEvent.html'">
-//         Go To Trip
-//         </button>
-//     `;
-    
-//     // will also be sending tripId to the details page (by session or post?)
-
-//     tripDiv.innerHTML += redirectBtn;
-// }
 
 function getBudget(tripId) {
     // this function will perform a fetch to get budget of the specific trip
