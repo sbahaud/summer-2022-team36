@@ -20,7 +20,7 @@ async function fetchTrips(userId) {
     await fetch('/get-trips', {method: 'GET', headers: params}).then(response => response.json()).then((trips) => {
         trips.forEach(
             (trip) => {
-                displayTrips(trip.tripID, trip.title, trip.totalBudget, trip.start, trip.end)});
+                displayTrips(trip.title, trip.totalBudget, trip.start, trip.end)});
     });
 }   
 
