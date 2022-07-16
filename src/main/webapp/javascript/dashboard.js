@@ -59,16 +59,28 @@ function showTripDetail() {
 
             this.classList.add("selectedTrip");
             this.lastChild.classList.remove("hide");
+
             let selectedTripId = this.getAttribute("tripIdNumber");
-            
             sessionStorage.setItem("tripId",  selectedTripId);
+
             getBudget(selectedTripId);
+            showBudget(selectedTripId);
         }			
     }
 }
 
 
 // work in progress
+function showBudget(tripId) {
+    let budgetDiv = document.getElementById("budget-div");
+    if(tripId === "" || tripId === null) {
+        let noSelectedTripMsg = `<p class="big-msg">Select a trip to begin!</p>`;
+        budgetDiv.innerHTML = noSelectedTripMsg;
+    } else {
+        // work in progress
+        console.log(tripId);
+    }
+}
 
 function getBudget(tripId) {
     // this function will perform a fetch to get budget of the specific trip
