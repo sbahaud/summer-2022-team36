@@ -2,17 +2,17 @@ let tripId = sessionStorage.getItem("tripId");
 let userId = sessionStorage.getItem("userId");
 let userName = sessionStorage.getItem("userName");
 
-displayTripInfo("colombia", "10000", "jul 2", "aug 2", "alice, bob, cathy");
-displayEvents("eventId", "event1", "30", "peru", "aug 3");
-displayEvents("eventId", "event2", "400", "lima", "aug 22");
-displayEvents("eventId", "event3", "1000", "sydney", "sep 2");
-displayEvents("eventId", "event4", "100000", "mars", "dec 9");
+// displayTripInfo("colombia", "10000", "jul 2", "aug 2", "alice, bob, cathy");
+// displayEvents("eventId", "event1", "30", "peru", "aug 3");
+// displayEvents("eventId", "event2", "400", "lima", "aug 22");
+// displayEvents("eventId", "event3", "1000", "sydney", "sep 2");
+// displayEvents("eventId", "event4", "100000", "mars", "dec 9");
 
-// if(userId !== "" && userId !== null && tripId !== "" && tripId !== null){
+if(userId !== "" && userId !== null && tripId !== "" && tripId !== null){
     console.log(tripId);
-    // fetchTripDetail(tripId);
-    // showUsername();
-// }
+    showUsername();
+    fetchTripDetail(tripId);
+}
 
 function showUsername() {
     console.log(userName);
@@ -24,7 +24,7 @@ async function fetchTripDetail(tripId) {
 
     params.append('tripID', tripId);
 
-    await fetch('/get-trips', {method: 'GET', headers: params}).then(response => response.json()).then(
+    await fetch('/getTripByID', {method: 'GET', headers: params}).then(response => response.json()).then(
         (trip) => {
             displayTripInfo(trip.title, trip.totalBudget, trip.start, trip.end, trip.participants)}
     );
@@ -59,8 +59,8 @@ function displayEvents(eventId, title, estimatedCost, location, date) {
         '<h3 class="event-title">' + title + '</h3>'
         + '<p class="event-info">Estimated Cost: ' + estimatedCost + '</p>'
         + '<p class="event-info">Location: ' + location + '</p>'
-        + '<p class="event-info">Date: ' + date + '</p>'
-        // + '<p class="trip-info">' + endDate.toString() + '</p>'
+        // + '<p class="event-info">Date: ' + date + '</p>'
+        + '<p class="trip-info">' + date.toString() + '</p>'
         ;
 
     event.innerHTML = eventBox;

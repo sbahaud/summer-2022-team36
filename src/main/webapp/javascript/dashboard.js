@@ -1,16 +1,11 @@
 let userId = sessionStorage.getItem("userId");
 let userName = sessionStorage.getItem("userName");
 
-displayTrips("trip.id", "trip.title", "trip.totalBudget", "trip.start", "trip.end");
-displayTrips("trip.id", "trip.title", "trip.totalBudget", "trip.start", "trip.end");
-displayTrips("trip.id", "trip.title", "trip.totalBudget", "trip.start", "trip.end");
-displayTrips("trip.id", "trip.title", "trip.totalBudget", "trip.start", "trip.end");
-
-// if(userId !== "" && userId !== null){
+if(userId !== "" && userId !== null){
     console.log(userId);
     fetchTrips(userId);
     showUsername();
-// }
+}
 
 function showUsername() {
     console.log(userName);
@@ -38,10 +33,8 @@ function displayTrips(tripId, title, totalBudget, startDate, endDate) {
     var tripBox = 
         '<h3 class="trip-title">' + title + '</h3>'
         + '<p class="trip-info">Budget: ' + totalBudget + '</p>'
-        + '<p class="trip-info">From: ' + startDate + '</p>'
-        // + '<p class="trip-info">' + startDate.toString() + '</p>'
-        + '<p class="trip-info">To: ' + endDate + '</p>'
-        // + '<p class="trip-info">' + endDate.toString() + '</p>'
+        + '<p class="trip-info">' + startDate.toString() + '</p>'
+        + '<p class="trip-info">' + endDate.toString() + '</p>'
         + ` <button 
             class="btn create-btn hide" 
             onclick="location.href='tripDashboard.html'">
