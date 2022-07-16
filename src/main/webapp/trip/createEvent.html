@@ -5,7 +5,7 @@
         <title>New Event</title>
          
         <!-- Stylesheet --> 
-        <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" href="../styles/tripEvent.css">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,40 +18,47 @@
 
     <body>
         <div class="container">
+            <!-- Header buttons -->
+            <div class="header" id="header-btn"></div>
+
+             <!-- Forms -->             
             <h1 class="trip-title">Add a New Event</h1>
             <div class="enter-btn-div">
 
                 <!-- Title -->
                 <div class="inputBox">
                     <h3 class="trip-item">Title</h3>
-                    <input name="text-input-title" type="text" placeholder="e.g. " required="required">
+                    <input id="input-title" type="text" placeholder="e.g. " required="required">
                 </div>
 
                 <!-- Dates -->
                 <div class="inputBox">
                     <h3 class="trip-item">Date</h3>
-                    <input name="text-input-date" type="date" id="fromDate" max="2025-12" required="required">
+                    <input id="input-date" type="date" id="fromDate" max="2025-12" required="required">
                 </div>
 
                 <!-- Location -->
                 <div class="inputBox">
                     <h3 class="trip-item">Location</h3>
-                    <input name="text-input-location" type="text" placeholder="e.g." required="required">
+                    <input id="input-location" type="text" placeholder="e.g." required="required">
                 </div>
 
                 <!-- Budget -->
                 <div class="inputBox">
                     <h3 class="trip-item">Event budget</h3>
-                    <input name="text-input-estimatedCost" type="text" placeholder="e.g. 500" required="required">
+                    <input id="input-estimatedCost" type="text" placeholder="e.g. 500" required="required">
                 </div>
                 
-                <button class="btn submit-btn" type="submit" id="submit-trip">Submit</button>
+                <button class="btn submit-btn" type="submit" id="submit-btn">Submit</button>
+
+                <!-- Response messages -->
+                <div id="status-msg"></div>
             </div>
         </div>
 
         <!-- JavaScript -->
         <script type="text/JavaScript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script type="text/JavaScript" src="../javascript/tripEvent.js"></script>
+        <script type="text/JavaScript" src="../javascript/event.js"></script>
 
     </body>
 

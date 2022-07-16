@@ -15,7 +15,7 @@ if (userName === "" || userName === null) {
 } else {
     btnLogin.innerHTML = 
     `<button class="btn name-btn">Hi <span>` + userName + ` !</span>` + 
-    `<button class="btn dashboard-btn" onclick="location.href='../pages/dashboard.html'" id="back">Back to Dashboard</button>`;
+    `<button class="btn redirect-btn" onclick="location.href='../pages/dashboard.html'" id="back">Back to Dashboard</button>`;
     createTrip();
 }
 
@@ -29,13 +29,6 @@ function backToLogin() {
         window.setTimeout(function() {
             window.location.href = "/pages/userSignin.html";
         }, 400);
-
-        // clear input box
-        title.value = "";
-        fromDate.value = "";
-        toDate.value = "";
-        participants.value = "";
-        budget.value = "";
     });
 }
 
@@ -50,14 +43,7 @@ function createTrip() {
     submit.addEventListener("click", function(event) {
         event.preventDefault();
 
-        postNewTrip(title.value, fromDate.value, toDate.value, participants.value, budget.value, userId);
-
-        // clear input box
-        title.value = "";
-        fromDate.value = "";
-        toDate.value = "";
-        participants.value = "";
-        budget.value = "";
+        postNewTrip(title.value, fromDate.value, toDate.value, participants.value, budget.value, userName, userId);
     });
 }
 
@@ -73,6 +59,8 @@ async function postNewTrip(title, fromDate, toDate, participants, budget, userNa
     params.append('text-input-userName', userName);
     params.append('text-input-userID', userId);
 
+    console.log(userName+userId);
+
     const response = await fetch('/NewTrip', {method: 'POST', body: params});
     const responseMsg = await response.text();
 
@@ -81,9 +69,10 @@ async function postNewTrip(title, fromDate, toDate, participants, budget, userNa
         msgDiv.innerHTML = `<p class="success">Success!</p>`;
 
         sessionStorage.setItem("tripId", responseMsg);
+        sessionStorage.setItem("tripTitle", title);
         
         window.setTimeout(function() {
-            window.location.href = "/pages/dashboard.html";
+            window.location.href = "/trip/createEvent.html";
         }, 400);
     
     } else {

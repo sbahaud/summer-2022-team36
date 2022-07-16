@@ -56,8 +56,6 @@ public class NewTripServlet extends HttpServlet {
             System.out.println("Input information error: "+ error);
             response.getWriter().println("Input information error: "+ error);
         }
-
-        //response.sendRedirect("/trip/tripDetails.html");
     }
 
     public void writeToDatastore(Trip newTrip) {
