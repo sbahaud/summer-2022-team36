@@ -12,7 +12,7 @@ public class Event implements Comparable<Event>{
     private String location;
     //uses user hashes
     private List<String> participants;
-    private Date date;
+    private String date;
     private float estimatedCost;
     private float actualCost;
     private boolean paid;
@@ -23,7 +23,7 @@ public class Event implements Comparable<Event>{
     //marks if the cost is split by all people or if it's a per person cost.
     private boolean splitCost = true;
 
-    public Event(String eventId, String tripID, String title, String location, Date date, float estimatedCost){
+    public Event(String eventId, String tripID, String title, String location, String date, float estimatedCost){
         this.eventId=eventId;
         this.tripID=tripID;
         this.title=title;
@@ -45,7 +45,7 @@ public class Event implements Comparable<Event>{
         return tripID;
     }
     
-    public Date getDate(){
+    public String getDate(){
         return date;
     }
 

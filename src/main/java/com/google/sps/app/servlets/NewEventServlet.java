@@ -74,7 +74,7 @@ public class NewEventServlet extends HttpServlet {
                 .set("title", newEvent.getTitle().trim())
                 .set("estimatedCost", newEvent.getEstimatedCost())
                 .set("location", newEvent.getLocation())
-                .set("date", newEvent.getDate().toString())
+                .set("date", newEvent.getDate())
                 .set("associatedUsernames", EMPTY_VALUE_LIST)
                 .set("associatedUserIDs", EMPTY_VALUE_LIST)
                 .build();
@@ -108,7 +108,7 @@ public class NewEventServlet extends HttpServlet {
         String tripID = request.getParameter(TRIP_ID);
         String eventID = UUIDs.generateID();
         String location = StringEscapeUtils.escapeHtml4(request.getParameter(LOCATION_PARAM));
-        Date date = DataStoreHelper.parseInputDate(request.getParameter(DATE_PARAM));
+        String date = (DataStoreHelper.parseInputDate(request.getParameter(DATE_PARAM))).toString();
         return new Event(eventID,tripID,title,location,date,estimatedCost);
     }
 
