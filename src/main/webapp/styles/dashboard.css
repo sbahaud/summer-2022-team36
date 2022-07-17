@@ -169,3 +169,7 @@ button.btn.create-btn {
 .event-info {
     font-size: 0.8em;
 }
+
+.info-title {
+    font-weight: 500;
+}
