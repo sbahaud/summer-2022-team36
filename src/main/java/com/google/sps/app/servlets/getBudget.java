@@ -41,7 +41,7 @@ public class getBudget extends HttpServlet{
         for (String tripID: associatedTripIDs){
             double contribution;
             try {
-                contribution = getEstimatedContribution(tripID, );
+                contribution = getEstimatedContribution(userID, tripID);
             } catch (IllegalArgumentException e){
                 responseObj.addToErrors("Could not calculate expected contribution");
                 continue;
