@@ -33,6 +33,7 @@ function selectTrip() {
         return `<button class="btn redirect-btn onclick="location.href='../pages/dashboard.html'">Select a trip</button>`;
     } else {
         console.log("tripId EXIST!");
+        fetchTripDates();
         return `<button class="btn name-btn">Current trip: <span>` + tripTitle + ` </span></button>`;
     }
 }
@@ -91,3 +92,43 @@ async function postNewEvent(tripId, title, date, location, budget) {
         msgDiv.innerHTML = responseMsg;
     }
 }
+
+// Limit date range within trip from/to dates
+async function fetchTripDates() {
+    const params = new Headers();
+
+    params.append('tripID', tripId);
+
+    await fetch('/getTripByID', {method: 'GET', headers: params}).then(response => response.json()).then(
+        (trip) => {
+            let startDate = new Date(trip.start);
+            let endDate = new Date(trip.end);
+            dateDisable(startDate, endDate)
+        }
+    )
+}
+
+function dateDisable(startDate, endDate) {    
+    console.log("start: " + startDate);
+    console.log("end: " + endDate);
+    fromDate = getDateString(startDate);
+    toDate = getDateString(endDate);
+    console.log("from: " + fromDate);
+    console.log("to: " + toDate);
+    document.getElementById("input-date").setAttribute('min', fromDate);
+    document.getElementById("input-date").setAttribute('max', toDate);    
+}
+
+function getDateString(date) {
+    var tdate = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getUTCFullYear();
+    if(tdate < 10){
+        tdate = '0' + tdate;
+    }
+    if(month < 10) {
+        month = '0' + month
+    }
+    return year + "-" + month + "-" + tdate
+}
+

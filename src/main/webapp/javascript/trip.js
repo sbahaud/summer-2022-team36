@@ -80,7 +80,7 @@ async function postNewTrip(title, fromDate, toDate, participants, budget, userNa
     }
 }
 
-// Limit date ranges
+// Limit date min to today's date
 var date = new Date();
 var tdate = date.getDate();
 var month = date.getMonth() + 1;
@@ -94,6 +94,7 @@ if(month < 10) {
 var minDate = year + "-" + month + "-" + tdate
 document.getElementById("text-input-start-date").setAttribute('min', minDate)
 
+// Lminit toDate min and fromDate max when either one is selected
 var fromDate;
 $('#text-input-start-date').on('change', function() {
     fromDate = $(this).val();
