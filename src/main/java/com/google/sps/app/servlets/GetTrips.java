@@ -58,7 +58,8 @@ public class GetTrips extends HttpServlet {
             Date start = DataStoreHelper.parseDataDate(entity.getString("startDate"));
             Date end = DataStoreHelper.parseDataDate(entity.getString("endDate"));
             List<String> participants = DataStoreHelper.convertToStringList(entity.getList("participants"));
-            trips.add(Trip.create(tripID, title, participants, totalBudget, start, end));
+            List<String> names = DataStoreHelper.convertToStringList(entity.getList("names"));
+            trips.add(Trip.create(tripID, title, start, end, participants, names, totalBudget));
         }
         return trips;
     }
