@@ -27,7 +27,7 @@ public class GetEvents extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String tripID = request.getParameter("tripID");
+        String tripID = request.getHeader("tripID");
         List<Event> Events = getEvents(tripID);
         Gson gson = new Gson();
         response.setContentType("application/json;");

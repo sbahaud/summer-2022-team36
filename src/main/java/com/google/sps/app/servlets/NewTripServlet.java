@@ -48,13 +48,12 @@ public class NewTripServlet extends HttpServlet {
             writeToDatastore(newTrip);
             final Gson gson = new Gson();
             response.setContentType("application/json;");
-            //response.getWriter().println(gson.toJson(newTrip.tripID()));
+            // response.getWriter().println(gson.toJson(newTrip.tripID()));
             response.getWriter().print(newTrip.tripID());
-        } 
-        else {
+        } else {
             System.out.println(request.getParameter(START_DATE_PARAM));
-            System.out.println("Input information error: "+ error);
-            response.getWriter().println("Input information error: "+ error);
+            System.out.println("Input information error: " + error);
+            response.getWriter().println("Input information error: " + error);
         }
     }
 
@@ -68,10 +67,11 @@ public class NewTripServlet extends HttpServlet {
                 .set("startDate", newTrip.start().toString())
                 .set("endDate", newTrip.end().toString())
                 .set("participants", DataStoreHelper.convertToValueList(newTrip.participants()))
+                .set("names", DataStoreHelper.convertToValueList(newTrip.names()))
                 .build();
         datastore.put(tripEntity);
     }
-    
+
     public String validateInput(HttpServletRequest request) {
         if (!request.getParameter(TITLE_PARAM).matches("[\\w*\\s*]*")) {
             return "Invalid title";
@@ -83,18 +83,18 @@ public class NewTripServlet extends HttpServlet {
         }
         Date start = DataStoreHelper.parseInputDate(request.getParameter(START_DATE_PARAM));
         Date end = DataStoreHelper.parseInputDate(request.getParameter(END_DATE_PARAM));
-        if(start==null){
+        if (start == null) {
             return "Invalid start date";
         }
-        if(end==null){
+        if (end == null) {
             return "Invalid end date";
         }
-        if(end.before(start))
+        if (end.before(start))
             return "Start date should before end date";
 
         String participantInput = StringEscapeUtils.escapeHtml4(request.getParameter(PARTICIPANTS_PARAM));
         List<String> participants = DataStoreHelper.splitUserList(participantInput);
-        for (String userToAdd: participants){
+        for (String userToAdd : participants) {
             String validationErrors = Validator.validateUserName(userToAdd);
             if (!validationErrors.isEmpty()) {
                 return String.format("Invalid %s for user %s", validationErrors, userToAdd);
@@ -109,7 +109,7 @@ public class NewTripServlet extends HttpServlet {
         return "";
     }
 
-    public Trip getTrip(HttpServletRequest request){
+    public Trip getTrip(HttpServletRequest request) {
         // Get the value entered in the form.
         String textValuetitle = StringEscapeUtils.escapeHtml4(request.getParameter(TITLE_PARAM));
         float totalBudget = Float
@@ -120,17 +120,17 @@ public class NewTripServlet extends HttpServlet {
         Date end = DataStoreHelper.parseInputDate(request.getParameter(END_DATE_PARAM));
         String participantInput = StringEscapeUtils.escapeHtml4(request.getParameter(PARTICIPANTS_PARAM));
         List<String> participantIds = new ArrayList<String>();
-        List<String> checkerduplicate = new ArrayList<String>();
-        List<String> participants = DataStoreHelper.splitUserList(participantInput);
-        checkerduplicate.add(request.getParameter(USERNAME_PARAM));
+        List<String> existingParticipantsNames = new ArrayList<String>();
+        List<String> participantNames = DataStoreHelper.splitUserList(participantInput);
+        existingParticipantsNames.add(request.getParameter(USERNAME_PARAM));
         participantIds.add(request.getParameter(USERID_PARAM));
-        for (String name: participants){
-            if(checkerduplicate.contains(name))
-                continue;
-            participantIds.add(DataStoreHelper.queryUserID(name));
-            checkerduplicate.add(name);
+        for (String name : participantNames) {
+          if (existingParticipantsNames.contains(name))
+              continue;
+          participantIds.add(DataStoreHelper.queryUserID(name));
+          existingParticipantsNames.add(name);
         }
-        return Trip.create(tripID,textValuetitle,participantIds, totalBudget,start,end);
+        return Trip.create(tripID, textValuetitle, start, end, participantIds, existingParticipantsNames, totalBudget);
     }
 
 }
