@@ -53,7 +53,8 @@ public class GetTripByID extends HttpServlet {
         Date start = DataStoreHelper.parseDataDate(entity.getString("startDate"));
         Date end = DataStoreHelper.parseDataDate(entity.getString("endDate"));
         List<String> participants = DataStoreHelper.convertToStringList(entity.getList("participants"));
-        return Trip.create(tripID, title, participants, totalBudget, start, end);
+        List<String> names = DataStoreHelper.convertToStringList(entity.getList("names"));
+        return Trip.create(tripID, title, start, end, participants, names, totalBudget);
     }
 
     public QueryResults<Entity> queryDatastore(String tripID) throws IllegalArgumentException {
