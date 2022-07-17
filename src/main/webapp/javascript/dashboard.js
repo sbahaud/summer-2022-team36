@@ -20,21 +20,70 @@ async function fetchTrips(userId) {
     await fetch('/get-trips', {method: 'GET', headers: params}).then(response => response.json()).then((trips) => {
         trips.forEach(
             (trip) => {
-                displayTrips(trip.title, trip.totalBudget, trip.startDate, trip.endDate)});
+                displayTrips(trip.tripID, trip.title, trip.totalBudget, trip.start, trip.end)});
     });
 }   
 
-function displayTrips(title, totalBudget, startDate, endDate) {
+function displayTrips(tripId, title, totalBudget, startDate, endDate) {
     const trip = document.createElement("div");
     trip.className = "trip";
+    trip.setAttribute("onclick", "showTripDetail()");
+    trip.setAttribute("tripIdNumber", tripId);
 
     var tripBox = 
         '<h3 class="trip-title">' + title + '</h3>'
-        + '<p class="trip-info">' + totalBudget + '</p>'
-        + '<p class="trip-info">' + startDate + '</p>'
-        + '<p class="trip-info">' + endDate + '</p>';
+        + '<p class="trip-info">Budget $ ' + totalBudget + '</p>'
+        + '<p class="trip-info">' + startDate.toString() + '</p>'
+        + '<p class="trip-info">' + endDate.toString() + '</p>'
+        + ` <button 
+            class="btn create-btn hide" 
+            onclick="location.href='tripDashboard.html'">
+            Go To Trip
+            </button>` ;
 
     trip.innerHTML = tripBox;
 
     document.getElementById("trips-div").appendChild(trip);
+}
+
+function showTripDetail() {
+    let trips = document.querySelectorAll(".trip");
+
+    for(let i = 0; i<trips.length; i++){
+
+        trips[i].onclick = function(){
+            for(let j = 0; j<trips.length; j++){
+                trips[j].classList.remove("selectedTrip");
+                trips[j].lastChild.classList.add("hide");
+            }
+
+            this.classList.add("selectedTrip");
+            this.lastChild.classList.remove("hide");
+
+            let selectedTripId = this.getAttribute("tripIdNumber");
+            sessionStorage.setItem("tripId",  selectedTripId);
+
+            getBudget(selectedTripId);
+            showBudget(selectedTripId);
+        }			
+    }
+}
+
+
+// work in progress
+function showBudget(tripId) {
+    let budgetDiv = document.getElementById("budget-div");
+    if(tripId === "" || tripId === null) {
+        let noSelectedTripMsg = `<p class="big-msg">Select a trip to begin!</p>`;
+        budgetDiv.innerHTML = noSelectedTripMsg;
+    } else {
+        // work in progress
+        console.log(tripId);
+    }
+}
+
+function getBudget(tripId) {
+    // this function will perform a fetch to get budget of the specific trip
+    // work in progress
+    console.log(tripId);
 }

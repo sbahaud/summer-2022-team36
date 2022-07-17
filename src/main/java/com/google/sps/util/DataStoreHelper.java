@@ -16,6 +16,7 @@ import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,5 +76,11 @@ public class DataStoreHelper {
             result.add(s.get());
         }
         return result;
+    }
+
+    public static List<String> splitUserList(String input){
+        input = input.replace(" ", "");
+        String[] strArr = input.split(",");
+        return Arrays.asList(strArr);
     }
 }
