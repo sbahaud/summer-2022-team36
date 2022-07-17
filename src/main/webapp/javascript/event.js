@@ -30,7 +30,7 @@ if (userName === "" || userName === null) {
 function selectTrip() {
     if (tripId === "" || tripId === null) {
         console.log("tripId is null");
-        return `<button class="btn redirect-btn onclick="location.href='../pages/dashboard.html'">Select a trip</button>`;
+        return `<button class="btn redirect-btn" onclick="location.href='../pages/dashboard.html'">Select a trip</button>`;
     } else {
         console.log("tripId EXIST!");
         fetchTripDates();
@@ -61,7 +61,16 @@ function createEvent() {
     submit.addEventListener("click", function(event) {
         event.preventDefault();
 
-        postNewEvent(tripId, title.value, date.value, location.value, budget.value);
+        if(tripId === "" || tripId === null) {
+            msgDiv.innerHTML = `<p class="success">Please select a first!</p>`;
+            
+            window.setTimeout(function() {
+                window.location.href = "/pages/dashboard.html";
+            }, 500);
+
+        } else {
+            postNewEvent(tripId, title.value, date.value, location.value, budget.value);
+        }
     });
 }
 
@@ -86,7 +95,7 @@ async function postNewEvent(tripId, title, date, location, budget) {
         
         window.setTimeout(function() {
             window.location.href = "/pages/tripDashboard.html";
-        }, 400);
+        }, 500);
     
     } else {
         msgDiv.innerHTML = responseMsg;
@@ -94,6 +103,7 @@ async function postNewEvent(tripId, title, date, location, budget) {
 }
 
 // Limit date range within trip from/to dates
+// Get trip from/to dates
 async function fetchTripDates() {
     const params = new Headers();
 
@@ -108,17 +118,15 @@ async function fetchTripDates() {
     )
 }
 
+// Set event date within the trip dates
 function dateDisable(startDate, endDate) {    
-    console.log("start: " + startDate);
-    console.log("end: " + endDate);
     fromDate = getDateString(startDate);
     toDate = getDateString(endDate);
-    console.log("from: " + fromDate);
-    console.log("to: " + toDate);
     document.getElementById("input-date").setAttribute('min', fromDate);
     document.getElementById("input-date").setAttribute('max', toDate);    
 }
 
+// Get the date string
 function getDateString(date) {
     var tdate = date.getDate();
     var month = date.getMonth() + 1;
