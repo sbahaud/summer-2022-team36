@@ -22,5 +22,9 @@ public class BudgetResponse {
     public void addToErrors(String newError){
         htmlToIntegrate.add(String.format("<p>%s</p>", newError));
     }
+<<<<<<< HEAD
 
 }
+=======
+}
+>>>>>>> 961c4df (connect budget to front end)

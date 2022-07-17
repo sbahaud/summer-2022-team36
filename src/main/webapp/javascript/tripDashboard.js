@@ -2,12 +2,6 @@ let tripId = sessionStorage.getItem("tripId");
 let userId = sessionStorage.getItem("userId");
 let userName = sessionStorage.getItem("userName");
 
-// displayTripInfo("colombia", "10000", "jul 2", "aug 2", "alice, bob, cathy");
-// displayEvents("eventId", "event1", "30", "peru", "aug 3");
-// displayEvents("eventId", "event2", "400", "lima", "aug 22");
-// displayEvents("eventId", "event3", "1000", "sydney", "sep 2");
-// displayEvents("eventId", "event4", "100000", "mars", "dec 9");
-
 if(userId !== "" && userId !== null && tripId !== "" && tripId !== null){
     console.log(tripId);
     showUsername();
@@ -27,18 +21,16 @@ async function fetchTripDetail(tripId) {
 
     await fetch('/getTripByID', {method: 'GET', headers: params}).then(response => response.json()).then(
         (trip) => {
-            displayTripInfo(trip.title, trip.totalBudget, trip.start, trip.end, trip.names)}
+            displayTripInfo(trip.title, trip.totalBudget, trip.start, trip.end, trip.participants)}
     );
 }
 
-function displayTripInfo(tripTitle, totalBudget, start, end, names) {
-    let startDate = new Date(start);
-    let endDate = new Date(end);
+function displayTripInfo(tripTitle, totalBudget, startDate, endDate, participants) {
     document.getElementById("destination").innerHTML = tripTitle;
     document.getElementById("totalBudget").innerHTML = totalBudget;
-    document.getElementById("startDate").innerHTML = startDate.toDateString();
-    document.getElementById("endDate").innerHTML = endDate.toDateString();
-    document.getElementById("participants").innerHTML = names;
+    document.getElementById("startDate").innerHTML = startDate;
+    document.getElementById("endDate").innerHTML = endDate;
+    document.getElementById("participants").innerHTML = participants;
 }
 
 async function fetchEvents(tripId) {

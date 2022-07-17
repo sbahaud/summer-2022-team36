@@ -17,6 +17,10 @@ import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+<<<<<<< HEAD
+=======
+import com.google.sps.model.Trip;
+>>>>>>> 961c4df (connect budget to front end)
 import com.google.sps.model.BudgetResponse;
 import com.google.sps.util.DataStoreHelper;
 
@@ -40,7 +44,7 @@ public class getBudget extends HttpServlet{
         for (String tripID: associatedTripIDs){
             double contribution;
             try {
-                contribution = getEstimatedContribution(tripID);
+                contribution = getEstimatedContribution(userID, tripID);
             } catch (IllegalArgumentException e){
                 responseObj.addToErrors("Could not calculate expected contribution");
                 continue;
@@ -59,11 +63,11 @@ public class getBudget extends HttpServlet{
         }
     }
 
-    private List<String> getAssociatedTrips(String tripID) {
+    private List<String> getAssociatedTrips(String userID) {
         Query<Entity> query =
           Query.newEntityQueryBuilder()
             .setKind("Trip")
-            .setFilter(PropertyFilter.eq("tripID", tripID))
+            .setFilter(PropertyFilter.eq("userID", userID))
             .build();
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         QueryResults<Entity> results = datastore.run(query);
@@ -71,7 +75,7 @@ public class getBudget extends HttpServlet{
             throw new IllegalArgumentException("Trip could not be found");
         }
 
-        List<Value<String>> associatedTrips = results.next().getList("tripIDs");
+        List<Value<String>> associatedTrips = results.next().getList("tripID");
         return DataStoreHelper.convertToStringList(associatedTrips);
     }
 
@@ -90,12 +94,18 @@ public class getBudget extends HttpServlet{
         return results.next().getDouble("totalBudget");
     }
 
-    private double getEstimatedContribution(String tripID) {
+    private double getEstimatedContribution(String userID, String tripID) {
         List<String> associatedEvents = getAssociatedEvents(tripID);
         
         double sum = 0.0;
         for (String eventID : associatedEvents) {
-            sum += getEventCost(eventID);
+            double cost = getEventCost(eventID);
+
+            int numTripParticipants = getNumTripParticipants(tripID);
+            int divisor = getSplitBy(eventID, userID, numTripParticipants);
+            double contribution = divisor == 0 ? 0.0 : (cost / divisor);
+
+            sum += contribution;
         }
 
         return sum;
