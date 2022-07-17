@@ -100,7 +100,7 @@ public class getBudget extends HttpServlet{
 
             int numTripParticipants = getNumTripParticipants(tripID);
             int divisor = getSplitBy(eventID, userID, numTripParticipants);
-            double contribution = divisor == 0 ? 0.0 : cost / divisor;
+            double contribution = divisor == 0 ? 0.0 : (cost / divisor);
 
             sum += contribution;
         }
