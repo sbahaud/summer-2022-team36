@@ -41,6 +41,9 @@ body {
     color: var(--second-color);
     font-size: 1.5em;
 }
+.response-msg {
+    color: red;
+}
 
 /* Trip */
 .inputBox {

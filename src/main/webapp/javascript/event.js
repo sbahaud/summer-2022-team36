@@ -88,7 +88,6 @@ async function postNewEvent(tripId, title, date, location, budget) {
         }, 400);
     
     } else {
-        console.log("eventId: " + responseMsg + "eventId type: " + typeof responseMsg);
         msgDiv.innerHTML = responseMsg;
     }
 }
