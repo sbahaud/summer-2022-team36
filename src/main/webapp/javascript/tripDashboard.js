@@ -1,6 +1,7 @@
 let tripId = sessionStorage.getItem("tripId");
 let userId = sessionStorage.getItem("userId");
 let userName = sessionStorage.getItem("userName");
+let eventDiv = document.getElementById("events-div");
 
 if(userId !== "" && userId !== null && tripId !== "" && tripId !== null){
     console.log(tripId);
@@ -33,11 +34,23 @@ function displayTripInfo(tripTitle, totalBudget, startDate, endDate, names) {
     document.getElementById("participants").innerHTML = names;
 }
 
+
+function displayLoading() {
+    eventDiv.innerHTML = `<p class="loading">Loading...</p>`;
+}
+
+function hideLoading() {
+    eventDiv.innerHTML = ``;
+}
+
 async function fetchEvents(tripId) {
+    displayLoading();
+
     const params = new Headers();
     params.append('tripID', tripId);
 
     await fetch('/get-events', {method: 'GET', headers: params}).then(response => response.json()).then((events) => {
+        hideLoading();
         events.forEach(
             (event) => {
                 displayEvents(event.eventID, event.title, event.estimatedCost, event.location, event.date)});
@@ -59,5 +72,5 @@ function displayEvents(eventId, title, estimatedCost, location, date) {
 
     event.innerHTML = eventBox;
 
-    document.getElementById("events-div").appendChild(event);
+    eventDiv.appendChild(event);
 }

@@ -75,6 +75,7 @@ button.btn.create-btn {
 .trip {
     border: 2px solid var(--third-color);
     border-radius: 10px;
+    cursor: pointer;
     margin: 1em 0;
     padding: 1em;
     width: 15vw;
