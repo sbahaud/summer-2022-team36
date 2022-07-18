@@ -40,9 +40,9 @@ public class getBudget extends HttpServlet{
         String userID = req.getHeader("userID");
 
         List<String> associatedTripIDs = getAssociatedTrips(userID);
-
-        BudgetResponse responseObj = new BudgetResponse();
+        List<BudgetResponse> budgets = new ArrayList<BudgetResponse>();
         for (String tripID: associatedTripIDs){
+            BudgetResponse responseObj = new BudgetResponse();
             double contribution;
             try {
                 contribution = getEstimatedContribution(userID, tripID);
@@ -58,13 +58,25 @@ public class getBudget extends HttpServlet{
                 responseObj.addToErrors("Could not get trip budget");
                 continue;
             }
+
+            String tripName;
+            try {
+                tripName = getTripName(tripID);
+            } catch (IllegalArgumentException e) {
+                responseObj.addToErrors("Could not get trip title");
+                continue;
+            }
             
             //no errors
-            responseObj.addToHTML(tripBudget, contribution);
+            responseObj.addTripBudget(tripBudget);
+            responseObj.addContribution(contribution);
+            responseObj.addID(tripID);
+            responseObj.addtitle(tripName);
+            budgets.add(responseObj);
         }
         Gson gson = new Gson();
         resp.setContentType("application/json;");
-        resp.getWriter().println(gson.toJson(responseObj));
+        resp.getWriter().println(gson.toJson(budgets));
     }
 
     private List<String> getAssociatedTrips(String userID) {
@@ -101,6 +113,21 @@ public class getBudget extends HttpServlet{
         }
 
         return results.next().getDouble("totalBudget");
+    }
+
+    private String getTripName(String tripID) {
+        Query<Entity> query =
+          Query.newEntityQueryBuilder()
+            .setKind("Trip")
+            .setFilter(PropertyFilter.eq("tripID", tripID))
+            .build();
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        QueryResults<Entity> results = datastore.run(query);
+        if (!results.hasNext()){
+            throw new IllegalArgumentException("Trip could not be found");
+        }
+
+        return results.next().getString("title");
     }
 
     private double getEstimatedContribution(String userID, String tripID) {
