@@ -29,12 +29,13 @@ function displayTrips(tripId, title, totalBudget, startDate, endDate) {
     trip.className = "trip";
     trip.setAttribute("onclick", "showTripDetail()");
     trip.setAttribute("tripIdNumber", tripId);
-
+    let start = new Date(startDate);
+    let end = new Date(endDate);
     var tripBox = 
         '<h3 class="trip-title">' + title + '</h3>'
         + '<p class="trip-info">Budget $ ' + totalBudget + '</p>'
-        + '<p class="trip-info">' + startDate.toString() + '</p>'
-        + '<p class="trip-info">' + endDate.toString() + '</p>'
+        + '<p class="trip-info">' + start.toDateString() + '</p>'
+        + '<p class="trip-info">' + end.toDateString() + '</p>'
         + ` <button 
             class="btn create-btn hide" 
             onclick="location.href='tripDashboard.html'">

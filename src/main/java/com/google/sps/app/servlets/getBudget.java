@@ -40,7 +40,7 @@ public class getBudget extends HttpServlet{
         for (String tripID: associatedTripIDs){
             double contribution;
             try {
-                contribution = getEstimatedContribution(tripID, );
+                contribution = getEstimatedContribution(tripID);
             } catch (IllegalArgumentException e){
                 responseObj.addToErrors("Could not calculate expected contribution");
                 continue;
@@ -90,18 +90,12 @@ public class getBudget extends HttpServlet{
         return results.next().getDouble("totalBudget");
     }
 
-    private double getEstimatedContribution(String userID, String tripID) {
+    private double getEstimatedContribution(String tripID) {
         List<String> associatedEvents = getAssociatedEvents(tripID);
         
         double sum = 0.0;
         for (String eventID : associatedEvents) {
-            double cost = getEventCost(eventID);
-
-            int numTripParticipants = getNumTripParticipants(tripID);
-            int divisor = getSplitBy(eventID, userID, numTripParticipants);
-            double contribution = divisor == 0 ? 0.0 : cost / divisor;
-
-            sum += contribution;
+            sum += getEventCost(eventID);
         }
 
         return sum;

@@ -79,3 +79,34 @@ async function postNewTrip(title, fromDate, toDate, participants, budget, userNa
         msgDiv.innerHTML = responseMsg;
     }
 }
+
+// Limit date min to today's date
+var date = new Date();
+var tdate = date.getDate();
+var month = date.getMonth() + 1;
+var year = date.getUTCFullYear();
+if(tdate < 10){
+    tdate = '0' + tdate;
+}
+if(month < 10) {
+    month = '0' + month
+}
+var minDate = year + "-" + month + "-" + tdate
+document.getElementById("text-input-start-date").setAttribute('min', minDate)
+
+// Lminit toDate min and fromDate max when either one is selected
+var fromDate;
+$('#text-input-start-date').on('change', function() {
+    fromDate = $(this).val();
+    $('#text-input-end-date').prop('min', function() {
+        return fromDate;
+    })
+});
+
+var toDate;
+$('#text-input-end-date').on('change', function() {
+    toDate = $(this).val();
+    $('#text-input-start-date').prop('max', function() {
+        return toDate;
+    })
+});

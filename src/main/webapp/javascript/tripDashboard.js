@@ -12,6 +12,7 @@ if(userId !== "" && userId !== null && tripId !== "" && tripId !== null){
     console.log(tripId);
     showUsername();
     fetchTripDetail(tripId);
+    fetchEvents(tripId);
 }
 
 function showUsername() {
@@ -39,9 +40,9 @@ function displayTripInfo(tripTitle, totalBudget, start, end, names) {
     document.getElementById("endDate").innerHTML = endDate.toDateString();
     document.getElementById("participants").innerHTML = names;
 }
+
 async function fetchEvents(tripId) {
     const params = new Headers();
-
     params.append('tripID', tripId);
 
     await fetch('/get-events', {method: 'GET', headers: params}).then(response => response.json()).then((events) => {
@@ -55,12 +56,13 @@ function displayEvents(eventId, title, estimatedCost, location, date) {
     const event = document.createElement("div");
     event.className = "event";
     event.setAttribute("eventId", eventId);
+    let eventDate = new Date(date);
 
     var eventBox = 
         '<h3 class="event-title">' + title + '</h3>'
         + '<p class="event-info">Estimated Cost $ ' + estimatedCost + '</p>'
         + '<p class="event-info">Location: ' + location + '</p>'
-        + '<p class="trip-info">' + date.toString() + '</p>'
+        + '<p class="trip-info">' + eventDate.toDateString() + '</p>'
         ;
 
     event.innerHTML = eventBox;
