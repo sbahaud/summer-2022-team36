@@ -15,16 +15,6 @@ if(username === "" || username === null){
         <button class="btn logout-btn" id="logout-btn">Log out</button>`;
 }
 
-// // Direct user to sign up page
-// document.getElementById("userSignup").onclick = () => {
-//     location.href = "./pages/userSignup.html";
-// }
-
-// // Direct user to sign in page
-// document.getElementById("userSignin").onclick = () => {
-//     location.href = "./pages/userSignin.html";
-// }
-
 // Log out
 document.getElementById("logout-btn").onclick = function(){
     sessionStorage.clear();
