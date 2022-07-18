@@ -96,11 +96,11 @@ function getBudget(tripId) {
 
 // Log out
 var logout = document.getElementById("logout-btn");
-var msgDiv = document.getElementById("status-msg");
+
 logout.addEventListener("click", function() {
     sessionStorage.clear();
-    msgDiv.innerHTML = `<p color=red> Successully logged out</p>`
+    alert("Successully logged out");
     window.setTimeout(function() {
         window.location.href = "../index.html";
-    }, 500);
+    }, 400);
 })

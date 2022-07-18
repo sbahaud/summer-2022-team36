@@ -12,14 +12,14 @@ if(username === "" || username === null){
         username + 
         `!</p>` +
         `<button class="btn create-btn" onclick="location.href='./pages/dashboard.html'">Dashboard</button>
-        <button class="btn logout-btn" id="logout-btn">Log out</button>`;
+        <button class="btn logout-btn" onclick="logout()">Log out</button>`;
 }
 
 // Log out
-document.getElementById("logout-btn").onclick = function(){
+function logout(){
     sessionStorage.clear();
-    btnDiv.innerHTML = `<p color=red> Successully logged out</p>`
+    alert("Successully logged out");
     window.setTimeout(function() {
         window.location.href = "../index.html";
-    }, 500);
+    }, 400);
 }
