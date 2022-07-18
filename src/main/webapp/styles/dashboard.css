@@ -145,6 +145,23 @@ button.btn.create-btn {
     padding: 0 0.5em;
 }
 
+.big-msg {
+    color: var(--second-color);
+    font-size: 1.5em;
+}
+
+.budget-title {
+    color: #000;
+    font-size: 1.5em;
+    font-weight: 500;
+}
+
+.budget-data {
+    color: var(--main-color);
+    font-size: 2em;
+    font-weight: 600;
+}
+
 /* event dashboard */
 #events-div {
     align-content: center;

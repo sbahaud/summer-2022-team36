@@ -17,10 +17,6 @@ import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
-<<<<<<< HEAD
-=======
-import com.google.sps.model.Trip;
->>>>>>> 961c4df (connect budget to front end)
 import com.google.sps.model.BudgetResponse;
 import com.google.sps.util.DataStoreHelper;
 import com.google.gson.Gson;
