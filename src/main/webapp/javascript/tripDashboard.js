@@ -21,16 +21,16 @@ async function fetchTripDetail(tripId) {
 
     await fetch('/getTripByID', {method: 'GET', headers: params}).then(response => response.json()).then(
         (trip) => {
-            displayTripInfo(trip.title, trip.totalBudget, trip.start, trip.end, trip.participants)}
+            displayTripInfo(trip.title, trip.totalBudget, trip.start, trip.end, trip.names)}
     );
 }
 
-function displayTripInfo(tripTitle, totalBudget, startDate, endDate, participants) {
+function displayTripInfo(tripTitle, totalBudget, startDate, endDate, names) {
     document.getElementById("destination").innerHTML = tripTitle;
     document.getElementById("totalBudget").innerHTML = totalBudget;
     document.getElementById("startDate").innerHTML = startDate;
     document.getElementById("endDate").innerHTML = endDate;
-    document.getElementById("participants").innerHTML = participants;
+    document.getElementById("participants").innerHTML = names;
 }
 
 async function fetchEvents(tripId) {

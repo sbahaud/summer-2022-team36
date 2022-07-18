@@ -23,6 +23,7 @@ import com.google.sps.model.Trip;
 >>>>>>> 961c4df (connect budget to front end)
 import com.google.sps.model.BudgetResponse;
 import com.google.sps.util.DataStoreHelper;
+import com.google.gson.Gson;
 
 @WebServlet("/get-budget")
 public class getBudget extends HttpServlet{
@@ -61,13 +62,16 @@ public class getBudget extends HttpServlet{
             //no errors
             responseObj.addToHTML(tripBudget, contribution);
         }
+        Gson gson = new Gson();
+        resp.setContentType("application/json;");
+        resp.getWriter().println(gson.toJson(responseObj));
     }
 
     private List<String> getAssociatedTrips(String userID) {
         Query<Entity> query =
           Query.newEntityQueryBuilder()
             .setKind("Trip")
-            .setFilter(PropertyFilter.eq("userID", userID))
+            .setFilter(PropertyFilter.eq("participants", userID))
             .build();
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         QueryResults<Entity> results = datastore.run(query);
@@ -75,8 +79,13 @@ public class getBudget extends HttpServlet{
             throw new IllegalArgumentException("Trip could not be found");
         }
 
-        List<Value<String>> associatedTrips = results.next().getList("tripID");
-        return DataStoreHelper.convertToStringList(associatedTrips);
+        List<String> AssociatedTrips = new ArrayList<>();
+        while (results.hasNext()) {
+            Entity entity = results.next();
+            String tripID = entity.getString("tripID");
+            AssociatedTrips.add(tripID);
+        }
+        return AssociatedTrips;
     }
 
     private double getTripBuget(String tripID) {
@@ -149,7 +158,7 @@ public class getBudget extends HttpServlet{
         Query<Entity> query =
           Query.newEntityQueryBuilder()
             .setKind("Event")
-            .setFilter(PropertyFilter.eq("eventId", eventID))
+            .setFilter(PropertyFilter.eq("eventID", eventID))
             .build();
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         QueryResults<Entity> results = datastore.run(query);
@@ -172,8 +181,7 @@ public class getBudget extends HttpServlet{
             throw new IllegalArgumentException("Event could not be found");
         }
 
-        List<Value<String>> datastoreEventParticipants = results.next().getList("participants");
-        List<String> eventParticipants = DataStoreHelper.convertToStringList(datastoreEventParticipants);
+        List<String> eventParticipants = DataStoreHelper.convertToStringList((results.next()).getList("associatedUsernames"));
         if (eventParticipants.size() == 0) {
             return numTripParticipants;
         } else if (!eventParticipants.contains(userID)) { // user not included in participant
