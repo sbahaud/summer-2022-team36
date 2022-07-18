@@ -11,15 +11,15 @@ if(username === "" || username === null){
         `<p>Hi ` + 
         username + 
         `!</p>` +
-        `<button class="btn create-btn" onclick="location.href='./pages/dashboard.html'">Dashboard</button>`;
+        `<button class="btn create-btn" onclick="location.href='./pages/dashboard.html'">Dashboard</button>
+        <button class="btn logout-btn" onclick="logout()">Log out</button>`;
 }
 
-// Direct user to sign up page
-document.getElementById("userSignup").onclick = () => {
-    location.href = "./pages/userSignup.html";
-}
-
-// Direct user to sign in page
-document.getElementById("userSignin").onclick = () => {
-    location.href = "./pages/userSignin.html";
+// Log out
+function logout(){
+    sessionStorage.clear();
+    alert("Successully logged out");
+    window.setTimeout(function() {
+        window.location.href = "../index.html";
+    }, 400);
 }
