@@ -30,9 +30,10 @@ if (userName === "" || userName === null) {
 function selectTrip() {
     if (tripId === "" || tripId === null) {
         console.log("tripId is null");
-        return `<button class="btn redirect-btn onclick="location.href='../pages/dashboard.html'">Select a trip</button>`;
+        return `<button class="btn redirect-btn" onclick="location.href='../pages/dashboard.html'">Select a trip</button>`;
     } else {
         console.log("tripId EXIST!");
+        fetchTripDates();
         return `<button class="btn name-btn">Current trip: <span>` + tripTitle + ` </span></button>`;
     }
 }
@@ -60,7 +61,16 @@ function createEvent() {
     submit.addEventListener("click", function(event) {
         event.preventDefault();
 
-        postNewEvent(tripId, title.value, date.value, location.value, budget.value);
+        if(tripId === "" || tripId === null) {
+            msgDiv.innerHTML = `<p class="success">Please select a first!</p>`;
+            
+            window.setTimeout(function() {
+                window.location.href = "/pages/dashboard.html";
+            }, 500);
+
+        } else {
+            postNewEvent(tripId, title.value, date.value, location.value, budget.value);
+        }
     });
 }
 
@@ -85,10 +95,48 @@ async function postNewEvent(tripId, title, date, location, budget) {
         
         window.setTimeout(function() {
             window.location.href = "/pages/tripDashboard.html";
-        }, 400);
+        }, 500);
     
     } else {
-        console.log("eventId: " + responseMsg + "eventId type: " + typeof responseMsg);
         msgDiv.innerHTML = responseMsg;
     }
 }
+
+// Limit date range within trip from/to dates
+// Get trip from/to dates
+async function fetchTripDates() {
+    const params = new Headers();
+
+    params.append('tripID', tripId);
+
+    await fetch('/getTripByID', {method: 'GET', headers: params}).then(response => response.json()).then(
+        (trip) => {
+            let startDate = new Date(trip.start);
+            let endDate = new Date(trip.end);
+            dateDisable(startDate, endDate)
+        }
+    )
+}
+
+// Set event date within the trip dates
+function dateDisable(startDate, endDate) {    
+    fromDate = getDateString(startDate);
+    toDate = getDateString(endDate);
+    document.getElementById("input-date").setAttribute('min', fromDate);
+    document.getElementById("input-date").setAttribute('max', toDate);    
+}
+
+// Get the date string
+function getDateString(date) {
+    var tdate = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getUTCFullYear();
+    if(tdate < 10){
+        tdate = '0' + tdate;
+    }
+    if(month < 10) {
+        month = '0' + month
+    }
+    return year + "-" + month + "-" + tdate
+}
+
