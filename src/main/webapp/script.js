@@ -11,15 +11,25 @@ if(username === "" || username === null){
         `<p>Hi ` + 
         username + 
         `!</p>` +
-        `<button class="btn create-btn" onclick="location.href='./pages/dashboard.html'">Dashboard</button>`;
+        `<button class="btn create-btn" onclick="location.href='./pages/dashboard.html'">Dashboard</button>
+        <button class="btn logout-btn" id="logout-btn">Log out</button>`;
 }
 
-// Direct user to sign up page
-document.getElementById("userSignup").onclick = () => {
-    location.href = "./pages/userSignup.html";
-}
+// // Direct user to sign up page
+// document.getElementById("userSignup").onclick = () => {
+//     location.href = "./pages/userSignup.html";
+// }
 
-// Direct user to sign in page
-document.getElementById("userSignin").onclick = () => {
-    location.href = "./pages/userSignin.html";
+// // Direct user to sign in page
+// document.getElementById("userSignin").onclick = () => {
+//     location.href = "./pages/userSignin.html";
+// }
+
+// Log out
+document.getElementById("logout-btn").onclick = function(){
+    sessionStorage.clear();
+    btnDiv.innerHTML = `<p color=red> Successully logged out</p>`
+    window.setTimeout(function() {
+        window.location.href = "../index.html";
+    }, 500);
 }
