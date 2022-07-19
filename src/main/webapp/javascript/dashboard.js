@@ -1,14 +1,13 @@
 let userId = sessionStorage.getItem("userId");
 let userName = sessionStorage.getItem("userName");
+sessionStorage.setItem("tripId", "");
 
 if(userId !== "" && userId !== null){
-    console.log(userId);
-    fetchTrips(userId);
     showUsername();
+    fetchTrips(userId);
 }
 
 function showUsername() {
-    console.log(userName);
     document.getElementById("nameSpan").innerHTML = userName;
 }
 
@@ -68,29 +67,51 @@ function showTripDetail() {
             sessionStorage.setItem("tripId",  selectedTripId);
             sessionStorage.setItem("tripTitle", selectedTripTitle)
 
-            getBudget(selectedTripId);
-            showBudget(selectedTripId);
+            fetchBudget(userId, selectedTripId);
         }			
     }
 }
 
 
-// work in progress
-function showBudget(tripId) {
-    let budgetDiv = document.getElementById("budget-div");
-    if(tripId === "" || tripId === null) {
-        let noSelectedTripMsg = `<p class="big-msg">Select a trip to begin!</p>`;
-        budgetDiv.innerHTML = noSelectedTripMsg;
-    } else {
-        // work in progress
-        console.log(tripId);
-    }
+// Show Budget
+let budgetDiv = document.getElementById("budget-div");
+
+function displayLoading() {
+    budgetDiv.innerHTML = `<p class="loading">Loading...</p>`;
 }
 
-function getBudget(tripId) {
-    // this function will perform a fetch to get budget of the specific trip
-    // work in progress
-    console.log(tripId);
+function hideLoading() {
+    budgetDiv.innerHTML = ``;
+}
+
+async function fetchBudget(userId, tripId) {
+    displayLoading();
+
+    const params = new Headers();
+
+    params.append('userID', userId);
+
+    await fetch('/get-budget', {method: 'GET', headers: params}).then(response => response.json()).then((budgets) => {
+        budgets.forEach(
+            (budget) => {
+                if(budget.tripID === tripId) {
+                    hideLoading();
+                    displayBudget(budget.title, budget.contribution, budget.tripBudget);
+                };
+            });
+    });
+}
+
+function displayBudget(title, contribution, budget) {
+    var content = 
+        `<p class="budget-title">Trip To</p>
+            <p class="budget-data">` + title + `</p>`
+        + `<p class="budget-title">Trip Budget</p>
+            <p class="budget-data">$ `+ budget + `</p>`
+        + `<p class="budget-title">Your Expected Contribution</p>
+            <p class="budget-data">$ ` + contribution + `</p>`;
+    
+    budgetDiv.innerHTML = content;
 }
 
 
