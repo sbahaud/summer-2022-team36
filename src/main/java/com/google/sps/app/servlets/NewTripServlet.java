@@ -1,22 +1,6 @@
 
 package com.google.sps.app.servlets;
 
-import com.google.cloud.datastore.Datastore;
-import com.google.cloud.datastore.DatastoreOptions;
-import com.google.cloud.datastore.Entity;
-import com.google.cloud.datastore.FullEntity;
-import com.google.cloud.datastore.KeyFactory;
-import com.google.cloud.datastore.ListValue;
-import com.google.cloud.datastore.Value;
-import com.google.cloud.datastore.Query;
-import com.google.cloud.datastore.QueryResults;
-import com.google.cloud.datastore.StringValue;
-import com.google.cloud.datastore.StructuredQuery.OrderBy;
-import com.google.gson.Gson;
-import com.google.sps.model.Trip;
-import com.google.sps.util.DataStoreHelper;
-import com.google.sps.util.UUIDs;
-import com.google.sps.util.Validator;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +10,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.FullEntity;
+import com.google.cloud.datastore.KeyFactory;
+import com.google.gson.Gson;
+import com.google.sps.model.Trip;
+import com.google.sps.util.DataStoreHelper;
+import com.google.sps.util.UUIDs;
+import com.google.sps.util.Validator;
+
 import org.apache.commons.text.StringEscapeUtils;
 
 @WebServlet("/NewTrip")
