@@ -3,6 +3,7 @@ package com.google.sps.app.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -90,6 +91,7 @@ public class NewTripServlet extends HttpServlet {
 
         String participantInput = StringEscapeUtils.escapeHtml4(request.getParameter(PARTICIPANTS_PARAM));
         List<String> participants = DataStoreHelper.splitUserList(participantInput);
+        if (participants.size() == 1 && participants.get(0).equals("")){return "";} // if there are no participants to add it skips this step
         for (String userToAdd : participants) {
             String validationErrors = Validator.validateUserName(userToAdd);
             if (!validationErrors.isEmpty()) {
