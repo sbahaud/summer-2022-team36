@@ -1,24 +1,9 @@
 
 package com.google.sps.app.servlets;
 
-import com.google.cloud.datastore.Datastore;
-import com.google.cloud.datastore.DatastoreOptions;
-import com.google.cloud.datastore.Entity;
-import com.google.cloud.datastore.FullEntity;
-import com.google.cloud.datastore.KeyFactory;
-import com.google.cloud.datastore.ListValue;
-import com.google.cloud.datastore.Value;
-import com.google.cloud.datastore.Query;
-import com.google.cloud.datastore.QueryResults;
-import com.google.cloud.datastore.StringValue;
-import com.google.cloud.datastore.StructuredQuery.OrderBy;
-import com.google.gson.Gson;
-import com.google.sps.model.Trip;
-import com.google.sps.util.DataStoreHelper;
-import com.google.sps.util.UUIDs;
-import com.google.sps.util.Validator;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +11,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.FullEntity;
+import com.google.cloud.datastore.KeyFactory;
+import com.google.gson.Gson;
+import com.google.sps.model.Trip;
+import com.google.sps.util.DataStoreHelper;
+import com.google.sps.util.UUIDs;
+import com.google.sps.util.Validator;
+
 import org.apache.commons.text.StringEscapeUtils;
 
 @WebServlet("/NewTrip")
@@ -94,6 +91,7 @@ public class NewTripServlet extends HttpServlet {
 
         String participantInput = StringEscapeUtils.escapeHtml4(request.getParameter(PARTICIPANTS_PARAM));
         List<String> participants = DataStoreHelper.splitUserList(participantInput);
+        if (participants.size() == 1 && participants.get(0).equals("")){return "";} // if there are no participants to add it skips this step
         for (String userToAdd : participants) {
             String validationErrors = Validator.validateUserName(userToAdd);
             if (!validationErrors.isEmpty()) {
@@ -123,13 +121,15 @@ public class NewTripServlet extends HttpServlet {
         List<String> existingParticipantsNames = new ArrayList<String>();
         List<String> participantNames = DataStoreHelper.splitUserList(participantInput);
         existingParticipantsNames.add(request.getParameter(USERNAME_PARAM));
-        participantIds.add(request.getParameter(USERID_PARAM));
-        for (String name : participantNames) {
-          if (existingParticipantsNames.contains(name))
-              continue;
-          participantIds.add(DataStoreHelper.queryUserID(name));
-          existingParticipantsNames.add(name);
+        if (existingParticipantsNames.size() == 1 && existingParticipantsNames.get(0).equals("")){ // if there are no participants to add it skips this step
+            for (String name : participantNames) {
+            if (existingParticipantsNames.contains(name))
+                continue;
+            participantIds.add(DataStoreHelper.queryUserID(name));
+            existingParticipantsNames.add(name);
+            }
         }
+        participantIds.add(request.getParameter(USERID_PARAM));
         return Trip.create(tripID, textValuetitle, start, end, participantIds, existingParticipantsNames, totalBudget);
     }
 
