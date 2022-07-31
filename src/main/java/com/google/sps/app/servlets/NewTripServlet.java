@@ -121,13 +121,15 @@ public class NewTripServlet extends HttpServlet {
         List<String> existingParticipantsNames = new ArrayList<String>();
         List<String> participantNames = DataStoreHelper.splitUserList(participantInput);
         existingParticipantsNames.add(request.getParameter(USERNAME_PARAM));
-        participantIds.add(request.getParameter(USERID_PARAM));
-        for (String name : participantNames) {
-          if (existingParticipantsNames.contains(name))
-              continue;
-          participantIds.add(DataStoreHelper.queryUserID(name));
-          existingParticipantsNames.add(name);
+        if (existingParticipantsNames.size() == 1 && existingParticipantsNames.get(0).equals("")){ // if there are no participants to add it skips this step
+            for (String name : participantNames) {
+            if (existingParticipantsNames.contains(name))
+                continue;
+            participantIds.add(DataStoreHelper.queryUserID(name));
+            existingParticipantsNames.add(name);
+            }
         }
+        participantIds.add(request.getParameter(USERID_PARAM));
         return Trip.create(tripID, textValuetitle, start, end, participantIds, existingParticipantsNames, totalBudget);
     }
 
